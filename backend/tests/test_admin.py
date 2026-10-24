@@ -25,7 +25,7 @@ def test_red_story_with_unchecked_translation_cannot_be_published(client, login)
     published = r.json()
     assert published["status"] == "published" and published["verification"]["verifiedBy"] == "Aino K."
     # Sara (non-EU) now gets it as must-see.
-    item = next(i for i in client.get("/v1/feed", headers=login("sara")).json()["items"] if i["storyId"] == "finns-party-cuts")
+    item = next(i for i in client.get("/v1/feed?limit=100", headers=login("sara")).json()["items"] if i["storyId"] == "finns-party-cuts")
     assert item["mustSee"]
 
 

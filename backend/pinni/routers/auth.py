@@ -34,6 +34,7 @@ def _adopt_anonymous(conn, anonymous_id: str, user_id: str) -> None:
                      (user_id, user_id, anonymous_id))
     conn.execute("UPDATE devices SET user_id = ? WHERE user_id = ?", (user_id, anonymous_id))
     conn.execute("DELETE FROM sessions WHERE user_id = ?", (anonymous_id,))
+    conn.execute("UPDATE users SET merged_into = ? WHERE id = ?", (user_id, anonymous_id))
 
 
 @router.post("/auth/login")

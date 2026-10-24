@@ -46,7 +46,7 @@ def test_feed_uses_what_similar_people_liked(client, app, anonymous, login):
     sara = login("sara")
 
     def relevance():
-        items = client.get("/v1/feed", headers=sara).json()["items"]
+        items = client.get("/v1/feed?limit=100", headers=sara).json()["items"]
         return next(i["relevance"] for i in items if i["storyId"] == "un-climate-report")
 
     before = relevance()
@@ -59,7 +59,7 @@ def test_feed_uses_content_similarity(client, anonymous):
     profile = client.get("/v1/profile", headers=headers).json()
 
     def relevance():
-        items = client.get("/v1/feed", headers=headers).json()["items"]
+        items = client.get("/v1/feed?limit=100", headers=headers).json()["items"]
         return next(i["relevance"] for i in items if i["storyId"] == "muhos-data-centre")
 
     client.put("/v1/profile", json={**profile, "interests": ["football"]}, headers=headers)

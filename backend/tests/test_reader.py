@@ -43,7 +43,7 @@ def test_cold_start_feed(client, anonymous, valid):
 
 
 def test_not_for_me_hides_story(client, login):
-    ids = {i["storyId"] for i in client.get("/v1/feed", headers=login("matti")).json()["items"]}
+    ids = {i["storyId"] for i in client.get("/v1/feed?limit=100", headers=login("matti")).json()["items"]}
     assert "athletics-euros-2030" not in ids
 
 
@@ -146,7 +146,7 @@ def test_taking_back_a_like(client, anonymous):
     headers, user = anonymous()
 
     def relevance():
-        items = client.get("/v1/feed", headers=headers).json()["items"]
+        items = client.get("/v1/feed?limit=100", headers=headers).json()["items"]
         return next(i["relevance"] for i in items if i["storyId"] == "lidl-ideapark")
 
     def like(n, value):

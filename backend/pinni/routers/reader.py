@@ -94,10 +94,14 @@ def post_events(request: Request, conn: Conn, user: CurrentUser, body: list = Bo
     if len(body) > 500:
         raise ApiError(422, "invalid", "At most 500 events per batch")
     c = contract(request)
+    # Events the app queued before signing in carry the anonymous id; that history is this account's now.
+    former = {r[0] for r in conn.execute("SELECT id FROM users WHERE merged_into = ?", (user["id"],))}
     for i, event in enumerate(body):
         problems = c.errors("event.schema.json", event)
         if problems:
             raise ApiError(422, "invalid", f"[{i}] " + "; ".join(problems[:3]))
+        if event["userId"] in former:
+            event["userId"] = user["id"]
         if event["userId"] != user["id"]:
             raise forbidden(f"[{i}] events can only be uploaded for yourself")
     with conn:
