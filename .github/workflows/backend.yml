@@ -17,3 +17,27 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: uv sync --frozen
       - run: uv run pytest -q
+
+  test-neo4j:
+    # The same tests with the knowledge graph in a real Neo4j instead of the in-memory graph.
+    runs-on: ubuntu-latest
+    services:
+      neo4j:
+        image: neo4j:5.26-community
+        env:
+          NEO4J_AUTH: neo4j/pinni-ci-graph
+        ports: ["7687:7687"]
+        options: >-
+          --health-cmd "wget -qO- http://localhost:7474 || exit 1"
+          --health-interval 10s --health-retries 12
+    env:
+      PINNI_TEST_NEO4J_URI: bolt://localhost:7687
+      PINNI_TEST_NEO4J_PASSWORD: pinni-ci-graph
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - run: uv run pytest -q

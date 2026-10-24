@@ -5,7 +5,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Query, Request
 
-from .. import db
+from .. import db, stores
 from ..auth import Conn, Editor
 from ..errors import ApiError, not_found
 
@@ -125,6 +125,7 @@ def edit_story(request: Request, story_id: str, conn: Conn, user: Editor, body: 
     with conn:
         db.put_story(conn, body)
         db.audit(conn, _actor(user), "review", "Story edited", story_id=story_id)
+    stores.story_changed(request, body)
     return body
 
 
@@ -158,6 +159,7 @@ def decide_story(request: Request, story_id: str, conn: Conn, user: Editor, body
             report.update(status="published", resultStoryId=story_id, updatedAt=now)
             db.put_report(conn, report)
             _notify(conn, report["reporterId"], "reportPublished", report, story_id)
+    stores.story_changed(request, story)
     return story
 
 
@@ -221,6 +223,7 @@ def decide_report(request: Request, report_id: str, conn: Conn, user: Editor, bo
         raise ApiError(409, "alreadyDecided", f"Report is already {report['status']}")
     c = request.app.state.contract
     now = db.now()
+    story = None
     with conn:
         if action == "approve":
             if report["kind"] == "problem":
@@ -251,6 +254,8 @@ def decide_report(request: Request, report_id: str, conn: Conn, user: Editor, bo
         db.audit(conn, _actor(user), "review", f"{action}" + (f": {note}" if note else ""), report_id=report_id)
         if notice:
             _notify(conn, report["reporterId"], notice, report, report.get("resultStoryId"), note)
+    if story:
+        stores.story_changed(request, story)
     return report
 
 

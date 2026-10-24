@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Query, Request, Response
 
-from .. import auth, db, ranking
+from .. import auth, db, ranking, stores
 from ..auth import Conn, CurrentUser
 from ..errors import ApiError, forbidden, not_found
 from .auth import preferred_language
@@ -34,6 +34,7 @@ def put_profile(request: Request, conn: Conn, user: CurrentUser, body: dict = Bo
         db.put_doc(conn, "profiles", body)
         db.add_event(conn, {"id": db.new_id("ev"), "userId": user["id"], "type": "profileEdit",
                             "detail": {"profile": body}, "context": {"screen": "profile"}, "occurredAt": body["updatedAt"]})
+    stores.profile_changed(request, body)
     return body
 
 
@@ -43,19 +44,21 @@ def get_learned(conn: Conn, user: CurrentUser):
 
 
 @router.delete("/profile/learned", status_code=204)
-def reset_learned(conn: Conn, user: CurrentUser):
+def reset_learned(request: Request, conn: Conn, user: CurrentUser):
     with conn:
         conn.execute("UPDATE users SET learned_reset_at = ? WHERE id = ?", (db.now(), user["id"]))
+    stores.replay_user(request, conn, user["id"])
     return Response(status_code=204)
 
 
 @router.get("/feed")
-def get_feed(conn: Conn, user: CurrentUser,
+def get_feed(request: Request, conn: Conn, user: CurrentUser,
              scale: Annotated[str | None, Query(pattern="^(area|city|finland|world)$")] = None,
              placeId: str | None = None,
              limit: Annotated[int, Query(ge=1, le=100)] = 30,
              cursor: str | None = None):
-    return ranking.feed(conn, user["id"], scale, placeId, limit, cursor)
+    return ranking.feed(conn, user["id"], scale, placeId, limit, cursor,
+                        graph=stores.graph(request), vectors=stores.vectors(request))
 
 
 @router.get("/stories")
@@ -94,8 +97,9 @@ def post_events(request: Request, conn: Conn, user: CurrentUser, body: list = Bo
         if event["userId"] != user["id"]:
             raise forbidden(f"[{i}] events can only be uploaded for yourself")
     with conn:
-        accepted = sum(db.add_event(conn, e) for e in body)
-    return {"accepted": accepted, "duplicates": len(body) - accepted}
+        accepted = [e for e in body if db.add_event(conn, e)]
+    stores.events_added(request, accepted)
+    return {"accepted": len(accepted), "duplicates": len(body) - len(accepted)}
 
 
 @router.get("/notifications")
