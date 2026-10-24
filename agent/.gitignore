@@ -1,0 +1,9 @@
+# Agent local gitignore
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+.pytest_cache/
+data/
+*.db
