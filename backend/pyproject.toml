@@ -1,0 +1,21 @@
+[project]
+name = "pinni-backend"
+version = "0.1.0"
+description = "Pinni API (Track C): FastAPI backend serving the shared contract"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.162.0",
+    "jsonschema[format-nongpl]>=4.26.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "pyyaml>=6.0.3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

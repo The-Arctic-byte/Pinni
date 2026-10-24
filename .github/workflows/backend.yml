@@ -1,0 +1,19 @@
+name: backend
+
+on:
+  push:
+    paths: ["backend/**", "contract/**", ".github/workflows/backend.yml"]
+  pull_request:
+    paths: ["backend/**", "contract/**", ".github/workflows/backend.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - run: uv run pytest -q

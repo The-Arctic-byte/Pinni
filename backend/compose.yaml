@@ -1,0 +1,20 @@
+# docker compose -f backend/compose.yaml up --build
+# Neo4j (knowledge graph), Chroma (vectors) and Ollama join this file in C2 / B1.
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      PINNI_SEED_MOCK: "true"
+      PINNI_DEV_ACCOUNTS: "true"
+    volumes:
+      - pinni-data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+
+volumes:
+  pinni-data:
