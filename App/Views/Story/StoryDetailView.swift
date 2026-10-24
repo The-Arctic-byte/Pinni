@@ -56,7 +56,7 @@ struct StoryDetailView: View {
                 case .mine:
                     Text(verbatim: Locale(identifier: model.contentLanguage).localizedString(forLanguageCode: model.contentLanguage) ?? model.contentLanguage)
                 case .english:
-                    Text(verbatim: "English")
+                    Text("English")
                 case .finnishOriginal:
                     Text("Finnish original ⇄")
                 }
