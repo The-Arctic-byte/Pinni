@@ -2204,6 +2204,28 @@
         }
       }
     },
+    "Open Profile to change the API URL." : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نمایه را باز کن و آدرس API را عوض کن."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Avaa Profiili ja vaihda API-osoite."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Öppna Profil och ändra API-adressen."
+          }
+        }
+      }
+    },
     "Opinion, not news" : {
       "localizations" : {
         "fa" : {
@@ -3657,6 +3679,7 @@
       }
     },
     "Try again" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fa" : {
           "stringUnit" : {

@@ -177,13 +177,13 @@ struct ProfileScreen: View {
             .textInputAutocapitalization(.never)
             .keyboardType(.URL)
             #endif
-            .onSubmit { UserDefaults.standard.set(apiBaseURL, forKey: DataSource.defaultsKey) }
+            .onSubmit { Task { await model.applyAPIBaseURL(apiBaseURL) } }
         } header: {
             Text(verbatim: "Mock data")
         } footer: {
             Text(verbatim: DataSource.current == .mock
-                 ? "Using the contract's mock files. Enter an API URL and relaunch to use a backend."
-                 : "Using the API at \(apiBaseURL). Clear the URL and relaunch for mock data.")
+                 ? "Using the sample news. Enter an API URL to use a backend."
+                 : "Using the API at \(apiBaseURL). Clear the URL to use the sample news.")
         }
     }
 

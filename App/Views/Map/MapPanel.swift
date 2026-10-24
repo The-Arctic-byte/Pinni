@@ -122,7 +122,17 @@ struct MapPanel: View {
     @ViewBuilder
     private var list: some View {
         Group {
-            if entries.isEmpty && mustSee.isEmpty {
+            if model.showsUnreachableAPI {
+                ContentUnavailableView {
+                    Label("Couldn’t load news", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text("Open Profile to change the API URL.")
+                } actions: {
+                    #if os(iOS)
+                    Button("Profile") { presented = .profile }
+                    #endif
+                }
+            } else if entries.isEmpty && mustSee.isEmpty {
                 // Keep the chips: an empty chip (e.g. the EU) must not trap the reader on it.
                 VStack(spacing: 0) {
                     chipRow
