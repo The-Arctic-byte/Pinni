@@ -22,10 +22,18 @@ final class AppModel {
     private(set) var feed: FeedPage?
     private(set) var stories: [String: Story] = [:]
 
+    /// Bumped on every load so a slower, older load cannot overwrite a newer one.
+    @ObservationIgnored private var loadGeneration = 0
+
     /// A fresh install is the anonymous new user; the debug switch in Profile picks other mock readers.
     init(service: any NewsService = MockNewsService(), persona: Persona = .newUser, defaults: UserDefaults = .standard) {
         self.service = service
+        #if DEBUG
+        // `-persona sara` as a launch argument picks a mock reader (screenshots).
+        self.persona = defaults.string(forKey: "persona").flatMap(Persona.init(rawValue:)) ?? persona
+        #else
         self.persona = persona
+        #endif
         self.defaults = defaults
         self.hasCompletedOnboarding = defaults.bool(forKey: Self.onboardingKey)
     }
@@ -41,6 +49,8 @@ final class AppModel {
     }
 
     func load() async {
+        loadGeneration += 1
+        let generation = loadGeneration
         state = .loading
         do {
             let userId = persona.userId
@@ -49,12 +59,16 @@ final class AppModel {
             async let feed = service.feed(for: userId)
             let page = try await feed
             let loaded = try await service.stories(ids: page.items.map(\.storyId))
-            self.profile = try await profile
-            self.places = Dictionary(uniqueKeysWithValues: try await places.map { ($0.id, $0) })
+            let loadedProfile = try await profile
+            let loadedPlaces = try await places
+            guard generation == loadGeneration else { return }
+            self.profile = loadedProfile
+            self.places = Dictionary(uniqueKeysWithValues: loadedPlaces.map { ($0.id, $0) })
             self.feed = page
             self.stories = Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, $0) })
             state = .loaded
         } catch {
+            guard generation == loadGeneration else { return }
             state = .failed(String(describing: error))
         }
     }

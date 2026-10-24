@@ -11,14 +11,14 @@ struct NewsScreen: View {
                 case .idle, .loading:
                     ProgressView()
                 case .failed(let message):
-                    ContentUnavailableView("Couldn’t load news", systemImage: "exclamationmark.triangle", description: Text(message))
+                    LoadFailure(message: message) { await model.load() }
                 case .loaded:
                     list
                 }
             }
             .navigationTitle(Text("News"))
             .navigationDestination(for: Story.self) { story in
-                StoryDetailPlaceholder(story: story, language: model.contentLanguage)
+                StoryPreview(story: story, item: model.feed?.items.first { $0.storyId == story.id }, language: model.contentLanguage)
             }
         }
     }
@@ -28,26 +28,6 @@ struct NewsScreen: View {
             NavigationLink(value: entry.story) {
                 StoryRow(story: entry.story, item: entry.item, language: model.contentLanguage)
             }
-        }
-    }
-}
-
-/// Stand-in until A7 builds the full story view.
-private struct StoryDetailPlaceholder: View {
-    let story: Story
-    let language: String
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text(story.title.text(for: language))
-                    .font(.title2.bold())
-                Text(story.explanation.forYou.text(for: language))
-                    .font(.body)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
-            .environment(\.layoutDirection, language.contentLayoutDirection)
         }
     }
 }

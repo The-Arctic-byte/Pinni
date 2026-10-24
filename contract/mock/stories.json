@@ -188,6 +188,7 @@
     "origin": "agent",
     "scale": "finland",
     "placeId": "finland",
+    "location": { "coordinate": { "lat": 60.1728, "lon": 24.933 }, "radiusMeters": 0 },
     "category": "politics",
     "tags": ["parliament"],
     "needs": ["understanding"],
@@ -248,7 +249,7 @@
     "origin": "agent",
     "scale": "finland",
     "placeId": "muhos",
-    "location": { "coordinate": { "lat": 64.808, "lon": 25.993 }, "radiusMeters": 2000 },
+    "location": { "coordinate": { "lat": 64.808, "lon": 25.993 }, "radiusMeters": 0 },
     "category": "environment",
     "tags": ["data centre", "water"],
     "needs": ["understanding"],
@@ -302,6 +303,7 @@
     "origin": "agent",
     "scale": "world",
     "placeId": "world",
+    "location": { "coordinate": { "lat": -1.292, "lon": 36.822 }, "radiusMeters": 0 },
     "category": "environment",
     "tags": ["climate"],
     "needs": ["understanding"],
@@ -328,6 +330,7 @@
     "origin": "agent",
     "scale": "world",
     "placeId": "world",
+    "location": { "coordinate": { "lat": 38.907, "lon": -77.037 }, "radiusMeters": 0 },
     "category": "technology",
     "tags": ["social media"],
     "needs": ["understanding"],
@@ -374,5 +377,260 @@
     "createdAt": "2026-10-24T07:50:00+03:00",
     "updatedAt": "2026-10-24T08:30:00+03:00",
     "publishedAt": "2026-10-24T08:30:00+03:00"
+  },
+  {
+    "id": "rotuaari-ice",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "oulu",
+    "location": { "coordinate": { "lat": 65.0124, "lon": 25.465 }, "radiusMeters": 220 },
+    "category": "safety",
+    "tags": ["winter", "walking"],
+    "needs": ["safety", "usefulness"],
+    "risk": "amber",
+    "isOpinion": false,
+    "importance": 0.7,
+    "label": { "en": "Icy street", "fi": "Liukas katu", "fa": "خیابان یخ‌زده" },
+    "title": {
+      "en": "Rotuaari is icy this morning; walk in the middle of the street",
+      "fi": "Rotuaari on tänä aamuna jäinen; kävele kadun keskellä",
+      "fa": "روتوآری امروز صبح یخ زده است؛ از وسط خیابان راه برو"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Overnight frost left the pedestrian street Rotuaari slippery between the marketplace and the cathedral.",
+        "fi": "Yön pakkanen teki kävelykatu Rotuaarista liukkaan kauppatorin ja tuomiokirkon välillä.",
+        "fa": "یخبندان شب، خیابان پیاده‌روی روتوآری را بین میدان بازار و کلیسای جامع لغزنده کرده است."
+      },
+      "forYou": {
+        "en": "If you are in the centre this morning, use the gritted middle of the street.",
+        "fi": "Jos olet aamulla keskustassa, kävele hiekoitettua kadun keskiosaa.",
+        "fa": "اگر امروز صبح در مرکز شهری، از وسط شن‌پاشی‌شده خیابان برو."
+      }
+    },
+    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-24T07:10:00+03:00" }],
+    "translations": [
+      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    ],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T07:40:00+03:00" },
+    "createdAt": "2026-10-24T07:15:00+03:00",
+    "updatedAt": "2026-10-24T07:40:00+03:00",
+    "publishedAt": "2026-10-24T07:40:00+03:00"
+  },
+  {
+    "id": "oulu-station-trains",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "oulu",
+    "location": { "coordinate": { "lat": 65.0106, "lon": 25.488 }, "radiusMeters": 0 },
+    "category": "transport",
+    "tags": ["trains"],
+    "needs": ["usefulness"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.6,
+    "mapObject": "station",
+    "label": { "en": "Trains delayed", "fi": "Junat myöhässä", "fa": "تأخیر قطار" },
+    "title": {
+      "en": "Morning trains from Oulu station are running about 20 minutes late",
+      "fi": "Aamun junat Oulun asemalta kulkevat noin 20 minuuttia myöhässä",
+      "fa": "قطارهای صبح از ایستگاه اولو حدود ۲۰ دقیقه تأخیر دارند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "A fault north of the station is delaying morning departures. VR says the delay is about 20 minutes.",
+        "fi": "Vika aseman pohjoispuolella viivästyttää aamun lähtöjä. VR:n mukaan myöhästyminen on noin 20 minuuttia.",
+        "fa": "نقصی در شمال ایستگاه، حرکت‌های صبح را عقب انداخته است. VR می‌گوید تأخیر حدود ۲۰ دقیقه است."
+      },
+      "forYou": {
+        "en": "If your train leaves before noon, check the board at the station before you leave home.",
+        "fi": "Jos junasi lähtee ennen puoltapäivää, tarkista aikataulunäyttö asemalla ennen kotoa lähtöä.",
+        "fa": "اگر قطار تو قبل از ظهر حرکت می‌کند، قبل از خروج از خانه تابلوی ایستگاه را چک کن."
+      }
+    },
+    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-24T06:40:00+03:00" }],
+    "translations": [
+      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    ],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T07:05:00+03:00" },
+    "createdAt": "2026-10-24T06:45:00+03:00",
+    "updatedAt": "2026-10-24T07:05:00+03:00",
+    "publishedAt": "2026-10-24T07:05:00+03:00"
+  },
+  {
+    "id": "oulu-library-sunday",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "oulu",
+    "location": { "coordinate": { "lat": 65.0167, "lon": 25.4755 }, "radiusMeters": 0 },
+    "category": "culture",
+    "tags": ["library"],
+    "needs": ["information"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.45,
+    "label": { "en": "Library open", "fi": "Kirjasto auki", "fa": "کتابخانه باز است" },
+    "title": {
+      "en": "Oulu main library is open this Sunday until 16:00",
+      "fi": "Oulun pääkirjasto on ensi sunnuntaina auki kello 16 asti",
+      "fa": "کتابخانه اصلی اولو این یکشنبه تا ساعت ۱۶ باز است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The main library on Kaarlenväylä opens on Sunday from 11:00 to 16:00. The reading room is included.",
+        "fi": "Pääkirjasto Kaarlenväylällä on sunnuntaina auki kello 11–16. Lukusali on mukana.",
+        "fa": "کتابخانه اصلی در کارلن‌ویلا یکشنبه از ۱۱ تا ۱۶ باز است. سالن مطالعه هم شامل می‌شود."
+      },
+      "forYou": {
+        "en": "Worth knowing if you were planning to return a book or study in the centre.",
+        "fi": "Hyvä tietää, jos aioit palauttaa kirjan tai lukea keskustassa.",
+        "fa": "اگر می‌خواستی کتاب پس بدهی یا در مرکز شهر درس بخوانی، بد نیست بدانی."
+      }
+    },
+    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-23T15:00:00+03:00" }],
+    "translations": [
+      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    ],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T16:00:00+03:00" },
+    "createdAt": "2026-10-23T15:10:00+03:00",
+    "updatedAt": "2026-10-23T16:00:00+03:00",
+    "publishedAt": "2026-10-23T16:00:00+03:00"
+  },
+  {
+    "id": "oulu-theatre-season",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "oulu",
+    "location": { "coordinate": { "lat": 65.0184, "lon": 25.4712 }, "radiusMeters": 0 },
+    "category": "culture",
+    "tags": ["theatre"],
+    "needs": ["emotion"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "mapObject": "concertHall",
+    "label": { "en": "New play", "fi": "Uusi näytelmä", "fa": "نمایش تازه" },
+    "title": {
+      "en": "Oulu Theatre opens its spring play next Saturday",
+      "fi": "Oulun teatterin kevään näytelmä saa ensi-iltansa ensi lauantaina",
+      "fa": "تئاتر اولو نمایش بهاری‌اش را شنبه آینده افتتاح می‌کند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The city theatre premieres its spring production next Saturday at 18:00. Tickets are on sale.",
+        "fi": "Kaupunginteatterin kevään esitys saa ensi-iltansa ensi lauantaina kello 18. Liput ovat myynnissä.",
+        "fa": "تئاتر شهر، اجرای بهاری‌اش را شنبه آینده ساعت ۱۸ افتتاح می‌کند. بلیت‌ها در فروش است."
+      },
+      "forYou": {
+        "en": "The theatre is a short walk from the library, if you are already in the centre.",
+        "fi": "Teatteri on lyhyen kävelymatkan päässä kirjastosta, jos olet jo keskustassa.",
+        "fa": "اگر از قبل در مرکز شهری، تئاتر چند قدم با کتابخانه فاصله دارد."
+      }
+    },
+    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-22T12:00:00+03:00" }],
+    "translations": [
+      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    ],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-22T14:00:00+03:00" },
+    "createdAt": "2026-10-22T12:20:00+03:00",
+    "updatedAt": "2026-10-22T14:00:00+03:00",
+    "publishedAt": "2026-10-22T14:00:00+03:00"
+  },
+  {
+    "id": "linnanmaa-campus-bus",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "linnanmaa",
+    "location": { "coordinate": { "lat": 65.059, "lon": 25.466 }, "radiusMeters": 0 },
+    "category": "transport",
+    "tags": ["bus", "campus"],
+    "needs": ["usefulness"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "mapObject": "campus",
+    "label": { "en": "Campus bus", "fi": "Kampusbussi", "fa": "اتوبوس پردیس" },
+    "title": {
+      "en": "Bus 4 is skipping the university stop in Linnanmaa this week",
+      "fi": "Bussi 4 ohittaa Linnanmaan yliopistopysäkin tällä viikolla",
+      "fa": "اتوبوس ۴ این هفته ایستگاه دانشگاه در لینانما را رد می‌کند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Road work on Pentti Kaiteran katu closes the university stop through Friday. Buses use the stop by the student housing.",
+        "fi": "Tietyö Pentti Kaiteran kadulla sulkee yliopiston pysäkin perjantaihin asti. Bussit käyttävät opiskelija-asumisen pysäkkiä.",
+        "fa": "کار جاده در خیابان پنتی کایتران ایستگاه دانشگاه را تا جمعه بسته است. اتوبوس‌ها از ایستگاه مسکن دانشجویی استفاده می‌کنند."
+      },
+      "forYou": {
+        "en": "If you study or work on campus, get off one stop earlier.",
+        "fi": "Jos opiskelet tai työskentelet kampuksella, jää yhtä pysäkkiä aiemmin pois.",
+        "fa": "اگر در پردیس درس می‌خوانی یا کار می‌کنی، یک ایستگاه زودتر پیاده شو."
+      }
+    },
+    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-24T06:20:00+03:00" }],
+    "translations": [
+      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    ],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T06:50:00+03:00" },
+    "createdAt": "2026-10-24T06:25:00+03:00",
+    "updatedAt": "2026-10-24T06:50:00+03:00",
+    "publishedAt": "2026-10-24T06:50:00+03:00"
+  },
+  {
+    "id": "ritaharju-crossing",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "ritaharju",
+    "location": { "coordinate": { "lat": 65.079, "lon": 25.522 }, "radiusMeters": 0 },
+    "category": "transport",
+    "tags": ["walking"],
+    "needs": ["usefulness", "safety"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "label": { "en": "New crossing", "fi": "Uusi suojatie", "fa": "گذرگاه تازه" },
+    "title": {
+      "en": "A new pedestrian crossing is open by the Ritaharju school",
+      "fi": "Ritaharjun koulun viereen on avattu uusi suojatie",
+      "fa": "گذرگاه تازه عابران کنار مدرسه ریتاهارجو باز شده است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The city opened a signalled crossing on the road past the Ritaharju school on Thursday.",
+        "fi": "Kaupunki avasi torstaina liikennevaloilla varustetun suojatien Ritaharjun koulun ohittavalle tielle.",
+        "fa": "شهر پنجشنبه یک گذرگاه چراغ‌دار در جاده کنار مدرسه ریتاهارجو باز کرد."
+      },
+      "forYou": {
+        "en": "Use the new crossing if you walk to the school or to Ideapark.",
+        "fi": "Käytä uutta suojatietä, jos kävelet koululle tai Ideaparkiin.",
+        "fa": "اگر پیاده به مدرسه یا آیدیاپارک می‌روی، از همین گذرگاه تازه استفاده کن."
+      }
+    },
+    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-23T18:00:00+03:00" }],
+    "translations": [
+      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    ],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T19:00:00+03:00" },
+    "createdAt": "2026-10-23T18:10:00+03:00",
+    "updatedAt": "2026-10-23T19:00:00+03:00",
+    "publishedAt": "2026-10-23T19:00:00+03:00"
   }
 ]

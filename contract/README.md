@@ -44,7 +44,9 @@ A new mock file must be added to `MOCK_SCHEMAS` in `validate.py`.
 
 ## Mock data
 
-Stories are the Kaleva headlines from 21–23 Oct 2026 used in the demo. People, channels, reports, counts and
-the community story are sample data. Coordinates are approximate.
+Stories are the Kaleva headlines from 21–23 Oct 2026 used in the demo, plus sample stories so every
+onboarding area has a pin: Oulu centre, Linnanmaa, and Ritaharju. Finland and world stories have a
+map point too. People, channels, reports, counts and the community story are sample data.
+Coordinates are approximate.
 Personas: `u-sara` (new student from Iran, Persian, Kiiminki, non-EU, PSOAS), `u-matti` (Finnish local, Kiiminki),
 `u-new` (just installed, no profile: cold start), `u-aino` (editor), `u-admin`.

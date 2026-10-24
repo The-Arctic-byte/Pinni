@@ -30,4 +30,9 @@ struct LocalizedText: Codable, Hashable, Sendable {
     func has(_ language: String) -> Bool {
         values[language] != nil
     }
+
+    /// The language `text(for:)` actually returns: the preferred one, or English when it is missing.
+    func shownLanguage(for preferred: String) -> String {
+        has(preferred) ? preferred : "en"
+    }
 }

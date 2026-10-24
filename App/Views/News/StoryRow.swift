@@ -27,7 +27,7 @@ struct StoryRow: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .environment(\.layoutDirection, language.contentLayoutDirection)
+            .environment(\.layoutDirection, story.title.shownLanguage(for: language).contentLayoutDirection)
             .frame(maxWidth: .infinity, alignment: .leading)
 
             RelevanceBars(relevance: item.relevance)

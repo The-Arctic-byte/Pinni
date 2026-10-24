@@ -85,10 +85,10 @@ Status:
 - [ ] Thiings topic images (SF Symbols stand in via `Category.symbolName`).
 
 ### A2 · App shell
-Tabs: Map · News · Community · Profile. Report button on the map and on every story.
-Mac: `NavigationSplitView` sidebar, map as detail, story in `.inspector`.
+iPhone (Flighty style): no tab bar. The full-screen map with a native sheet that is never dismissed; the sheet holds the news list, and Community and Profile open from buttons in its header. Report button comes with A11.
+Mac: `NavigationSplitView` sidebar (Map, News, Community, Profile), map as detail, news list in the map's inspector.
 
-Status: [x] tabs (iPhone) and sidebar (Mac) with placeholder Map, News, Community, Profile. Report button and inspector come with A7/A11.
+Status: [x] iPhone map + native sheet; [x] Mac sidebar + inspector. A system sheet cannot sit behind a tab bar (Apple supports it only with the tab bar inside the sheet, as in Find My), so the tab bar was dropped on iPhone; the separate News list now lives in the sheet, per scale.
 
 ### A3 · Mock data layer
 `NewsService` protocol with a mock implementation that reads `contract/mock/`. The real API implementation comes in Integration.
@@ -120,6 +120,21 @@ Status:
 - Colour-coded pins by category; size + accent ring = relevance.
 - 3D map objects for some stories: e.g. a stadium for a sport event, more later (concert hall, campus, …).
 - Safety stories as an area circle, never a point.
+
+Status:
+- [x] Segmented control Area · City · Finland · World moves the camera; pinching updates the control (`Scale(cameraDistance:)`).
+- [x] Scales are relative to the reader (`ReaderScale`): your area → Area, rest of your city → City, rest of Finland → Finland, abroad → World; never smaller than the story's own scale. Readers without an area start on City.
+- [x] Pins: category colour, size by relevance, accent ring for must-see / relevance ≥ 0.7, dashed ring for opinion; labels only for relevant stories.
+- [x] Pins that would overlap at the current zoom are grouped (`PinGrouping`) with a count badge; area stories stay circles and are never grouped.
+- [x] Area stories draw a dashed circle (`radiusMeters`), never a point; the circle opens its story.
+- [x] Stories with `mapObject` show a raised 3D tile; opening one flies the camera in (pitch 70°, 900 m) so MapKit's real 3D buildings show — checked with the Helsinki Olympic Stadium.
+- [x] News panel (`MapPanel`): iPhone = native sheet, never dismissed, detents collapsed (110 pt) / resting (default, 34 %) / medium / large, map usable up to medium, Community and Profile in its header; Mac = inspector, open by default, toolbar toggle. Lists the scale's stories ranked for the reader; a group pin narrows it ("Show all" to go back); a story pushes inside the panel with the system back button.
+- [x] Story text direction follows the language actually shown (English fallback stays left-to-right for Persian readers).
+- [ ] Thiings 3D images for map objects (SF Symbols stand in).
+- [ ] Camera ignores the sheet: pins near the bottom of the screen can sit under a medium sheet.
+- [ ] "Back to my location" button with when-in-use permission.
+- [x] Mac: launch / resize crash fixed (camera updates were changing state inside AppKit's layout pass); resizing confirmed working.
+- Debug launch arguments: `-persona sara`, `-mapScale <scale>`, `-mapSelect <story id>`, `-mapPanel medium|large`, `-onboarding.completed YES`.
 
 ### A6 · Place chips (news without a point)
 A strip like the demo with places: "Oulu", "Finland", "EU", "World", and the reader's home country. Tapping one shows that place's news ranked for the reader.
@@ -221,6 +236,7 @@ APNs push: story published (reporter), high-relevance story approved (target rea
 ---
 
 ## Decisions
+- Architecture: MV, not MVVM. `@Observable` models in the environment, views read them directly; logic in plain types (`ReaderScale`, `PinGrouping`, `OnboardingAnswers`), no per-screen view models.
 - Platforms: iPhone (iOS 18.0+) and native Mac (macOS 15.0+).
 - Theme: system colours and font, automatic light/dark, `AccentColor`. Category colours only on the map.
 - Icons: SF Symbols for UI, Thiings (licensed) for topics.
