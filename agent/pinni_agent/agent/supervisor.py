@@ -17,12 +17,13 @@ from __future__ import annotations
 import hashlib
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from ..config import Settings, default_settings
 from ..knowledge.graph import KnowledgeGraph
 from ..knowledge.vector_store import VectorStore
 from ..llm import OllamaLLM
+from ..recommender.engine import RecommendationEngine
 from ..store import Store
 from .skills import SupervisorSkills
 from .trace import SupervisorTrace
@@ -44,6 +45,7 @@ class Supervisor:
         self.vector_store = vector_store or VectorStore(self.s)
         self.graph = graph or KnowledgeGraph(self.s)
         self.llm = llm or OllamaLLM(self.s)
+        self.recommender = RecommendationEngine(self.s, self.store, self.vector_store, self.graph)
         self.skills = SupervisorSkills(
             settings=self.s,
             store=self.store,
@@ -87,6 +89,48 @@ class Supervisor:
         items = res.data.get("items", [])
         tr.step("gather", f"Gathered {len(items)} source articles for user '{user_id}'")
         return items
+
+    # 2b. RETRIEVE WEB NEWS & STORE IN VECTOR DB
+    def retrieve_and_store_web_news(
+        self,
+        tags: Optional[List[str]] = None,
+        words: Optional[Union[str, List[str]]] = None,
+        urls: Optional[List[str]] = None,
+        location: Optional[str] = None,
+        categories: Optional[List[str]] = None,
+        store_in_vector_db: bool = True,
+        auto_pipeline_to_stories: bool = False,
+        trace: Optional[SupervisorTrace] = None,
+    ) -> Dict[str, Any]:
+        """Retrieve news and articles from websites based on tags, words (keywords), and URLs.
+
+        Stores them directly in the vector database and optionally processes them through
+        the full story creation pipeline (Select -> Explain -> Translate -> Route/Distribute).
+        """
+        tr = trace or SupervisorTrace(self.store)
+        tr.step("gather", f"Retrieving web news for tags={tags}, words={words}, urls={urls}, location={location}")
+        res = self.skills.retrieve_web_news(
+            tags=tags,
+            words=words,
+            urls=urls,
+            location=location,
+            categories=categories,
+            store_in_vector=store_in_vector_db,
+        )
+        items = res.data.get("items", [])
+        tr.step("gather", f"Retrieved {len(items)} web items (storedInVectorDb={store_in_vector_db})")
+
+        created_stories = []
+        if auto_pipeline_to_stories and items:
+            tr.step("select", f"Processing {len(items)} retrieved web items into supervisor story pipeline")
+            created_stories = self.process_incoming_news(items, auto_publish_non_red=False)
+
+        return {
+            "retrievedCount": len(items),
+            "storedInVectorDb": store_in_vector_db,
+            "items": items,
+            "storiesCreated": created_stories,
+        }
 
     # 3. SELECT
     def select(

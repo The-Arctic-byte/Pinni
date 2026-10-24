@@ -4,7 +4,11 @@
   "personalization": 0,
   "items": [
     { "storyId": "kiiminki-shooting", "relevance": 0.8, "mustSee": true, "reasons": [{ "en": "Safety in Oulu" }] },
+    { "storyId": "rotuaari-ice", "relevance": 0.7, "mustSee": false, "reasons": [{ "en": "In the centre of Oulu" }] },
+    { "storyId": "oulu-station-trains", "relevance": 0.62, "mustSee": false, "reasons": [{ "en": "Oulu railway station" }] },
+    { "storyId": "oulu-library-sunday", "relevance": 0.58, "mustSee": false, "reasons": [{ "en": "In the centre of Oulu" }] },
     { "storyId": "orpo-kyiv", "relevance": 0.55, "mustSee": false, "reasons": [{ "en": "Top story in Finland" }] },
+    { "storyId": "oulu-theatre-season", "relevance": 0.52, "mustSee": false, "reasons": [{ "en": "In the centre of Oulu" }] },
     { "storyId": "interpellation", "relevance": 0.5, "mustSee": false, "reasons": [{ "en": "Top story in Finland" }] },
     { "storyId": "parkkipate-strike", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "Popular in Oulu" }] },
     { "storyId": "un-climate-report", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "Top story in the world" }] },
@@ -13,6 +17,8 @@
     { "storyId": "muhos-data-centre", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "Near Oulu" }] },
     { "storyId": "athletics-euros-2030", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "Sport in Finland" }] },
     { "storyId": "icy-path-kiiminki", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "Reported by people in Oulu" }] },
+    { "storyId": "linnanmaa-campus-bus", "relevance": 0.33, "mustSee": false, "reasons": [{ "en": "University in Linnanmaa" }] },
+    { "storyId": "ritaharju-crossing", "relevance": 0.32, "mustSee": false, "reasons": [{ "en": "In Ritaharju" }] },
     { "storyId": "editorial-social-media", "relevance": 0.2, "mustSee": false, "reasons": [{ "en": "Opinion, not news" }] }
   ]
 }
