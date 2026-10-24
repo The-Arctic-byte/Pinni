@@ -33,8 +33,8 @@ class Settings:
     # Embeddings. Empty URL = hashing embedder (no model needed).
     ollama_url: str
     embed_model: str
-    # The Track B agent (pinni/newsroom.py): run a round every N minutes (0 = only from the admin
-    # page), and let it use Ollama (otherwise its offline heuristics).
+    # The Track B agent (pinni/newsroom.py): a round at startup and every N minutes (0 = only from
+    # the admin page; tests use 0), and whether it may use Ollama (otherwise its offline heuristics).
     agent_every_minutes: float = 0
     agent_llm: bool = False
 
@@ -52,6 +52,6 @@ class Settings:
             chroma=os.environ.get("PINNI_CHROMA", str(BACKEND / "data" / "chroma")),
             ollama_url=os.environ.get("PINNI_OLLAMA_URL", ""),
             embed_model=os.environ.get("PINNI_EMBED_MODEL", "bge-m3"),
-            agent_every_minutes=float(os.environ.get("PINNI_AGENT_EVERY_MINUTES", "0")),
+            agent_every_minutes=float(os.environ.get("PINNI_AGENT_EVERY_MINUTES", "30")),
             agent_llm=_flag("PINNI_AGENT_LLM", False),
         )

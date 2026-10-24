@@ -271,7 +271,7 @@ $("#run-agent").addEventListener("click", async (event) => {
   try {
     const r = await api("POST", "/v1/admin/agent/run");
     await loadQueue();
-    $("#queue-count").textContent += ` · agent: ${r.queued} new drafts, ${r.published} published`;
+    $("#queue-count").textContent += ` · agent: ${r.published} published, ${r.queued} to review`;
   } catch (err) {
     $("#queue-count").textContent = err.message;
   } finally {

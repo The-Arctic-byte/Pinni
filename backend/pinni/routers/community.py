@@ -74,8 +74,9 @@ def get_posts(channel_id: str, conn: Conn, user: CurrentUser):
 
 @router.post("/channels/{channel_id}/posts", status_code=201)
 def create_post(request: Request, channel_id: str, conn: Conn, user: Member, body: dict = Body(...)):
-    _channel(conn, channel_id)
+    channel = _channel(conn, channel_id)
     story_id, text, reply_to = body.get("storyId"), body.get("text"), body.get("replyToId")
+    parent = None
     if story_id is None and text is None:
         raise ApiError(422, "invalid", "A post needs storyId or text")
     if reply_to is not None:
@@ -106,8 +107,21 @@ def create_post(request: Request, channel_id: str, conn: Conn, user: Member, bod
         if story_id is not None:
             event["storyId"] = story_id
         db.add_event(conn, event)
+        if parent and parent["authorId"] != user["id"]:
+            db.put_notification(conn, _reply_notice(parent, channel, post))
     stores.events_added(request, [event])
     return post
+
+
+def _reply_notice(parent: dict, channel: dict, post: dict) -> dict:
+    """Tell a post's author that someone replied (notification kind channelPost)."""
+    name = channel["name"]
+    return {"id": db.new_id("notif"), "userId": parent["authorId"], "kind": "channelPost",
+            "title": {"en": "New reply", "fi": "Uusi vastaus", "fa": "پاسخ تازه"},
+            "body": {"en": f"Someone replied to your post in {name.get('en', channel['id'])}.",
+                     "fi": f"Joku vastasi viestiisi kanavalla {name.get('fi', name.get('en', channel['id']))}.",
+                     "fa": f"کسی به پست شما در {name.get('fa', name.get('en', channel['id']))} پاسخ داد."},
+            "channelId": channel["id"], "createdAt": post["createdAt"]}
 
 
 REPORT_EXAMPLE = {"kind": "newsTip", "category": "transport", "text": "Road works on Kiimingintie",

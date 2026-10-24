@@ -63,7 +63,7 @@ Turn the dev accounts off with `PINNI_DEV_ACCOUNTS=false` anywhere outside devel
 | `PINNI_CHROMA` | `backend/data/chroma` | Directory (embedded), `http(s)://host:port` (server) or `memory` |
 | `PINNI_OLLAMA_URL` | empty | e.g. `http://localhost:11434`. Empty = hashing embedder |
 | `PINNI_EMBED_MODEL` | `bge-m3` | Ollama embedding model (multilingual) |
-| `PINNI_AGENT_EVERY_MINUTES` | `0` | Run the agent at startup and then every N minutes. 0 = only from the editor page |
+| `PINNI_AGENT_EVERY_MINUTES` | `30` | Run the agent at startup and then every N minutes. 0 = only from the editor page |
 | `PINNI_AGENT_LLM` | `false` | Let the agent use Ollama (`PINNI_OLLAMA_URL`, its `PINNI_LLM_MODEL`); otherwise its offline heuristics |
 
 Changing the embedding model empties the vector index; it is rebuilt on the next start.
@@ -141,12 +141,16 @@ Likes and dislikes sent again with `value: 0` (the app's undo) cancel the earlie
 `newsroom.py` runs the Track B supervisor inside the backend. Each round hands every reader profile to
 the agent's profile-based gathering (PSOAS notices for tenants who consented, campus news for students,
 the home place, interests and wanted news, the categories they like); the agent selects, explains and
-translates, and its stories go through `drafts.save_agent_story`: the agent's nulls are dropped, times
-are cut to whole seconds (what the app's decoder reads) and the story waits in review (`origin: agent`)
-in the editor queue of the right desk. Red-risk stories and stories that break the publish rules never
-skip review, and a story an editor already decided is not overwritten. Once approved, a story is in the
-graph and vector index and in readers' feeds.
+translates, and its stories go through `drafts.save_agent_story`.
 
-A round runs from the editor page (**Run agent**, `POST /v1/admin/agent/run`) and, with
-`PINNI_AGENT_EVERY_MINUTES`, at startup and on a timer. The agent keeps its working files in
-`data/agent.db`. `tests/test_newsroom.py` and `tests/test_drafts.py` run the real supervisor offline.
+News read on news sites needs no editor: it is published at once (`verification.verifiedBy` "Pinni
+agent (source)") and lands on the map at its place (its own spot when the source has one, otherwise the
+centre of its place, with the place's scale). Red-risk stories (residence, health, money, work, safety)
+and stories that break the publish rules wait in the editor queue of the right desk instead, and a
+story already out or decided is never overwritten. Reader reports never go through the agent: they
+always wait for the editor desk of their category (`contract/processes/report-review.md`). Times are
+cut to whole seconds, which is what the app's date decoder reads.
+
+A round runs at startup and every `PINNI_AGENT_EVERY_MINUTES`, and from the editor page (**Run agent**,
+`POST /v1/admin/agent/run`). The agent keeps its working files in `data/agent.db`.
+`tests/test_newsroom.py` and `tests/test_drafts.py` run the real supervisor offline.

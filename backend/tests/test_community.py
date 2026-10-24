@@ -79,6 +79,14 @@ def test_replies(client, login, valid):
     assert client.post(url, json={"storyId": "lidl-ideapark", "replyToId": parent["id"]}, headers=headers).status_code == 422
     assert client.post(url, json={"text": "x", "replyToId": reply["id"]}, headers=headers).status_code == 422
     assert client.post(url, json={"text": "x", "replyToId": "nope"}, headers=headers).status_code == 404
+    # The author hears about replies from others, not about their own.
+    assert not [n for n in client.get("/v1/notifications", headers=headers).json() if n["kind"] == "channelPost"]
+    matti = login("matti")
+    client.put("/v1/channels/persian-oulu/membership", headers=matti)
+    assert client.post(url, json={"text": "Oral is good.", "replyToId": parent["id"]}, headers=matti).status_code == 201
+    notes = [n for n in client.get("/v1/notifications", headers=headers).json() if n["kind"] == "channelPost"]
+    valid("notification.schema.json", notes)
+    assert len(notes) == 1 and notes[0]["channelId"] == "persian-oulu"
 
 
 def test_reports(client, login, anonymous, valid):

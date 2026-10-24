@@ -1,9 +1,10 @@
 """Runs the Track B supervisor (agent/pinni_agent/agent/supervisor.py) next to the backend.
 
 The agent gathers news for what readers asked for: every stored profile goes to its profile-based
-gathering (housing provider, student, home place, interests, wanted news), plus its general source
-pool. It writes stories, and those enter the editor queue through drafts.save_agent_story, so
-nothing reaches readers until an editor approves it (or it passes the publish rules on its own).
+gathering (housing provider, student, home place, interests, wanted news, liked categories). News
+read on news sites needs no editor: drafts.save_agent_story publishes it straight away, on the map at
+its place. Only red-risk stories and ones that break the publish rules wait in the editor queue.
+Reader reports never come through here; they always go to the editor desk of their category.
 
 The agent keeps its own working files in data/agent.db. With PINNI_AGENT_LLM=1 it uses Ollama
 (PINNI_OLLAMA_URL); otherwise it runs its offline heuristics, which need nothing installed."""
@@ -77,15 +78,12 @@ def run(conn: sqlite3.Connection, contract: Contract, settings: Settings,
     settings.db_path.parent.mkdir(parents=True, exist_ok=True)
     items = gather(conn)
     stories = Supervisor(agent_settings(settings)).process_incoming_news(items)
-    places = {r[0] for r in conn.execute("SELECT id FROM places")}
-    counts = {"gathered": len(items), "written": len(stories), "queued": 0, "published": 0, "alreadyDecided": 0}
+    counts = {"gathered": len(items), "written": len(stories), "queued": 0, "published": 0, "unchanged": 0}
     for story in stories:
-        if story.get("placeId") not in places:
-            story["placeId"] = "oulu"  # the agent's default place; readers' feeds filter on known places
         before = db.get_doc(conn, "stories", story["id"])
-        saved = save_agent_story(conn, contract, story)
+        saved = save_agent_story(conn, contract, story, publish=True)
         if before and before["status"] in ("published", "rejected"):
-            counts["alreadyDecided"] += 1
+            counts["unchanged"] += 1
             continue
         counts["published" if saved["status"] == "published" else "queued"] += 1
         for store, update in ((graph, lambda g: g.upsert_story(saved)), (vectors, lambda v: v.index([saved]))):
