@@ -102,7 +102,7 @@ struct MapPanel: View {
                             HStack(spacing: 6) {
                                 Text(verbatim: chip.name)
                                 Text(chip.count, format: .number)
-                                    .foregroundStyle(.secondary)
+                                    .opacity(0.7)
                             }
                         }
                         .id(chip.id)

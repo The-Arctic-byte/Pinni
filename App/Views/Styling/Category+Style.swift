@@ -1,22 +1,26 @@
 import SwiftUI
 
 extension Category {
-    /// Category colour. Used on the map only; the rest of the UI uses system colours and the accent.
+    /// Category colour from the asset catalog, named for the category. Used on the map only.
+    /// Transport and technology stay the same in the dark: system yellow and gray are too light for a white symbol.
     var mapColor: Color {
         switch self {
-        case .safety: .red
-        case .politics, .society: .indigo
-        case .economy, .work: .orange
-        case .shopping: .pink
-        case .sport: .green
-        case .culture, .cityLife: .purple
-        case .transport: .yellow
-        case .education: .teal
-        case .housing: .brown
-        case .health: .mint
-        case .environment: .cyan
-        case .technology: .gray
-        case .world: .blue
+        case .safety: .safety
+        case .politics: .politics
+        case .society: .society
+        case .economy: .economy
+        case .work: .work
+        case .shopping: .shopping
+        case .sport: .sport
+        case .culture: .culture
+        case .cityLife: .cityLife
+        case .transport: .transport
+        case .education: .education
+        case .housing: .housing
+        case .health: .health
+        case .environment: .environment
+        case .technology: .technology
+        case .world: .world
         }
     }
 
