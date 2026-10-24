@@ -5,6 +5,7 @@ Not scheduled yet: nothing calls this until the agent runs next to the backend. 
 with the agent's output by tests/test_drafts.py, which runs the real supervisor offline."""
 
 import sqlite3
+from datetime import datetime
 
 from . import db
 from .contract import Contract
@@ -22,10 +23,27 @@ def _without_nulls(value):
     return value
 
 
+def _whole_seconds(value):
+    """The agent writes times with microseconds; the app's ISO 8601 decoder only reads whole seconds."""
+    if isinstance(value, dict):
+        out = {}
+        for k, v in value.items():
+            if k.endswith("At") and isinstance(v, str):
+                try:
+                    v = datetime.fromisoformat(v).isoformat(timespec="seconds")
+                except ValueError:
+                    pass
+            out[k] = _whole_seconds(v)
+        return out
+    if isinstance(value, list):
+        return [_whole_seconds(v) for v in value]
+    return value
+
+
 def save_agent_story(conn: sqlite3.Connection, contract: Contract, story: dict) -> dict:
     """Store one agent story. It goes to the editor queue (inReview) unless the agent published it
     and it may be published without a human: never red risk, never with the publish rules broken."""
-    story = _without_nulls(story)
+    story = _whole_seconds(_without_nulls(story))
     story["origin"] = "agent"
     if story.get("status") != "published" or story.get("risk") == "red" or publish_problems(story):
         story["status"] = "inReview"

@@ -1,5 +1,7 @@
 """Pinni API. Run with:  uv run uvicorn pinni.main:app --reload"""
 
+import asyncio
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -11,6 +13,18 @@ from .config import Settings
 from .contract import Contract
 from .routers import admin, auth, community, reader
 from .seed import ensure_dev_editors, seed, upgrade_reports
+
+
+async def _newsroom_timer(app: FastAPI) -> None:
+    """The agent's rounds: one at startup, then every PINNI_AGENT_EVERY_MINUTES."""
+    from . import newsroom
+
+    while True:
+        try:
+            await asyncio.to_thread(newsroom.run_round, app.state)
+        except Exception:  # noqa: BLE001  (a failed round must not stop the next one)
+            logging.getLogger("pinni.newsroom").exception("Newsroom round failed")
+        await asyncio.sleep(app.state.settings.agent_every_minutes * 60)
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -34,7 +48,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 app.state.vectors.index(db.docs(conn, "SELECT doc FROM stories"))
         finally:
             conn.close()
+        timer = asyncio.create_task(_newsroom_timer(app)) if settings.agent_every_minutes > 0 else None
         yield
+        if timer:
+            timer.cancel()
         app.state.graph.close()
 
     app = FastAPI(

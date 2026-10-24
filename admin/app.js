@@ -265,6 +265,19 @@ function show(view) {
 $("#login-form").addEventListener("submit", signIn);
 $("#sign-out").addEventListener("click", signOut);
 $("#refresh").addEventListener("click", loadQueue);
+$("#run-agent").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  button.disabled = true;
+  try {
+    const r = await api("POST", "/v1/admin/agent/run");
+    await loadQueue();
+    $("#queue-count").textContent += ` · agent: ${r.queued} new drafts, ${r.published} published`;
+  } catch (err) {
+    $("#queue-count").textContent = err.message;
+  } finally {
+    button.disabled = false;
+  }
+});
 document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => show(t.dataset.view)));
 
 (async () => {

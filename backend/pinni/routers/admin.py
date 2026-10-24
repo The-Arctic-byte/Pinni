@@ -377,3 +377,16 @@ def set_domains(request: Request, user_id: str, conn: Conn, user: Admin,
         db.audit(conn, _actor(user), "route",
                  f"Editor domain for {user_id}: {', '.join(categories) if categories else 'everything'}")
     return _editor(conn, user_id)
+
+
+@router.post("/agent/run")
+def run_agent(request: Request, conn: Conn, user: Editor):
+    """One newsroom round now: the agent gathers news for readers' profiles; its stories join the queue."""
+    from .. import newsroom  # here, not at the top: newsroom -> drafts -> this module
+
+    state = request.app.state
+    counts = newsroom.run(conn, state.contract, state.settings, state.graph, state.vectors)
+    with conn:
+        db.audit(conn, user["id"], "route", f"Ran the agent: {counts['queued']} drafts queued, "
+                                             f"{counts['published']} published")
+    return counts
