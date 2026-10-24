@@ -71,6 +71,7 @@ struct MapScreen: View {
         MapPanel(
             title: panelTitle,
             entries: panelEntries,
+            mustSee: mustSeeEntries,
             chips: chipItems,
             selectedChip: listFilter?.placeId,
             isFiltered: listFilter != nil,
@@ -222,6 +223,13 @@ struct MapScreen: View {
         return model.rankedStories.filter { reader.scale(of: $0.story) == scale }
     }
 
+    /// Must-see stories that are not already in the list. Only on the unfiltered list: a chip or group is a deliberate choice.
+    private var mustSeeEntries: [(item: FeedItem, story: Story)] {
+        guard listFilter == nil else { return [] }
+        let listed = Set(panelEntries.map(\.story.id))
+        return model.rankedStories.filter { $0.item.mustSee && !listed.contains($0.story.id) }
+    }
+
     private var panelTitle: Text {
         switch listFilter {
         case .group(let ids):
@@ -354,8 +362,8 @@ struct MapScreen: View {
 
 #if DEBUG
 extension MapScreen {
-    /// `-mapScale world`, `-mapSelect <story id>`, `-mapChip <place id>` and `-mapPanel collapsed|medium|large`
-    /// as launch arguments (screenshots).
+    /// `-mapScale world`, `-mapSelect <story id>`, `-mapChip <place id>`, `-openStory <story id>`
+    /// and `-mapPanel collapsed|medium|large` as launch arguments (screenshots).
     fileprivate func applyLaunchArguments() {
         let defaults = UserDefaults.standard
         if let raw = defaults.string(forKey: "mapScale"), let debugScale = Scale(rawValue: raw) { show(debugScale, animated: false) }
@@ -367,6 +375,7 @@ extension MapScreen {
             }
         }
         if let chip = defaults.string(forKey: "mapChip") { select(chip: chip) }
+        if let id = defaults.string(forKey: "openStory"), model.stories[id] != nil { open(id) }
         switch defaults.string(forKey: "mapPanel") {
         case "collapsed": sheetDetent = .collapsed
         case "medium": sheetDetent = .medium

@@ -152,7 +152,13 @@ Status:
 - Story detail with the explanation sections, sources, verified-by, language switch (mine · EN · FI ⇄).
 - Like, dislike, "not for me" (hard filter), share, report.
 
-Status (feedback part): [x] `StoryFeedbackBar` on every story — like, dislike, not for me (this story / whole category; must-see never hidden), share, something wrong?. Full story layout still open.
+Status:
+- [x] `StoryDetailView`: category and place, opinion label, why you see this, verified-by and how the translation was checked, what we know / what happened / not known yet / what this means for you, where you can ask (Apple Maps / website), "To understand" context card, updates timeline, sources (and "area only" note).
+- [x] Language switch: reader's language · English · Finnish original ⇄ (each Kaleva sentence above its translation, word of the day spoken in Finnish).
+- [x] Red-risk stories are never shown in an unchecked (tier 3) translation: English with a note instead (`StoryLanguage`).
+- [x] "Important for you" section in the panel: must-see stories from other scales pinned above the list.
+- [x] `StoryFeedbackBar` on every story — like, dislike, not for me (this story / whole category; must-see never hidden), share, something wrong?.
+- Debug launch arguments: `-openStory <story id>`, `-storyLanguage en|fi`.
 
 ### A8 · Interaction tracking
 Log every event from T00 (open, dwell time, likes, skips, zoom, map taps, …) locally; batch-upload once the API exists.

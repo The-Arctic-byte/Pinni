@@ -14,6 +14,8 @@ struct MapPanel: View {
     @Environment(AppModel.self) private var model
     let title: Text
     let entries: [(item: FeedItem, story: Story)]
+    /// Must-see stories from other scales, pinned on top so personalization never hides them.
+    let mustSee: [(item: FeedItem, story: Story)]
     let chips: [Chip]
     let selectedChip: String?
     let isFiltered: Bool
@@ -65,7 +67,7 @@ struct MapPanel: View {
                 }
                 .navigationDestination(for: String.self) { id in
                     if let story = model.stories[id] {
-                        StoryPreview(story: story, item: model.feed?.items.first { $0.storyId == id }, language: model.contentLanguage)
+                        StoryDetailView(story: story)
                             .panelBackground()
                     }
                 }
@@ -120,7 +122,7 @@ struct MapPanel: View {
     @ViewBuilder
     private var list: some View {
         Group {
-            if entries.isEmpty {
+            if entries.isEmpty && mustSee.isEmpty {
                 // Keep the chips: an empty chip (e.g. the EU) must not trap the reader on it.
                 VStack(spacing: 0) {
                     chipRow
@@ -137,6 +139,17 @@ struct MapPanel: View {
             chipRow
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init())
+            if !mustSee.isEmpty {
+                Section {
+                    ForEach(mustSee, id: \.item.id) { entry in
+                        NavigationLink(value: entry.story.id) {
+                            StoryRow(story: entry.story, item: entry.item, language: model.contentLanguage)
+                        }
+                    }
+                } header: {
+                    Label("Important for you", systemImage: "exclamationmark.circle")
+                }
+            }
             Section {
                 ForEach(entries, id: \.item.id) { entry in
                     NavigationLink(value: entry.story.id) {

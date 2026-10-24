@@ -18,7 +18,7 @@ struct NewsScreen: View {
             }
             .navigationTitle(Text("News"))
             .navigationDestination(for: Story.self) { story in
-                StoryPreview(story: story, item: model.feed?.items.first { $0.storyId == story.id }, language: model.contentLanguage)
+                StoryDetailView(story: story)
             }
         }
     }

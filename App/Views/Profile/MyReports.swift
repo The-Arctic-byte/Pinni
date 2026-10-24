@@ -86,7 +86,7 @@ struct ReportDetailView: View {
                 }
                 if let id = report.resultStoryId, let story = model.stories[id] {
                     NavigationLink {
-                        StoryPreview(story: story, item: model.feed?.items.first { $0.storyId == id }, language: model.contentLanguage)
+                        StoryDetailView(story: story)
                     } label: {
                         Label(report.status == .published ? "Read the published story" : "Read the corrected story", systemImage: "newspaper")
                     }
