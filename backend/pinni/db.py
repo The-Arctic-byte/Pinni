@@ -136,6 +136,13 @@ def init(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE users ADD COLUMN merged_into TEXT")
 
 
+def stories_as_points(conn: sqlite3.Connection) -> None:
+    """Databases stored before as_point: their area stories become pins."""
+    with conn:
+        for story in docs(conn, "SELECT doc FROM stories WHERE json_extract(doc, '$.location.radiusMeters') > 0"):
+            put_story(conn, story)
+
+
 def is_empty(conn: sqlite3.Connection) -> bool:
     return conn.execute("SELECT COUNT(*) FROM users").fetchone()[0] == 0
 
@@ -160,7 +167,16 @@ def put_doc(conn: sqlite3.Connection, table: str, doc: dict, **columns) -> None:
     conn.execute(f"INSERT OR REPLACE INTO {table} ({names}) VALUES ({marks})", tuple(cols.values()))
 
 
+def as_point(story: dict) -> None:
+    """Product decision: the map shows every story as a pin, never as an area circle (the app draws
+    any radiusMeters > 0 as a circle). Reports keep their area; the story made from one does not."""
+    location = story.get("location")
+    if location and location.get("radiusMeters", 0) > 0:
+        location["radiusMeters"] = 0
+
+
 def put_story(conn: sqlite3.Connection, story: dict) -> None:
+    as_point(story)
     put_doc(conn, "stories", story, status=story["status"])
 
 

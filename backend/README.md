@@ -57,7 +57,7 @@ Turn the dev accounts off with `PINNI_DEV_ACCOUNTS=false` anywhere outside devel
 | `PINNI_CONTRACT_DIR` | `contract/` | Schemas and mock data |
 | `PINNI_ADMIN_DIR` | `admin/` | Editor page, served at `/admin` |
 | `PINNI_SEED_MOCK` | `true` | Seed an empty database from `contract/mock/` |
-| `PINNI_SEED_CONTENT` | `false` | Also seed the mock stories, reports, posts, notifications and events. Off: only places, channels and users; the news is what the agent publishes (tests seed it all) |
+| `PINNI_SEED_CONTENT` | `true` | Also seed the mock stories, reports, posts, notifications and events. Off: only places, channels and users; the news is what the agent publishes |
 | `PINNI_DEV_ACCOUNTS` | `true` | Give the mock personas the dev password |
 | `PINNI_NEO4J_URI` | empty | e.g. `bolt://localhost:7687`. Empty = in-memory graph |
 | `PINNI_NEO4J_USER` / `PINNI_NEO4J_PASSWORD` | `neo4j` / empty | |
@@ -117,6 +117,8 @@ It is plain HTML/JS with no build step and only calls the `/v1/admin/*` and `/v1
 - Readers cannot join channels, post or report (403).
 - A red-risk story cannot be published with a tier-3 (unchecked) translation (409).
 - Events are append-only and uploads are idempotent by event id.
+- Every story on the map is a pin: a story's `radiusMeters` is stored as 0 (`db.as_point`), also for
+  mock stories and stories made from reports. Reports keep their area (at least 300 m).
 - Reports follow `contract/processes/report-review.md`: the backend sets `sensitive` (always for safety),
   opening a `sent` report moves it to `inReview`, only reports in review can be decided, every step is
   added to `history`, and the reporter is notified of the outcome. Sensitive reports are never published.

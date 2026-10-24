@@ -217,7 +217,9 @@ def story_from_report(conn, report: dict, editor: dict) -> dict:
     once the agents exist (Track B) they write the explanation sections."""
     now = db.now()
     place = _nearest_place(conn, report.get("location"))
-    location = report.get("location") or {"coordinate": place["center"], "radiusMeters": 1000}
+    # A pin at the centre of the reported area (the report keeps its area), or at the place.
+    centre = (report.get("location") or {}).get("coordinate") or place["center"]
+    location = {"coordinate": dict(centre), "radiusMeters": 0}
     text = report["text"].strip()
     title = text if len(text) <= 90 else text[:87].rstrip() + "…"
     label = " ".join(text.split()[:3])

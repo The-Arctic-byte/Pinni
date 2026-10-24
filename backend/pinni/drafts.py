@@ -74,9 +74,7 @@ def fit_for_the_app(story: dict) -> None:
     - no fake translations: offline, the agent "translates" by putting a word before the English
       title. Those languages are left out, so the app shows English (LocalizedText falls back to it);
     - a label of whole words, not the title cut after 15 characters."""
-    location = story.get("location")
-    if location and location.get("radiusMeters", 0) > 0:
-        location["radiusMeters"] = 0
+    db.as_point(story)
     english = story["title"].get("en", "")
     fake = {lang for lang, text in story["title"].items() if lang != "en" and english and english in text}
     for lang in fake:

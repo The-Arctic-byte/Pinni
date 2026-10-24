@@ -30,8 +30,8 @@ Or with Docker, which also starts Neo4j:
 docker compose -f backend/compose.yaml up --build
 ```
 
-The first start takes places, channels and the development accounts from `contract/mock/` (no mock
-news: set `PINNI_SEED_CONTENT=true` for that) and runs one agent round, which fills the map; the agent runs
+The first start fills the database from `contract/mock/` (`PINNI_SEED_CONTENT=false` leaves out the
+mock news, reports and posts) and runs one agent round; the agent runs
 again every 30 minutes and from the editor page. API docs: `http://localhost:8000/docs`. Editor page:
 `http://localhost:8000/admin/`. Development accounts use the password `pinni-dev`: `sara@pinni.test`
 and `matti@pinni.test` (readers), `admin@pinni.test` (all categories), `mira@pinni.test` (city desk),

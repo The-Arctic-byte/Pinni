@@ -41,6 +41,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 ensure_dev_editors(conn)
             upgrade_reports(conn)
             drafts.tidy_agent_stories(conn, app.state.contract)
+            db.stories_as_points(conn)
             app.state.graph = graph.connect(settings)
             if app.state.graph.is_empty():
                 graph.rebuild(conn, app.state.graph)
