@@ -1,0 +1,16 @@
+Nap.xcodeproj/xcuserdata
+.DS_Store
+*.xcuserstate
+*.xcuserdatad
+*.xcuserdata/
+.claude
+.agents
+.drivedData
+.xcodebuildmcp
+.build/
+build/
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+supabase/.env.local
