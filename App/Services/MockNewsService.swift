@@ -9,10 +9,12 @@ struct MockNewsService: NewsService {
 
     let bundle: Bundle
     private let saved: SavedProfiles
+    private let newsroom: MockNewsroom
 
     init(bundle: Bundle = .main, defaults: UserDefaults = .standard) {
         self.bundle = bundle
         self.saved = SavedProfiles(defaults: defaults)
+        self.newsroom = MockNewsroom(defaults: defaults)
     }
 
     func places() async throws -> [Place] {
@@ -21,11 +23,25 @@ struct MockNewsService: NewsService {
 
     func feed(for userId: String) async throws -> FeedPage {
         guard let persona = Persona(userId: userId) else { throw MockError.unknown(userId) }
-        return try load(persona.feedFile)
+        let page: FeedPage = try load(persona.feedFile)
+        // Community stories an editor published in this mock reach every reader.
+        let community = newsroom.published.map { published in
+            let mine = published.reporterId == userId
+            return FeedItem(
+                storyId: published.story.id,
+                relevance: 0.75,
+                mustSee: false,
+                isExploration: nil,
+                reasons: [LocalizedText(["en": mine ? "Your report" : "Reported by a neighbour"])]
+            )
+        }
+        let items = (page.items + community).sorted { $0.relevance > $1.relevance }
+        return FeedPage(userId: page.userId, generatedAt: page.generatedAt, scale: page.scale, placeId: page.placeId,
+                        personalization: page.personalization, items: items, nextCursor: page.nextCursor)
     }
 
     func stories(ids: [String]) async throws -> [Story] {
-        let all: [Story] = try load("stories")
+        let all: [Story] = try load("stories") + newsroom.published.map(\.story)
         let byId = Dictionary(uniqueKeysWithValues: all.map { ($0.id, $0) })
         return ids.compactMap { byId[$0] }
     }
@@ -52,9 +68,39 @@ struct MockNewsService: NewsService {
     }
 
     func reports(for userId: String) async throws -> [Report] {
-        let all: [Report] = try load("reports")
-        return all.filter { $0.reporterId == userId }
+        let file: [Report] = try load("reports")
+        return newsroom.reports(file: file).filter { $0.reporterId == userId }.sorted { $0.createdAt > $1.createdAt }
     }
+
+    func submit(_ draft: ReportDraft, reporterId: String) async throws -> Report {
+        let report = draft.report(id: "report-" + UUID().uuidString.lowercased(), reporterId: reporterId, now: Date())
+        newsroom.add(report)
+        return report
+    }
+
+    #if DEBUG
+    /// Plays the editor (Track C's admin page does this for real): approve or reject a report.
+    func decide(_ report: Report, approve: Bool, homePlaceId: String?, editor: String = "Aino K.") -> Report {
+        let now = Date()
+        // Opening a sent report puts it in review first, as the admin page does.
+        var decided = report.status == .sent ? report.with(status: .inReview, note: nil, now: now) : report
+        var newStory: Story?
+        switch (approve, report.sensitive, report.kind) {
+        case (false, _, _):
+            decided = decided.with(status: .rejected, note: "Thanks. We could not confirm this, so it was not published.", now: now)
+        case (true, true, _):
+            decided = decided.with(status: .editorLead, note: "Thanks. We keep this as a lead and check it with the authorities before writing anything.", now: now)
+        case (true, false, .problem):
+            decided = decided.with(status: .edited, note: "Thanks. We corrected the story.", now: now, resultStoryId: report.storyId)
+        case (true, false, .newsTip):
+            let story = Story.community(from: report, placeId: homePlaceId ?? ReaderScale.defaultCityId, editor: editor, now: now)
+            newStory = story
+            decided = decided.with(status: .published, note: nil, now: now, resultStoryId: story.id, reach: 120)
+        }
+        newsroom.update(decided, publishing: newStory)
+        return decided
+    }
+    #endif
 
     func notifications(for userId: String) async throws -> [AppNotification] {
         let all: [AppNotification] = try load("notifications")
@@ -94,6 +140,114 @@ final class SavedProfiles {
     private var all: [String: Profile] {
         guard let data = defaults.data(forKey: key) else { return [:] }
         return (try? JSONDecoder.contract.decode([String: Profile].self, from: data)) ?? [:]
+    }
+}
+
+/// Reports sent through the mock and the community stories an editor published from them.
+/// Kept in UserDefaults so they survive relaunch.
+final class MockNewsroom {
+    struct Published: Codable {
+        let reporterId: String
+        let story: Story
+    }
+
+    private struct State: Codable {
+        var submitted: [Report] = []
+        /// Decisions on reports from the mock file, by report id.
+        var decided: [String: Report] = [:]
+        var published: [Published] = []
+    }
+
+    private let defaults: UserDefaults
+    private let key = "mock.newsroom"
+
+    init(defaults: UserDefaults) {
+        self.defaults = defaults
+    }
+
+    var published: [Published] { state.published }
+
+    func reports(file: [Report]) -> [Report] {
+        let current = state
+        return file.map { current.decided[$0.id] ?? $0 } + current.submitted
+    }
+
+    func add(_ report: Report) {
+        var current = state
+        current.submitted.append(report)
+        state = current
+    }
+
+    func update(_ report: Report, publishing story: Story?) {
+        var current = state
+        if let index = current.submitted.firstIndex(where: { $0.id == report.id }) {
+            current.submitted[index] = report
+        } else {
+            current.decided[report.id] = report
+        }
+        if let story { current.published.append(Published(reporterId: report.reporterId, story: story)) }
+        state = current
+    }
+
+    private var state: State {
+        get {
+            guard let data = defaults.data(forKey: key) else { return State() }
+            return (try? JSONDecoder.contract.decode(State.self, from: data)) ?? State()
+        }
+        set { defaults.set(try? JSONEncoder.contract.encode(newValue), forKey: key) }
+    }
+}
+
+private extension Report {
+    /// The report after one more step, with the step appended to `history`.
+    func with(status: Status, note: String?, now: Date, resultStoryId: String? = nil, reach: Int? = nil) -> Report {
+        Report(id: id, kind: kind, reporterId: reporterId, storyId: storyId, category: category, sensitive: sensitive,
+               text: text, location: location, status: status, editorNote: note ?? editorNote, resultStoryId: resultStoryId,
+               reach: reach, history: history + [Step(status: status, at: now, note: note)], createdAt: createdAt, updatedAt: now)
+    }
+}
+
+private extension Story {
+    /// The story an editor publishes from a community news tip (mock only; the agents write it for real).
+    static func community(from report: Report, placeId: String, editor: String, now: Date) -> Story {
+        let headline = String(report.text.prefix(90))
+        let label = String(report.text.prefix(24))
+        return Story(
+            id: "community-" + report.id.replacingOccurrences(of: "report-", with: ""),
+            status: .published,
+            origin: .community,
+            scale: .area,
+            placeId: placeId,
+            location: report.location,
+            category: report.category,
+            tags: nil,
+            needs: [.usefulness, .community],
+            risk: .none,
+            isOpinion: false,
+            importance: 0.35,
+            affects: nil,
+            mapObject: nil,
+            label: LocalizedText(["en": label]),
+            title: LocalizedText(["en": headline]),
+            explanation: .init(
+                known: nil,
+                happened: LocalizedText(["en": report.text]),
+                notKnown: nil,
+                forYou: LocalizedText(["en": "Reported by someone in your community and checked by an editor."]),
+                context: nil,
+                actionPlace: nil,
+                timeline: nil
+            ),
+            originals: nil,
+            wordOfDay: nil,
+            sources: [.init(name: "Community report", url: nil, publishedAt: now)],
+            translations: [.init(language: "en", tier: 1, reviewedBy: editor)],
+            verification: .init(verifiedBy: editor, verifiedAt: now),
+            community: .init(reportId: report.id, confirmations: 0),
+            createdAt: report.createdAt,
+            updatedAt: now,
+            publishedAt: now
+        )
     }
 }
 

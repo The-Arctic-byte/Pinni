@@ -24,11 +24,25 @@ struct MapPanel: View {
     #if os(iOS)
     /// iPhone has no tab bar: the sections that are not the map open from the sheet's header.
     private enum Destination: Identifiable {
-        case community, profile
+        case report, community, profile
         var id: Self { self }
     }
 
-    @State private var presented: Destination?
+    @State private var presented: Destination? = MapPanel.launchDestination
+
+    /// Debug builds accept `-panelSheet report|community|profile` as a launch argument (screenshots).
+    private static var launchDestination: Destination? {
+        #if DEBUG
+        switch UserDefaults.standard.string(forKey: "panelSheet") {
+        case "report": .report
+        case "community": .community
+        case "profile": .profile
+        default: nil
+        }
+        #else
+        nil
+        #endif
+    }
     #endif
 
     var body: some View {
@@ -43,6 +57,7 @@ struct MapPanel: View {
                     }
                     #if os(iOS)
                     ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button("Report news", systemImage: "exclamationmark.bubble") { presented = .report }
                         Button("Community", systemImage: "person.2") { presented = .community }
                         Button("Profile", systemImage: "person.crop.circle") { presented = .profile }
                     }
@@ -58,6 +73,7 @@ struct MapPanel: View {
         #if os(iOS)
         .sheet(item: $presented) { destination in
             switch destination {
+            case .report: ReportForm(draft: .newsTip())
             case .community: CommunityScreen()
             case .profile: ProfileScreen()
             }

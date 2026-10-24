@@ -263,18 +263,23 @@ paths:
     post:
       tags: [community]
       summary: Submit news or report a problem with a story (members only)
+      description: |
+        Starts the report review process (contract/processes/report-review.md). The new report has
+        status `sent` and one `history` entry. The backend sets `sensitive` (always for safety);
+        the app does not send it. Problem reports carry no location; news tips may carry an area
+        of at least 300 m radius.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [kind, category, sensitive, text]
+              required: [kind, category, text]
+              additionalProperties: false
               properties:
                 kind: { enum: [newsTip, problem] }
-                storyId: { type: string }
+                storyId: { type: string, description: Required for kind = problem. }
                 category: { $ref: "./schemas/common.schema.json#/$defs/Category" }
-                sensitive: { type: boolean }
                 text: { type: string, minLength: 1, maxLength: 4000 }
                 location: { $ref: "./schemas/common.schema.json#/$defs/Location" }
       responses:
@@ -288,12 +293,27 @@ paths:
   /v1/reports/mine:
     get:
       tags: [community]
+      summary: The reader's reports, newest first — the app's Profile → My reports page
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema: { type: array, items: { $ref: "./schemas/report.schema.json" } }
+
+  /v1/reports/{reportId}:
+    get:
+      tags: [community]
+      summary: One of the reader's reports with its full history — the My reports detail page
+      parameters:
+        - { name: reportId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "./schemas/report.schema.json" }
+        "404": { $ref: "#/components/responses/Error" }
 
   /v1/notifications:
     get:
@@ -379,10 +399,32 @@ paths:
               schema: { $ref: "./schemas/story.schema.json" }
         "403": { $ref: "#/components/responses/Error" }
 
+  /v1/admin/reports/{reportId}:
+    get:
+      tags: [admin]
+      summary: Open a report in the admin page. The first editor to open a `sent` report moves it to `inReview`.
+      parameters:
+        - { name: reportId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "./schemas/report.schema.json" }
+        "403": { $ref: "#/components/responses/Error" }
+
   /v1/admin/reports/{reportId}/decision:
     post:
       tags: [admin]
-      summary: Publish (creates a story and notifies the reporter), keep as editor lead, or reject
+      summary: Decide on a report in review (contract/processes/report-review.md)
+      description: |
+        approve, news tip, not sensitive → `published`: a community story is created, `resultStoryId` set,
+        reporter notified (`reportPublished`).
+        approve, problem, not sensitive → `edited`: the story is corrected, `resultStoryId` = the story,
+        reporter notified (`reportCorrected`).
+        approve or keepAsLead, sensitive → `editorLead`: nothing is published, reporter notified (`reportEditorLead`).
+        reject → `rejected` with a note for the reporter (`reportRejected`).
+        Every decision appends to `history` and writes an audit entry. Only reports in `inReview` can be decided.
       parameters:
         - { name: reportId, in: path, required: true, schema: { type: string } }
       requestBody:

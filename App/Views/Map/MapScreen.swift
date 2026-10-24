@@ -19,6 +19,7 @@ struct MapScreen: View {
     @State private var areaSelection: String?
     @State private var sheetDetent: PresentationDetent = .resting
     @State private var showsInspector = true
+    @State private var reportsNews = false
 
     var body: some View {
         if case .failed(let message) = model.state {
@@ -47,8 +48,14 @@ struct MapScreen: View {
             }
             .toolbar {
                 ToolbarItem {
+                    Button("Report news", systemImage: "exclamationmark.bubble") { reportsNews = true }
+                }
+                ToolbarItem {
                     Button("Story list", systemImage: "sidebar.trailing") { showsInspector.toggle() }
                 }
+            }
+            .sheet(isPresented: $reportsNews) {
+                ReportForm(draft: .newsTip())
             }
         #endif
     }

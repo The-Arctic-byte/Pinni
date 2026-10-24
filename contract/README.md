@@ -7,6 +7,7 @@ Change this folder first, get the other two tracks to review, then change code.
 schemas/     JSON Schema (2020-12), one file per type; shared types in common.schema.json
 openapi.yaml API endpoints (OpenAPI 3.1), referencing the schemas
 mock/        Sample data valid against the schemas — the app's first data source and the backend's seed
+processes/   Flows that span the app, the backend and the admin page (report-review.md)
 tools/       validate.py
 ```
 
@@ -18,7 +19,8 @@ uv run contract/tools/validate.py
 
 It checks the schemas, every mock file against its schema, the OpenAPI file, and rules the schemas cannot express:
 ids that must exist, feeds only contain published stories sorted by relevance, hard filters hold,
-red-risk stories are never published without a human or with an unchecked translation, readers cannot post.
+red-risk stories are never published without a human or with an unchecked translation, readers cannot post,
+and the report review rules (history order, sensitive never published, outcome notifications, 300 m areas).
 A new mock file must be added to `MOCK_SCHEMAS` in `validate.py`.
 
 ## Types
@@ -31,7 +33,7 @@ A new mock file must be added to `MOCK_SCHEMAS` in `validate.py`.
 | Event | `event.schema.json` | One interaction; append-only input for the recommender. |
 | Profile | `profile.schema.json` | What the reader told us (onboarding, profile edits). |
 | Channel / Suggestion / Post | `channel.schema.json` | Community channels, suggestions from similar people, posts. |
-| Report | `report.schema.json` | News tip or problem report, with editor status. |
+| Report | `report.schema.json` | News tip or problem report, its status and `history`; lifecycle in `processes/report-review.md`. |
 | Notification | `notification.schema.json` | Report status, must-see, for-you, channel posts. |
 | User | `user.schema.json` | Role: reader, member, editor, admin. |
 

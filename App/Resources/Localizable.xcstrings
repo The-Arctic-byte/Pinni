@@ -1,6 +1,28 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%lld of %lld": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$lld از %2$lld"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$lld/%2$lld"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "%1$lld av %2$lld"
+          }
+        }
+      }
+    },
     "%lld stories here": {
       "localizations": {
         "fa": {
@@ -19,6 +41,28 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "%lld nyheter här"
+          }
+        }
+      }
+    },
+    "About this story": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "درباره این خبر"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tästä uutisesta"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Om den här nyheten"
           }
         }
       }
@@ -45,6 +89,28 @@
         }
       }
     },
+    "An editor checks it before anything is published. Follow its status in Profile → My reports.": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Toimittaja tarkistaa sen ennen julkaisua. Seuraa sen tilaa kohdassa Profiili → Omat ilmoitukset."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "یک ویراستار قبل از انتشار آن را بررسی می‌کند. وضعیتش را در نمایه ← گزارش‌های من دنبال کن."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "En redaktör kontrollerar den innan något publiceras. Följ dess status under Profil → Mina rapporter."
+          }
+        }
+      }
+    },
     "Area": {
       "localizations": {
         "fa": {
@@ -67,6 +133,28 @@
         }
       }
     },
+    "Attach my area": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "محله‌ام را پیوست کن"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Liitä alueeni"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Bifoga mitt område"
+          }
+        }
+      }
+    },
     "Back": {
       "localizations": {
         "fa": {
@@ -85,6 +173,28 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Tillbaka"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "انصراف"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Peruuta"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Avbryt"
           }
         }
       }
@@ -244,6 +354,50 @@
         }
       }
     },
+    "Corrected": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "اصلاح شد"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Korjattu"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Rättad"
+          }
+        }
+      }
+    },
+    "Could not send. Check your connection and try again.": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "ارسال نشد. اتصالت را بررسی کن و دوباره امتحان کن."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Lähetys epäonnistui. Tarkista yhteys ja yritä uudelleen."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Kunde inte skicka. Kontrollera anslutningen och försök igen."
+          }
+        }
+      }
+    },
     "Couldn’t load news": {
       "localizations": {
         "fa": {
@@ -288,6 +442,72 @@
         }
       }
     },
+    "Details": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "جزئیات"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tiedot"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Detaljer"
+          }
+        }
+      }
+    },
+    "Dislike": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "نپسندیدم"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "En pidä"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Gillar inte"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "تمام"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Valmis"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Klar"
+          }
+        }
+      }
+    },
     "EU citizen": {
       "localizations": {
         "fa": {
@@ -328,6 +548,50 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Ekonomi"
+          }
+        }
+      }
+    },
+    "Editor lead": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "سرنخ ویراستار"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Toimittajan vihje"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Redaktörens tips"
+          }
+        }
+      }
+    },
+    "Editor review": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "بررسی ویراستار"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Toimittajan tarkistus"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Redaktörens granskning"
           }
         }
       }
@@ -486,6 +750,50 @@
         }
       }
     },
+    "For example: the date in the story is wrong": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "مثلاً: تاریخ در خبر اشتباه است"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Esimerkiksi: uutisen päivämäärä on väärä"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Till exempel: datumet i nyheten är fel"
+          }
+        }
+      }
+    },
+    "For example: the path by the school is very icy": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "مثلاً: مسیر کنار مدرسه خیلی یخ زده است"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Esimerkiksi: koulun vieressä oleva polku on hyvin liukas"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Till exempel: gången vid skolan är mycket isig"
+          }
+        }
+      }
+    },
     "Health": {
       "localizations": {
         "fa": {
@@ -504,6 +812,72 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Hälsa"
+          }
+        }
+      }
+    },
+    "Hide all %@ news": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "همه خبرهای %@ را پنهان کن"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Piilota kaikki aiheen %@ uutiset"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dölj alla nyheter om %@"
+          }
+        }
+      }
+    },
+    "Hide this story": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "این خبر را پنهان کن"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Piilota tämä uutinen"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dölj den här nyheten"
+          }
+        }
+      }
+    },
+    "History": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Historia"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "تاریخچه"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Historik"
           }
         }
       }
@@ -552,6 +926,28 @@
         }
       }
     },
+    "Important safety news still reaches you.": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "خبرهای مهم ایمنی همچنان به تو می‌رسند."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tärkeät turvallisuusuutiset tavoittavat sinut silti."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Viktiga säkerhetsnyheter når dig ändå."
+          }
+        }
+      }
+    },
     "In %@": {
       "localizations": {
         "fa": {
@@ -596,6 +992,28 @@
         }
       }
     },
+    "In an emergency, call 112.": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Hätätilanteessa soita 112."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "در موقعیت اضطراری با ۱۱۲ تماس بگیر."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ring 112 i en nödsituation."
+          }
+        }
+      }
+    },
     "In the world": {
       "localizations": {
         "fa": {
@@ -636,6 +1054,28 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "I ditt område"
+          }
+        }
+      }
+    },
+    "Like": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "پسندیدم"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Pidän"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Gilla"
           }
         }
       }
@@ -750,6 +1190,28 @@
         }
       }
     },
+    "My reports": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "گزارش‌های من"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Omat ilmoitukset"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Mina rapporter"
+          }
+        }
+      }
+    },
     "News": {
       "localizations": {
         "fa": {
@@ -772,6 +1234,50 @@
         }
       }
     },
+    "News tip": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Uutisvinkki"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "خبر"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Nyhetstips"
+          }
+        }
+      }
+    },
+    "No reports yet": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ei vielä ilmoituksia"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "هنوز گزارشی نیست"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Inga rapporter än"
+          }
+        }
+      }
+    },
     "No stories here yet": {
       "localizations": {
         "fa": {
@@ -790,6 +1296,94 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Inga nyheter här än"
+          }
+        }
+      }
+    },
+    "Not attached": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ei liitetty"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "پیوست نشده"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Inte bifogat"
+          }
+        }
+      }
+    },
+    "Not for me": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "برای من نیست"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ei minulle"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Inte för mig"
+          }
+        }
+      }
+    },
+    "Not published": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "منتشر نشد"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ei julkaistu"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Inte publicerad"
+          }
+        }
+      }
+    },
+    "Only your area is shared, at least 300 m wide, never your exact location.": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "فقط محله‌ات با پهنای دست‌کم ۳۰۰ متر به اشتراک گذاشته می‌شود، هرگز مکان دقیقت."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Vain alueesi jaetaan, vähintään 300 m leveänä, ei koskaan tarkkaa sijaintiasi."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Bara ditt område delas, minst 300 m brett, aldrig din exakta plats."
           }
         }
       }
@@ -970,6 +1564,28 @@
         }
       }
     },
+    "Problem with a story": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ongelma uutisessa"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "مشکل در یک خبر"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Problem med en nyhet"
+          }
+        }
+      }
+    },
     "Profile": {
       "localizations": {
         "fa": {
@@ -988,6 +1604,94 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Profil"
+          }
+        }
+      }
+    },
+    "Published": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "منتشر شد"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Julkaistu"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Publicerad"
+          }
+        }
+      }
+    },
+    "Reached %lld people": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "به %lld نفر رسید"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tavoitti %lld ihmistä"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Nådde %lld personer"
+          }
+        }
+      }
+    },
+    "Read the corrected story": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Lue korjattu uutinen"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "خبر اصلاح‌شده را بخوان"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Läs den rättade nyheten"
+          }
+        }
+      }
+    },
+    "Read the published story": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Lue julkaistu uutinen"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "خبر منتشرشده را بخوان"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Läs den publicerade nyheten"
           }
         }
       }
@@ -1033,6 +1737,50 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Relevans %lld av 4"
+          }
+        }
+      }
+    },
+    "Report news": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "گزارش خبر"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ilmoita uutinen"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Rapportera nyhet"
+          }
+        }
+      }
+    },
+    "Report not found": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ilmoitusta ei löytynyt"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "گزارش پیدا نشد"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Rapporten hittades inte"
           }
         }
       }
@@ -1169,6 +1917,72 @@
         }
       }
     },
+    "Send": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "ارسال"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Lähetä"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Skicka"
+          }
+        }
+      }
+    },
+    "Sent": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "ارسال شد"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Lähetetty"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Skickad"
+          }
+        }
+      }
+    },
+    "Share": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "اشتراک‌گذاری"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Jaa"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Dela"
+          }
+        }
+      }
+    },
     "Shopping": {
       "localizations": {
         "fa": {
@@ -1301,6 +2115,28 @@
         }
       }
     },
+    "Something wrong?": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "اشتباهی هست؟"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Jotain vialla?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Något fel?"
+          }
+        }
+      }
+    },
     "Sorted by how much it matters to you": {
       "localizations": {
         "fa": {
@@ -1345,6 +2181,50 @@
         }
       }
     },
+    "Status": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tila"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "وضعیت"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Status"
+          }
+        }
+      }
+    },
+    "Status: %@": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "وضعیت: %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tila: %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Status: %@"
+          }
+        }
+      }
+    },
     "Step %lld of %lld": {
       "localizations": {
         "fa": {
@@ -1363,6 +2243,28 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Steg %1$lld av %2$lld"
+          }
+        }
+      }
+    },
+    "Story": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Uutinen"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "خبر"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Nyhet"
           }
         }
       }
@@ -1455,6 +2357,50 @@
         }
       }
     },
+    "Thanks, your report was sent": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "ممنون، گزارشت ارسال شد"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Kiitos, ilmoituksesi lähetettiin"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tack, din rapport skickades"
+          }
+        }
+      }
+    },
+    "Topic": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "موضوع"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Aihe"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ämne"
+          }
+        }
+      }
+    },
     "Transport": {
       "localizations": {
         "fa": {
@@ -1501,22 +2447,66 @@
     },
     "Try another scale or place.": {
       "localizations": {
-        "fi": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "Kokeile toista mittakaavaa tai paikkaa."
-          }
-        },
         "fa": {
           "stringUnit": {
             "state": "needs_review",
             "value": "مقیاس یا مکان دیگری را امتحان کن."
           }
         },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Kokeile toista mittakaavaa tai paikkaa."
+          }
+        },
         "sv": {
           "stringUnit": {
             "state": "needs_review",
             "value": "Prova en annan skala eller plats."
+          }
+        }
+      }
+    },
+    "Type": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Tyyppi"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "نوع"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Typ"
+          }
+        }
+      }
+    },
+    "Use Report news on the map, or “Something wrong?” on a story.": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Käytä kartan Ilmoita uutinen -painiketta tai uutisen ”Jotain vialla?”."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "از «گزارش خبر» روی نقشه یا «اشتباهی هست؟» در خبر استفاده کن."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Använd Rapportera nyhet på kartan eller ”Något fel?” på en nyhet."
           }
         }
       }
@@ -1565,6 +2555,50 @@
         }
       }
     },
+    "What happened?": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "چه اتفاقی افتاد؟"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Mitä tapahtui?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Vad hände?"
+          }
+        }
+      }
+    },
+    "What is wrong?": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "چه چیزی اشتباه است؟"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Mikä on vialla?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Vad är fel?"
+          }
+        }
+      }
+    },
     "What matters most to you?": {
       "localizations": {
         "fa": {
@@ -1583,6 +2617,50 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Vad är viktigast för dig?"
+          }
+        }
+      }
+    },
+    "What you reported and where each report is in the editor’s review.": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Mitä olet ilmoittanut ja missä vaiheessa toimittajan tarkistusta kukin ilmoitus on."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "آنچه گزارش داده‌ای و اینکه هر گزارش در کجای بررسی ویراستار است."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Det du har rapporterat och var varje rapport är i redaktörens granskning."
+          }
+        }
+      }
+    },
+    "What you sent": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Mitä lähetit"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "آنچه فرستادی"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Det du skickade"
           }
         }
       }
@@ -1719,6 +2797,28 @@
         }
       }
     },
+    "Your area (at least 300 m)": {
+      "localizations": {
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Alueesi (vähintään 300 m)"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "محله‌ات (دست‌کم ۳۰۰ متر)"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ditt område (minst 300 m)"
+          }
+        }
+      }
+    },
     "Your area puts nearby news first. Stories only ever show an area, never an address.": {
       "localizations": {
         "fa": {
@@ -1759,6 +2859,28 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Ditt hemland lägger till en plats på kartan med nyheter därifrån."
+          }
+        }
+      }
+    },
+    "Your name is never shown. An editor checks every report before anything is published.": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "نامت هرگز نمایش داده نمی‌شود. یک ویراستار هر گزارش را قبل از انتشار بررسی می‌کند."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Nimeäsi ei koskaan näytetä. Toimittaja tarkistaa jokaisen ilmoituksen ennen kuin mitään julkaistaan."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "Ditt namn visas aldrig. En redaktör kontrollerar varje rapport innan något publiceras."
           }
         }
       }

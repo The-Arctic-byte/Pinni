@@ -3,18 +3,54 @@
   "$id": "notification.schema.json",
   "title": "Notification",
   "type": "object",
-  "required": ["id", "userId", "kind", "title", "body", "createdAt"],
+  "required": [
+    "id",
+    "userId",
+    "kind",
+    "title",
+    "body",
+    "createdAt"
+  ],
   "additionalProperties": false,
   "properties": {
-    "id": { "$ref": "common.schema.json#/$defs/Id" },
-    "userId": { "$ref": "common.schema.json#/$defs/Id" },
-    "kind": { "enum": ["reportPublished", "reportRejected", "reportEditorLead", "mustSee", "forYou", "channelPost"] },
-    "title": { "$ref": "common.schema.json#/$defs/LocalizedText" },
-    "body": { "$ref": "common.schema.json#/$defs/LocalizedText" },
-    "storyId": { "$ref": "common.schema.json#/$defs/Id" },
-    "reportId": { "$ref": "common.schema.json#/$defs/Id" },
-    "channelId": { "$ref": "common.schema.json#/$defs/Id" },
-    "createdAt": { "$ref": "common.schema.json#/$defs/Timestamp" },
-    "readAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "userId": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "kind": {
+      "description": "reportPublished / reportCorrected / reportRejected / reportEditorLead tell a reporter the outcome of their report (contract/processes/report-review.md).",
+      "enum": [
+        "reportPublished",
+        "reportCorrected",
+        "reportRejected",
+        "reportEditorLead",
+        "mustSee",
+        "forYou",
+        "channelPost"
+      ]
+    },
+    "title": {
+      "$ref": "common.schema.json#/$defs/LocalizedText"
+    },
+    "body": {
+      "$ref": "common.schema.json#/$defs/LocalizedText"
+    },
+    "storyId": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "reportId": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "channelId": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "createdAt": {
+      "$ref": "common.schema.json#/$defs/Timestamp"
+    },
+    "readAt": {
+      "$ref": "common.schema.json#/$defs/Timestamp"
+    }
   }
 }

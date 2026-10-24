@@ -11,6 +11,8 @@ protocol NewsService: Sendable {
     func suggestedChannels(for userId: String) async throws -> [ChannelSuggestion]
     func channels() async throws -> [Channel]
     func reports(for userId: String) async throws -> [Report]
+    /// A news tip or a problem with a story. The backend queues it for a human editor.
+    func submit(_ draft: ReportDraft, reporterId: String) async throws -> Report
     func notifications(for userId: String) async throws -> [AppNotification]
     func send(_ events: [Event]) async throws
 }

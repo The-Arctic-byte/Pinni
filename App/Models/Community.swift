@@ -46,6 +46,13 @@ struct Report: Codable, Hashable, Identifiable, Sendable {
         case sent, inReview, published, edited, rejected, editorLead
     }
 
+    /// One step of the review (contract/processes/report-review.md).
+    struct Step: Codable, Hashable, Sendable {
+        let status: Status
+        let at: Date
+        let note: String?
+    }
+
     let id: String
     let kind: Kind
     let reporterId: String
@@ -58,13 +65,15 @@ struct Report: Codable, Hashable, Identifiable, Sendable {
     let editorNote: String?
     let resultStoryId: String?
     let reach: Int?
+    /// Every status so far, oldest first; the last one equals `status`.
+    let history: [Step]
     let createdAt: Date
     let updatedAt: Date
 }
 
 struct AppNotification: Codable, Hashable, Identifiable, Sendable {
     enum Kind: String, Codable, Sendable {
-        case reportPublished, reportRejected, reportEditorLead, mustSee, forYou, channelPost
+        case reportPublished, reportCorrected, reportRejected, reportEditorLead, mustSee, forYou, channelPost
     }
 
     let id: String
