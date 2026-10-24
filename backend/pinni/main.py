@@ -10,7 +10,7 @@ from . import db, errors, graph, vectors
 from .config import Settings
 from .contract import Contract
 from .routers import admin, auth, community, reader
-from .seed import seed
+from .seed import ensure_dev_editors, seed, upgrade_reports
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -23,6 +23,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             db.init(conn)
             if settings.seed_mock and db.is_empty(conn):
                 seed(conn, app.state.contract, settings.dev_accounts)
+            if settings.dev_accounts:
+                ensure_dev_editors(conn)
+            upgrade_reports(conn)
             app.state.graph = graph.connect(settings)
             if app.state.graph.is_empty():
                 graph.rebuild(conn, app.state.graph)

@@ -141,3 +141,24 @@ def test_dev_editors_have_domains(client, login):
     mira = {i["id"] for i in client.get("/v1/admin/queue", headers=login("mira")).json()}
     assert "finns-party-cuts" in leo and "finns-party-cuts" not in mira
     assert "report-wrong-date" in mira and "report-wrong-date" not in leo
+
+
+def test_older_database_is_upgraded(app, client, login, valid):
+    """A database seeded before editor desks and report history still works after an update."""
+    from pinni import db
+    from pinni.seed import ensure_dev_editors, upgrade_reports
+
+    conn = db.connect(app.state.settings.db_path)
+    with conn:
+        conn.execute("DELETE FROM users WHERE id = 'u-mira'")
+        old = db.get_doc(conn, "reports", "report-wrong-date")
+        del old["history"]
+        db.put_report(conn, old)
+    ensure_dev_editors(conn)
+    ensure_dev_editors(conn)  # idempotent
+    upgrade_reports(conn)
+    conn.close()
+
+    report = client.get("/v1/admin/reports/report-wrong-date", headers=login("mira")).json()
+    valid("report.schema.json", report)
+    assert [h["status"] for h in report["history"]] == ["sent", "inReview"]

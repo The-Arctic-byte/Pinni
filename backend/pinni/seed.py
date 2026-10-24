@@ -37,13 +37,6 @@ def seed(conn: sqlite3.Connection, contract: Contract, dev_accounts: bool) -> No
                  hash_password(DEV_PASSWORD) if signs_in else None,
                  u["createdAt"]),
             )
-        if dev_accounts:
-            for e in DEV_EDITORS:
-                conn.execute(
-                    "INSERT INTO users (id, role, display_name, email, password_hash, created_at) VALUES (?, 'editor', ?, ?, ?, ?)",
-                    (e["id"], e["displayName"], dev_email(e["id"]), hash_password(DEV_PASSWORD), db.now()),
-                )
-                domains.put(conn, e["id"], e["categories"])
         for p in m("profiles.json"):
             db.put_doc(conn, "profiles", p)
         for s in m("stories.json"):
@@ -65,3 +58,33 @@ def seed(conn: sqlite3.Connection, contract: Contract, dev_accounts: bool) -> No
                     (e["userId"], e["channelId"], e["occurredAt"]),
                 )
         db.audit(conn, "agent:seed", "gather", "Database seeded from contract/mock")
+
+
+def ensure_dev_editors(conn: sqlite3.Connection) -> None:
+    """Add the development editors if missing, also to a database seeded before they existed."""
+    with conn:
+        for e in DEV_EDITORS:
+            added = conn.execute(
+                "INSERT OR IGNORE INTO users (id, role, display_name, email, password_hash, created_at) VALUES (?, 'editor', ?, ?, ?, ?)",
+                (e["id"], e["displayName"], dev_email(e["id"]), hash_password(DEV_PASSWORD), db.now()),
+            ).rowcount
+            if added:
+                domains.put(conn, e["id"], e["categories"])
+
+
+def upgrade_reports(conn: sqlite3.Connection) -> None:
+    """Reports stored before the report review process (contract/processes/report-review.md) get the
+    history and sensitivity the contract now requires, so an existing database keeps working."""
+    with conn:
+        for r in db.docs(conn, "SELECT doc FROM reports"):
+            if "history" in r:
+                continue
+            history = [{"status": "sent", "at": r["createdAt"]}]
+            if r["status"] != "sent":
+                history.append({"status": "inReview", "at": r["updatedAt"]})
+            if r["status"] not in ("sent", "inReview"):
+                history.append({"status": r["status"], "at": r["updatedAt"]})
+            r["history"] = history
+            if r["category"] == "safety" and r["status"] not in ("published", "edited"):
+                r["sensitive"] = True
+            db.put_report(conn, r)
