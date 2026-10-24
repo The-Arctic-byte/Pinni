@@ -10,6 +10,7 @@ import sqlite3
 from typing import Annotated
 
 from fastapi import Depends, Request
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from . import db
 from .errors import ApiError, forbidden
@@ -65,12 +66,14 @@ def get_conn(request: Request):
 Conn = Annotated[sqlite3.Connection, Depends(get_conn)]
 
 
-def current_user(request: Request, conn: Conn) -> dict:
-    header = request.headers.get("authorization", "")
-    scheme, _, token = header.partition(" ")
-    if scheme.lower() != "bearer" or not token:
+# Declared so /docs shows an "Authorize" button; errors stay in the contract's shape below.
+bearer = HTTPBearer(auto_error=False)
+
+
+def current_user(conn: Conn, credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)]) -> dict:
+    if credentials is None or not credentials.credentials:
         raise ApiError(401, "unauthorized", "Missing bearer token; get one from POST /v1/auth/anonymous")
-    row = user_for_token(conn, token.strip())
+    row = user_for_token(conn, credentials.credentials.strip())
     if row is None:
         raise ApiError(401, "unauthorized", "Unknown or expired token")
     return db.user_doc(row)
