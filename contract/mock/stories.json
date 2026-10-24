@@ -5,49 +5,121 @@
     "origin": "agent",
     "scale": "area",
     "placeId": "kiiminki",
-    "location": { "coordinate": { "lat": 65.131, "lon": 25.735 }, "radiusMeters": 600 },
+    "location": {
+      "coordinate": {
+        "lat": 65.131,
+        "lon": 25.735
+      },
+      "radiusMeters": 600
+    },
     "category": "safety",
-    "tags": ["police"],
-    "needs": ["information", "usefulness"],
+    "tags": [
+      "police"
+    ],
+    "needs": [
+      "information",
+      "usefulness"
+    ],
     "risk": "red",
     "isOpinion": false,
     "importance": 0.8,
-    "affects": ["residents:kiiminki"],
-    "label": { "en": "Shooting", "fa": "تیراندازی" },
+    "affects": [
+      "residents:kiiminki"
+    ],
+    "label": {
+      "en": "Shooting",
+      "fa": "تیراندازی"
+    },
     "title": {
       "en": "Shots fired at an empty flat in Kiiminki; one person arrested",
       "fa": "تیراندازی به آپارتمانی خالی در کیمینکی؛ یک نفر بازداشت شد"
     },
     "explanation": {
       "known": [
-        { "en": "Shots were fired at an empty apartment in Kiiminki on Wednesday evening.", "fa": "چهارشنبه شب به یک آپارتمان خالی در کیمینکی تیراندازی شد." },
-        { "en": "Police say no one was injured.", "fa": "به گفته پلیس، کسی آسیب ندیده است." },
-        { "en": "On Thursday morning police said they had arrested one person.", "fa": "پنجشنبه صبح پلیس اعلام کرد یک نفر را بازداشت کرده است." }
+        {
+          "en": "Shots were fired at an empty apartment in Kiiminki on Wednesday evening.",
+          "fa": "چهارشنبه شب به یک آپارتمان خالی در کیمینکی تیراندازی شد."
+        },
+        {
+          "en": "Police say no one was injured.",
+          "fa": "به گفته پلیس، کسی آسیب ندیده است."
+        },
+        {
+          "en": "On Thursday morning police said they had arrested one person.",
+          "fa": "پنجشنبه صبح پلیس اعلام کرد یک نفر را بازداشت کرده است."
+        }
       ],
-      "notKnown": { "en": "Police have not said why it happened. We will update this story when they do.", "fa": "انگیزه این حادثه هنوز اعلام نشده است. با اطلاعات تازه پلیس، این خبر به‌روز می‌شود." },
-      "forYou": { "en": "This happened near where you live. If you see or hear something urgent, call 112.", "fa": "این حادثه نزدیک محل زندگی توست. اگر چیزی فوری دیدی یا شنیدی، با ۱۱۲ تماس بگیر." },
+      "notKnown": {
+        "en": "Police have not said why it happened. We will update this story when they do.",
+        "fa": "انگیزه این حادثه هنوز اعلام نشده است. با اطلاعات تازه پلیس، این خبر به‌روز می‌شود."
+      },
+      "forYou": {
+        "en": "This happened near where you live. If you see or hear something urgent, call 112.",
+        "fa": "این حادثه نزدیک محل زندگی توست. اگر چیزی فوری دیدی یا شنیدی، با ۱۱۲ تماس بگیر."
+      },
       "context": {
-        "question": { "en": "Is it safe to call the police in Finland?", "fa": "تماس با پلیس در فنلاند امن است؟" },
-        "answer": { "en": "Yes. Finnish police are widely trusted. 112 is free and covers police, fire and ambulance. You can usually speak English.", "fa": "بله. پلیس فنلاند در میان مردم بسیار مورد اعتماد است. ۱۱۲ رایگان است و برای پلیس، آتش‌نشانی و آمبولانس کار می‌کند. معمولاً می‌توانی انگلیسی هم صحبت کنی." }
+        "question": {
+          "en": "Is it safe to call the police in Finland?",
+          "fa": "تماس با پلیس در فنلاند امن است؟"
+        },
+        "answer": {
+          "en": "Yes. Finnish police are widely trusted. 112 is free and covers police, fire and ambulance. You can usually speak English.",
+          "fa": "بله. پلیس فنلاند در میان مردم بسیار مورد اعتماد است. ۱۱۲ رایگان است و برای پلیس، آتش‌نشانی و آمبولانس کار می‌کند. معمولاً می‌توانی انگلیسی هم صحبت کنی."
+        }
       },
       "timeline": [
-        { "at": "2026-10-22T10:19:00+03:00", "text": { "en": "One person arrested", "fa": "یک نفر بازداشت شد" } },
-        { "at": "2026-10-21T21:21:00+03:00", "text": { "en": "First report, no injuries", "fa": "گزارش اول؛ کسی آسیب ندید" } }
+        {
+          "at": "2026-10-22T10:19:00+03:00",
+          "text": {
+            "en": "One person arrested",
+            "fa": "یک نفر بازداشت شد"
+          }
+        },
+        {
+          "at": "2026-10-21T21:21:00+03:00",
+          "text": {
+            "en": "First report, no injuries",
+            "fa": "گزارش اول؛ کسی آسیب ندید"
+          }
+        }
       ]
     },
     "originals": [
-      { "fi": "Yksi otettu kiinni Kiimingin keskiviikkoillan ammuskelusta", "en": "One person arrested over Wednesday evening’s shooting in Kiiminki" },
-      { "fi": "Poliisin tietojen mukaan kukaan ei ole loukkaantunut tilanteessa.", "en": "According to police, no one was injured." }
+      {
+        "fi": "Yksi otettu kiinni Kiimingin keskiviikkoillan ammuskelusta",
+        "en": "One person arrested over Wednesday evening’s shooting in Kiiminki"
+      },
+      {
+        "fi": "Poliisin tietojen mukaan kukaan ei ole loukkaantunut tilanteessa.",
+        "en": "According to police, no one was injured."
+      }
     ],
     "sources": [
-      { "name": "Kaleva", "publishedAt": "2026-10-21T21:21:00+03:00" },
-      { "name": "Kaleva", "publishedAt": "2026-10-22T10:19:00+03:00" }
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-21T21:21:00+03:00"
+      },
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-22T10:19:00+03:00"
+      }
     ],
     "translations": [
-      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fa", "tier": 2, "reviewedBy": "Negar" }
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
     ],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-22T10:40:00+03:00" },
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:40:00+03:00"
+    },
     "createdAt": "2026-10-21T21:30:00+03:00",
     "updatedAt": "2026-10-22T10:40:00+03:00",
     "publishedAt": "2026-10-22T10:40:00+03:00"
@@ -58,26 +130,68 @@
     "origin": "agent",
     "scale": "city",
     "placeId": "ritaharju",
-    "location": { "coordinate": { "lat": 65.075, "lon": 25.535 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.075,
+        "lon": 25.535
+      },
+      "radiusMeters": 0
+    },
     "category": "shopping",
-    "tags": ["groceries"],
-    "needs": ["usefulness"],
+    "tags": [
+      "groceries"
+    ],
+    "needs": [
+      "usefulness"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.4,
     "mapObject": "shoppingCentre",
-    "label": { "en": "Lidl at Ideapark", "fa": "لیدل در Ideapark" },
-    "title": { "en": "Lidl will open a store at Oulu’s Ideapark shopping centre", "fa": "لیدل در مرکز خرید Ideapark اولو فروشگاه باز می‌کند" },
+    "label": {
+      "en": "Lidl at Ideapark",
+      "fa": "لیدل در Ideapark"
+    },
+    "title": {
+      "en": "Lidl will open a store at Oulu’s Ideapark shopping centre",
+      "fa": "لیدل در مرکز خرید Ideapark اولو فروشگاه باز می‌کند"
+    },
     "explanation": {
-      "happened": { "en": "A zoning change in the Ritaharju district makes the store possible.", "fa": "تغییر طرح شهری در محله ریتاهارجو (Ritaharju) راه ساخت این فروشگاه را باز کرده است." },
-      "forYou": { "en": "Another grocery store on the way from Kiiminki to town. The opening date was not announced.", "fa": "یک فروشگاه مواد غذایی دیگر در مسیر کیمینکی به شهر خواهی داشت. تاریخ افتتاح در خبر اعلام نشده است." }
+      "happened": {
+        "en": "A zoning change in the Ritaharju district makes the store possible.",
+        "fa": "تغییر طرح شهری در محله ریتاهارجو (Ritaharju) راه ساخت این فروشگاه را باز کرده است."
+      },
+      "forYou": {
+        "en": "Another grocery store on the way from Kiiminki to town. The opening date was not announced.",
+        "fa": "یک فروشگاه مواد غذایی دیگر در مسیر کیمینکی به شهر خواهی داشت. تاریخ افتتاح در خبر اعلام نشده است."
+      }
     },
     "originals": [
-      { "fi": "Oulun Ideapark saa päivittäistavarakaupan: Lidl avaa myymälän kauppakeskukseen", "en": "Oulu’s Ideapark gets a grocery store: Lidl opens a shop in the centre" }
+      {
+        "fi": "Oulun Ideapark saa päivittäistavarakaupan: Lidl avaa myymälän kauppakeskukseen",
+        "en": "Oulu’s Ideapark gets a grocery store: Lidl opens a shop in the centre"
+      }
     ],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-21T12:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 2 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-21T12:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      },
+      {
+        "language": "fa",
+        "tier": 2
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-21T13:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -88,31 +202,88 @@
     "origin": "agent",
     "scale": "city",
     "placeId": "oulu",
-    "location": { "coordinate": { "lat": 65.012, "lon": 25.471 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.012,
+        "lon": 25.471
+      },
+      "radiusMeters": 0
+    },
     "category": "work",
-    "tags": ["strike"],
-    "needs": ["usefulness"],
+    "tags": [
+      "strike"
+    ],
+    "needs": [
+      "usefulness"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.45,
-    "label": { "en": "Strike from 5 Nov", "fa": "اعتصاب ۵ نوامبر" },
-    "title": { "en": "Parkkipate staff will strike for five days from 5 November", "fa": "کارکنان Parkkipate از ۵ نوامبر پنج روز اعتصاب می‌کنند" },
+    "label": {
+      "en": "Strike from 5 Nov",
+      "fa": "اعتصاب ۵ نوامبر"
+    },
+    "title": {
+      "en": "Parkkipate staff will strike for five days from 5 November",
+      "fa": "کارکنان Parkkipate از ۵ نوامبر پنج روز اعتصاب می‌کنند"
+    },
     "explanation": {
-      "happened": { "en": "The five-day strike starts on 5 November and covers all work at the company.", "fa": "اعتصاب پنج‌روزه از ۵ نوامبر شروع می‌شود و همه کارهای این شرکت را شامل می‌شود." },
-      "forYou": { "en": "If you use Parkkipate services, check your plans for those days in advance.", "fa": "اگر از خدمات Parkkipate استفاده می‌کنی، برنامه این روزها را از قبل چک کن." },
+      "happened": {
+        "en": "The five-day strike starts on 5 November and covers all work at the company.",
+        "fa": "اعتصاب پنج‌روزه از ۵ نوامبر شروع می‌شود و همه کارهای این شرکت را شامل می‌شود."
+      },
+      "forYou": {
+        "en": "If you use Parkkipate services, check your plans for those days in advance.",
+        "fa": "اگر از خدمات Parkkipate استفاده می‌کنی، برنامه این روزها را از قبل چک کن."
+      },
       "context": {
-        "question": { "en": "What is a strike in Finland?", "fa": "اعتصاب در فنلاند چیست؟" },
-        "answer": { "en": "Strikes are legal and usually calm. Trade unions organise them and dates are announced in advance.", "fa": "اعتصاب قانونی است و معمولاً آرام برگزار می‌شود. اتحادیه‌های کارگری آن را سازمان می‌دهند و تاریخش از قبل اعلام می‌شود، پس می‌توانی برنامه‌ریزی کنی." }
+        "question": {
+          "en": "What is a strike in Finland?",
+          "fa": "اعتصاب در فنلاند چیست؟"
+        },
+        "answer": {
+          "en": "Strikes are legal and usually calm. Trade unions organise them and dates are announced in advance.",
+          "fa": "اعتصاب قانونی است و معمولاً آرام برگزار می‌شود. اتحادیه‌های کارگری آن را سازمان می‌دهند و تاریخش از قبل اعلام می‌شود، پس می‌توانی برنامه‌ریزی کنی."
+        }
       }
     },
     "originals": [
-      { "fi": "Parkkipaten työntekijät lakkoon ensi kuussa", "en": "Parkkipate staff to strike next month" },
-      { "fi": "Viisipäiväinen lakko alkaa 5. marraskuuta.", "en": "The five-day strike starts on 5 November." }
+      {
+        "fi": "Parkkipaten työntekijät lakkoon ensi kuussa",
+        "en": "Parkkipate staff to strike next month"
+      },
+      {
+        "fi": "Viisipäiväinen lakko alkaa 5. marraskuuta.",
+        "en": "The five-day strike starts on 5 November."
+      }
     ],
-    "wordOfDay": { "word": "lakko", "meaning": { "en": "strike · say “LAHK-koh”", "fa": "اعتصاب · «لاک‌کو»" } },
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-21T15:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 2 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "wordOfDay": {
+      "word": "lakko",
+      "meaning": {
+        "en": "strike · say “LAHK-koh”",
+        "fa": "اعتصاب · «لاک‌کو»"
+      }
+    },
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-21T15:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      },
+      {
+        "language": "fa",
+        "tier": 2
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-21T16:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -123,26 +294,60 @@
     "origin": "agent",
     "scale": "city",
     "placeId": "oulu",
-    "location": { "coordinate": { "lat": 65.013, "lon": 25.465 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.013,
+        "lon": 25.465
+      },
+      "radiusMeters": 0
+    },
     "category": "technology",
-    "tags": ["e-services"],
-    "needs": ["usefulness"],
+    "tags": [
+      "e-services"
+    ],
+    "needs": [
+      "usefulness"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.4,
     "mapObject": "cityHall",
-    "label": { "en": "City site was down" },
-    "title": { "en": "City of Oulu website was offline after a security flaw" },
+    "label": {
+      "en": "City site was down"
+    },
+    "title": {
+      "en": "City of Oulu website was offline after a security flaw"
+    },
     "explanation": {
-      "happened": { "en": "Two critical PHP flaws took many websites offline on Wednesday, including the City of Oulu’s. Kaleva reports some services may take weeks to fully return." },
-      "forYou": { "en": "If the city site will not load, follow up by phone or in person." }
+      "happened": {
+        "en": "Two critical PHP flaws took many websites offline on Wednesday, including the City of Oulu’s. Kaleva reports some services may take weeks to fully return."
+      },
+      "forYou": {
+        "en": "If the city site will not load, follow up by phone or in person."
+      }
     },
     "originals": [
-      { "fi": "Myös Oulun kaupungin verkkosivuja ollut pois käytöstä", "en": "The City of Oulu’s web pages have also been offline" }
+      {
+        "fi": "Myös Oulun kaupungin verkkosivuja ollut pois käytöstä",
+        "en": "The City of Oulu’s web pages have also been offline"
+      }
     ],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T08:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-22T09:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -154,31 +359,77 @@
     "scale": "finland",
     "placeId": "finland",
     "category": "politics",
-    "tags": ["immigration", "social security", "pensions"],
-    "needs": ["understanding"],
+    "tags": [
+      "immigration",
+      "social security",
+      "pensions"
+    ],
+    "needs": [
+      "understanding"
+    ],
     "risk": "red",
     "isOpinion": false,
     "importance": 0.6,
-    "affects": ["residence:nonEu"],
-    "label": { "en": "Party proposal, not law", "fa": "پیشنهاد حزبی، نه قانون" },
-    "title": { "en": "Finns Party wants cuts to social security, pensions and immigration", "fa": "حزب فنلاندی‌ها خواستار کاهش هزینه‌ها در تأمین اجتماعی، بازنشستگی و مهاجرت شد" },
+    "affects": [
+      "residence:nonEu"
+    ],
+    "label": {
+      "en": "Party proposal, not law",
+      "fa": "پیشنهاد حزبی، نه قانون"
+    },
+    "title": {
+      "en": "Finns Party wants cuts to social security, pensions and immigration",
+      "fa": "حزب فنلاندی‌ها خواستار کاهش هزینه‌ها در تأمین اجتماعی، بازنشستگی و مهاجرت شد"
+    },
     "explanation": {
-      "happened": { "en": "The Finns Party (Perussuomalaiset) has proposed cuts to social security, pensions and immigration.", "fa": "حزب فنلاندی‌ها (Perussuomalaiset) پیشنهادهایی برای کاهش هزینه‌ها در تأمین اجتماعی، حقوق بازنشستگی و مهاجرت ارائه کرده است." },
-      "forYou": { "en": "This is a party proposal, not a law. Nothing about your residence or rights has changed. If a law passes, we will tell you here with the official source.", "fa": "این یک پیشنهاد حزبی است، نه قانون. فعلاً چیزی در اقامت یا حقوق تو تغییر نکرده است. اگر قانونی تصویب شود، همین‌جا با منبع رسمی خبر می‌دهیم." },
+      "happened": {
+        "en": "The Finns Party (Perussuomalaiset) has proposed cuts to social security, pensions and immigration.",
+        "fa": "حزب فنلاندی‌ها (Perussuomalaiset) پیشنهادهایی برای کاهش هزینه‌ها در تأمین اجتماعی، حقوق بازنشستگی و مهاجرت ارائه کرده است."
+      },
+      "forYou": {
+        "en": "This is a party proposal, not a law. Nothing about your residence or rights has changed. If a law passes, we will tell you here with the official source.",
+        "fa": "این یک پیشنهاد حزبی است، نه قانون. فعلاً چیزی در اقامت یا حقوق تو تغییر نکرده است. اگر قانونی تصویب شود، همین‌جا با منبع رسمی خبر می‌دهیم."
+      },
       "context": {
-        "question": { "en": "How is a party proposal different from a law?", "fa": "پیشنهاد حزب با قانون چه فرقی دارد؟" },
-        "answer": { "en": "In Finland every law must be debated and passed by Parliament. A party’s proposal alone changes nothing.", "fa": "در فنلاند هر قانون باید در پارلمان بررسی و تصویب شود. پیشنهاد یک حزب به‌تنهایی چیزی را تغییر نمی‌دهد." }
+        "question": {
+          "en": "How is a party proposal different from a law?",
+          "fa": "پیشنهاد حزب با قانون چه فرقی دارد؟"
+        },
+        "answer": {
+          "en": "In Finland every law must be debated and passed by Parliament. A party’s proposal alone changes nothing.",
+          "fa": "در فنلاند هر قانون باید در پارلمان بررسی و تصویب شود. پیشنهاد یک حزب به‌تنهایی چیزی را تغییر نمی‌دهد."
+        }
       },
       "actionPlace": {
-        "name": { "en": "Migri · if you have questions", "fa": "Migri · اگر سؤال داری" },
+        "name": {
+          "en": "Migri · if you have questions",
+          "fa": "Migri · اگر سؤال داری"
+        },
         "url": "https://migri.fi"
       }
     },
     "originals": [
-      { "fi": "Perussuomalaiset leikkaisi sosiaaliturvasta, eläkkeistä ja maahanmuutosta", "en": "The Finns Party would cut social security, pensions and immigration" }
+      {
+        "fi": "Perussuomalaiset leikkaisi sosiaaliturvasta, eläkkeistä ja maahanmuutosta",
+        "en": "The Finns Party would cut social security, pensions and immigration"
+      }
     ],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T11:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 3 }],
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-22T11:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      },
+      {
+        "language": "fa",
+        "tier": 3
+      }
+    ],
     "createdAt": "2026-10-22T12:00:00+03:00",
     "updatedAt": "2026-10-22T12:00:00+03:00"
   },
@@ -188,29 +439,67 @@
     "origin": "agent",
     "scale": "finland",
     "placeId": "finland",
-    "location": { "coordinate": { "lat": 60.1728, "lon": 24.933 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 60.1728,
+        "lon": 24.933
+      },
+      "radiusMeters": 0
+    },
     "category": "politics",
-    "tags": ["parliament"],
-    "needs": ["understanding"],
+    "tags": [
+      "parliament"
+    ],
+    "needs": [
+      "understanding"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.5,
-    "label": { "en": "Interpellation" },
-    "title": { "en": "Opposition files an interpellation against the government" },
+    "label": {
+      "en": "Interpellation"
+    },
+    "title": {
+      "en": "Opposition files an interpellation against the government"
+    },
     "explanation": {
-      "happened": { "en": "Five opposition parties (SDP, Centre, Greens, Left Alliance and Liike Nyt) filed an interpellation in Parliament." },
-      "forYou": { "en": "This is a political debate in Parliament and does not change your daily life for now." },
+      "happened": {
+        "en": "Five opposition parties (SDP, Centre, Greens, Left Alliance and Liike Nyt) filed an interpellation in Parliament."
+      },
+      "forYou": {
+        "en": "This is a political debate in Parliament and does not change your daily life for now."
+      },
       "context": {
-        "question": { "en": "What is an interpellation?" },
-        "answer": { "en": "The opposition asks the government to explain itself, and Parliament then votes on confidence in the government." }
+        "question": {
+          "en": "What is an interpellation?"
+        },
+        "answer": {
+          "en": "The opposition asks the government to explain itself, and Parliament then votes on confidence in the government."
+        }
       }
     },
     "originals": [
-      { "fi": "\"Hallitus ei elä samassa todellisuudessa tavallisten suomalaisten kanssa\" – oppositio teki välikysymyksen", "en": "“The government does not live in the same reality as ordinary Finns” – opposition files an interpellation" }
+      {
+        "fi": "\"Hallitus ei elä samassa todellisuudessa tavallisten suomalaisten kanssa\" – oppositio teki välikysymyksen",
+        "en": "“The government does not live in the same reality as ordinary Finns” – opposition files an interpellation"
+      }
     ],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-23T09:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T11:00:00+03:00" },
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-23T09:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T11:00:00+03:00"
+    },
     "createdAt": "2026-10-23T09:30:00+03:00",
     "updatedAt": "2026-10-23T11:00:00+03:00",
     "publishedAt": "2026-10-23T11:00:00+03:00"
@@ -221,24 +510,69 @@
     "origin": "agent",
     "scale": "finland",
     "placeId": "helsinki",
-    "location": { "coordinate": { "lat": 60.187, "lon": 24.927 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 60.187,
+        "lon": 24.927
+      },
+      "radiusMeters": 0
+    },
     "category": "sport",
-    "tags": ["athletics"],
-    "needs": ["emotion", "information"],
+    "tags": [
+      "athletics"
+    ],
+    "needs": [
+      "emotion",
+      "information"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.35,
     "mapObject": "stadium",
-    "label": { "en": "Athletics Euros 2030", "fa": "دوومیدانی اروپا ۲۰۳۰" },
-    "title": { "en": "Helsinki will host the 2030 European Athletics Championships", "fa": "مسابقات قهرمانی دوومیدانی اروپا ۲۰۳۰ در هلسینکی برگزار می‌شود" },
-    "explanation": {
-      "happened": { "en": "Helsinki will host the European Athletics Championships in 2030.", "fa": "هلسینکی میزبان مسابقات قهرمانی دوومیدانی اروپا در سال ۲۰۳۰ شد." },
-      "forYou": { "en": "A big sports event in Finland, still years away.", "fa": "یک رویداد ورزشی بزرگ در فنلاند، ولی هنوز چند سال تا آن مانده." }
+    "label": {
+      "en": "Athletics Euros 2030",
+      "fa": "دوومیدانی اروپا ۲۰۳۰"
     },
-    "originals": [{ "fi": "Helsinki sai yleisurheilun EM-kilpailut", "en": "Helsinki gets the European Athletics Championships" }],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T14:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 2 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "title": {
+      "en": "Helsinki will host the 2030 European Athletics Championships",
+      "fa": "مسابقات قهرمانی دوومیدانی اروپا ۲۰۳۰ در هلسینکی برگزار می‌شود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Helsinki will host the European Athletics Championships in 2030.",
+        "fa": "هلسینکی میزبان مسابقات قهرمانی دوومیدانی اروپا در سال ۲۰۳۰ شد."
+      },
+      "forYou": {
+        "en": "A big sports event in Finland, still years away.",
+        "fa": "یک رویداد ورزشی بزرگ در فنلاند، ولی هنوز چند سال تا آن مانده."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Helsinki sai yleisurheilun EM-kilpailut",
+        "en": "Helsinki gets the European Athletics Championships"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-22T14:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      },
+      {
+        "language": "fa",
+        "tier": 2
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-22T15:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -249,23 +583,60 @@
     "origin": "agent",
     "scale": "finland",
     "placeId": "muhos",
-    "location": { "coordinate": { "lat": 64.808, "lon": 25.993 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 64.808,
+        "lon": 25.993
+      },
+      "radiusMeters": 0
+    },
     "category": "environment",
-    "tags": ["data centre", "water"],
-    "needs": ["understanding"],
+    "tags": [
+      "data centre",
+      "water"
+    ],
+    "needs": [
+      "understanding"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.4,
-    "label": { "en": "Muhos data centre" },
-    "title": { "en": "Police asked to investigate Google’s Muhos data-centre project" },
-    "explanation": {
-      "happened": { "en": "The permits and supervision agency LVV asked police to investigate Google’s Muhos data-centre project and wants a more detailed water plan." },
-      "forYou": { "en": "Muhos is near Oulu, but this does not directly affect your daily life." }
+    "label": {
+      "en": "Muhos data centre"
     },
-    "originals": [{ "fi": "LVV on tehnyt poliisille tutkintapyynnön Googlen Muhoksen datakeskushankkeesta", "en": "LVV has asked police to investigate Google’s Muhos data-centre project" }],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T10:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "title": {
+      "en": "Police asked to investigate Google’s Muhos data-centre project"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The permits and supervision agency LVV asked police to investigate Google’s Muhos data-centre project and wants a more detailed water plan."
+      },
+      "forYou": {
+        "en": "Muhos is near Oulu, but this does not directly affect your daily life."
+      }
+    },
+    "originals": [
+      {
+        "fi": "LVV on tehnyt poliisille tutkintapyynnön Googlen Muhoksen datakeskushankkeesta",
+        "en": "LVV has asked police to investigate Google’s Muhos data-centre project"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-22T10:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-22T11:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -276,23 +647,60 @@
     "origin": "agent",
     "scale": "world",
     "placeId": "ukraine",
-    "location": { "coordinate": { "lat": 50.45, "lon": 30.52 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 50.45,
+        "lon": 30.52
+      },
+      "radiusMeters": 0
+    },
     "category": "world",
-    "tags": ["foreign policy", "ukraine"],
-    "needs": ["information"],
+    "tags": [
+      "foreign policy",
+      "ukraine"
+    ],
+    "needs": [
+      "information"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.55,
-    "label": { "en": "Orpo in Kyiv" },
-    "title": { "en": "Air-raid alerts during Finnish PM’s visit to Kyiv" },
-    "explanation": {
-      "happened": { "en": "Petteri Orpo met Zelensky, and Finnish and Ukrainian companies signed deals worth €300 million." },
-      "forYou": { "en": "This shows Finland’s foreign policy. It does not directly change your daily life." }
+    "label": {
+      "en": "Orpo in Kyiv"
     },
-    "originals": [{ "fi": "Ilmahälytykset säestivät Orpon Kiovan-vierailun joka hetkeä", "en": "Air-raid alerts accompanied every moment of Orpo’s Kyiv visit" }],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T16:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "title": {
+      "en": "Air-raid alerts during Finnish PM’s visit to Kyiv"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Petteri Orpo met Zelensky, and Finnish and Ukrainian companies signed deals worth €300 million."
+      },
+      "forYou": {
+        "en": "This shows Finland’s foreign policy. It does not directly change your daily life."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Ilmahälytykset säestivät Orpon Kiovan-vierailun joka hetkeä",
+        "en": "Air-raid alerts accompanied every moment of Orpo’s Kyiv visit"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-22T16:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-22T17:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -303,23 +711,59 @@
     "origin": "agent",
     "scale": "world",
     "placeId": "world",
-    "location": { "coordinate": { "lat": -1.292, "lon": 36.822 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": -1.292,
+        "lon": 36.822
+      },
+      "radiusMeters": 0
+    },
     "category": "environment",
-    "tags": ["climate"],
-    "needs": ["understanding"],
+    "tags": [
+      "climate"
+    ],
+    "needs": [
+      "understanding"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.45,
-    "label": { "en": "UN climate report" },
-    "title": { "en": "UN: the world is far from the Paris Agreement goals" },
-    "explanation": {
-      "happened": { "en": "According to UNEP, warming could reach 2.6 degrees above pre-industrial levels this century." },
-      "forYou": { "en": "Global news with no direct effect on your daily life in Oulu." }
+    "label": {
+      "en": "UN climate report"
     },
-    "originals": [{ "fi": "Pariisin ilmastosopimuksen tavoitteista jäädään kauas, varoittaa YK", "en": "The Paris Agreement goals will be missed by far, the UN warns" }],
-    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-21T10:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "title": {
+      "en": "UN: the world is far from the Paris Agreement goals"
+    },
+    "explanation": {
+      "happened": {
+        "en": "According to UNEP, warming could reach 2.6 degrees above pre-industrial levels this century."
+      },
+      "forYou": {
+        "en": "Global news with no direct effect on your daily life in Oulu."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Pariisin ilmastosopimuksen tavoitteista jäädään kauas, varoittaa YK",
+        "en": "The Paris Agreement goals will be missed by far, the UN warns"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Kaleva",
+        "publishedAt": "2026-10-21T10:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-21T11:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -330,23 +774,59 @@
     "origin": "agent",
     "scale": "world",
     "placeId": "world",
-    "location": { "coordinate": { "lat": 38.907, "lon": -77.037 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 38.907,
+        "lon": -77.037
+      },
+      "radiusMeters": 0
+    },
     "category": "technology",
-    "tags": ["social media"],
-    "needs": ["understanding"],
+    "tags": [
+      "social media"
+    ],
+    "needs": [
+      "understanding"
+    ],
     "risk": "none",
     "isOpinion": true,
     "importance": 0.2,
-    "label": { "en": "Editorial: social media" },
-    "title": { "en": "Editorial: social media giants must answer for their content" },
-    "explanation": {
-      "happened": { "en": "Kaleva editorial: a US court has found that Meta endangers children’s health." },
-      "forYou": { "en": "This is the newspaper’s opinion, not a news report." }
+    "label": {
+      "en": "Editorial: social media"
     },
-    "originals": [{ "fi": "Somejätit täytyy saada vastuuseen sisällöistään", "en": "Social media giants must be held accountable for their content" }],
-    "sources": [{ "name": "Kaleva (editorial)", "publishedAt": "2026-10-23T06:00:00+03:00" }],
-    "translations": [{ "language": "en", "tier": 1 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "title": {
+      "en": "Editorial: social media giants must answer for their content"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Kaleva editorial: a US court has found that Meta endangers children’s health."
+      },
+      "forYou": {
+        "en": "This is the newspaper’s opinion, not a news report."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Somejätit täytyy saada vastuuseen sisällöistään",
+        "en": "Social media giants must be held accountable for their content"
+      }
+    ],
+    "sources": [
+      {
+        "name": "Kaleva (editorial)",
+        "publishedAt": "2026-10-23T06:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T09:12:00+03:00"
+    },
     "createdAt": "2026-10-23T07:00:00+03:00",
     "updatedAt": "2026-10-23T09:12:00+03:00",
     "publishedAt": "2026-10-23T09:12:00+03:00"
@@ -357,23 +837,66 @@
     "origin": "community",
     "scale": "area",
     "placeId": "kiiminki",
-    "location": { "coordinate": { "lat": 65.129, "lon": 25.741 }, "radiusMeters": 100 },
+    "location": {
+      "coordinate": {
+        "lat": 65.129,
+        "lon": 25.741
+      },
+      "radiusMeters": 100
+    },
     "category": "transport",
-    "tags": ["winter", "walking"],
-    "needs": ["usefulness", "community"],
+    "tags": [
+      "winter",
+      "walking"
+    ],
+    "needs": [
+      "usefulness",
+      "community"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.35,
-    "label": { "en": "Icy path", "fa": "مسیر یخ‌زده" },
-    "title": { "en": "Icy or slippery path by the Kiiminki school", "fa": "مسیر یخ‌زده یا لغزنده کنار مدرسه کیمینکی" },
-    "explanation": {
-      "happened": { "en": "The walking and bike path by the Kiiminki school is very icy.", "fa": "مسیر پیاده و دوچرخه کنار مدرسه کیمینکی خیلی یخ زده است." },
-      "forYou": { "en": "Take another route or walk carefully if you pass the school.", "fa": "اگر از کنار مدرسه رد می‌شوی، مسیر دیگری برو یا با احتیاط راه برو." }
+    "label": {
+      "en": "Icy path",
+      "fa": "مسیر یخ‌زده"
     },
-    "sources": [{ "name": "Community report (sample data)" }],
-    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 1 }],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T08:30:00+03:00" },
-    "community": { "reportId": "report-icy-path", "confirmations": 3 },
+    "title": {
+      "en": "Icy or slippery path by the Kiiminki school",
+      "fa": "مسیر یخ‌زده یا لغزنده کنار مدرسه کیمینکی"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The walking and bike path by the Kiiminki school is very icy.",
+        "fa": "مسیر پیاده و دوچرخه کنار مدرسه کیمینکی خیلی یخ زده است."
+      },
+      "forYou": {
+        "en": "Take another route or walk carefully if you pass the school.",
+        "fa": "اگر از کنار مدرسه رد می‌شوی، مسیر دیگری برو یا با احتیاط راه برو."
+      }
+    },
+    "sources": [
+      {
+        "name": "Community report (sample data)"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1
+      },
+      {
+        "language": "fa",
+        "tier": 1
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T08:30:00+03:00"
+    },
+    "community": {
+      "reportId": "report-icy-path",
+      "confirmations": 3
+    },
     "createdAt": "2026-10-24T07:50:00+03:00",
     "updatedAt": "2026-10-24T08:30:00+03:00",
     "publishedAt": "2026-10-24T08:30:00+03:00"
@@ -384,14 +907,30 @@
     "origin": "agent",
     "scale": "area",
     "placeId": "oulu",
-    "location": { "coordinate": { "lat": 65.0124, "lon": 25.465 }, "radiusMeters": 220 },
+    "location": {
+      "coordinate": {
+        "lat": 65.0124,
+        "lon": 25.465
+      },
+      "radiusMeters": 220
+    },
     "category": "safety",
-    "tags": ["winter", "walking"],
-    "needs": ["safety", "usefulness"],
+    "tags": [
+      "winter",
+      "walking"
+    ],
+    "needs": [
+      "safety",
+      "usefulness"
+    ],
     "risk": "amber",
     "isOpinion": false,
     "importance": 0.7,
-    "label": { "en": "Icy street", "fi": "Liukas katu", "fa": "خیابان یخ‌زده" },
+    "label": {
+      "en": "Icy street",
+      "fi": "Liukas katu",
+      "fa": "خیابان یخ‌زده"
+    },
     "title": {
       "en": "Rotuaari is icy this morning; walk in the middle of the street",
       "fi": "Rotuaari on tänä aamuna jäinen; kävele kadun keskellä",
@@ -409,13 +948,33 @@
         "fa": "اگر امروز صبح در مرکز شهری، از وسط شن‌پاشی‌شده خیابان برو."
       }
     },
-    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-24T07:10:00+03:00" }],
-    "translations": [
-      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T07:10:00+03:00"
+      }
     ],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T07:40:00+03:00" },
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T07:40:00+03:00"
+    },
     "createdAt": "2026-10-24T07:15:00+03:00",
     "updatedAt": "2026-10-24T07:40:00+03:00",
     "publishedAt": "2026-10-24T07:40:00+03:00"
@@ -426,15 +985,29 @@
     "origin": "agent",
     "scale": "area",
     "placeId": "oulu",
-    "location": { "coordinate": { "lat": 65.0106, "lon": 25.488 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.0106,
+        "lon": 25.488
+      },
+      "radiusMeters": 0
+    },
     "category": "transport",
-    "tags": ["trains"],
-    "needs": ["usefulness"],
+    "tags": [
+      "trains"
+    ],
+    "needs": [
+      "usefulness"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.6,
     "mapObject": "station",
-    "label": { "en": "Trains delayed", "fi": "Junat myöhässä", "fa": "تأخیر قطار" },
+    "label": {
+      "en": "Trains delayed",
+      "fi": "Junat myöhässä",
+      "fa": "تأخیر قطار"
+    },
     "title": {
       "en": "Morning trains from Oulu station are running about 20 minutes late",
       "fi": "Aamun junat Oulun asemalta kulkevat noin 20 minuuttia myöhässä",
@@ -452,13 +1025,33 @@
         "fa": "اگر قطار تو قبل از ظهر حرکت می‌کند، قبل از خروج از خانه تابلوی ایستگاه را چک کن."
       }
     },
-    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-24T06:40:00+03:00" }],
-    "translations": [
-      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T06:40:00+03:00"
+      }
     ],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T07:05:00+03:00" },
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T07:05:00+03:00"
+    },
     "createdAt": "2026-10-24T06:45:00+03:00",
     "updatedAt": "2026-10-24T07:05:00+03:00",
     "publishedAt": "2026-10-24T07:05:00+03:00"
@@ -469,14 +1062,28 @@
     "origin": "agent",
     "scale": "area",
     "placeId": "oulu",
-    "location": { "coordinate": { "lat": 65.0167, "lon": 25.4755 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.0167,
+        "lon": 25.4755
+      },
+      "radiusMeters": 0
+    },
     "category": "culture",
-    "tags": ["library"],
-    "needs": ["information"],
+    "tags": [
+      "library"
+    ],
+    "needs": [
+      "information"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.45,
-    "label": { "en": "Library open", "fi": "Kirjasto auki", "fa": "کتابخانه باز است" },
+    "label": {
+      "en": "Library open",
+      "fi": "Kirjasto auki",
+      "fa": "کتابخانه باز است"
+    },
     "title": {
       "en": "Oulu main library is open this Sunday until 16:00",
       "fi": "Oulun pääkirjasto on ensi sunnuntaina auki kello 16 asti",
@@ -494,13 +1101,33 @@
         "fa": "اگر می‌خواستی کتاب پس بدهی یا در مرکز شهر درس بخوانی، بد نیست بدانی."
       }
     },
-    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-23T15:00:00+03:00" }],
-    "translations": [
-      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T15:00:00+03:00"
+      }
     ],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T16:00:00+03:00" },
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T16:00:00+03:00"
+    },
     "createdAt": "2026-10-23T15:10:00+03:00",
     "updatedAt": "2026-10-23T16:00:00+03:00",
     "publishedAt": "2026-10-23T16:00:00+03:00"
@@ -511,15 +1138,29 @@
     "origin": "agent",
     "scale": "area",
     "placeId": "oulu",
-    "location": { "coordinate": { "lat": 65.0184, "lon": 25.4712 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.0184,
+        "lon": 25.4712
+      },
+      "radiusMeters": 0
+    },
     "category": "culture",
-    "tags": ["theatre"],
-    "needs": ["emotion"],
+    "tags": [
+      "theatre"
+    ],
+    "needs": [
+      "emotion"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.4,
     "mapObject": "concertHall",
-    "label": { "en": "New play", "fi": "Uusi näytelmä", "fa": "نمایش تازه" },
+    "label": {
+      "en": "New play",
+      "fi": "Uusi näytelmä",
+      "fa": "نمایش تازه"
+    },
     "title": {
       "en": "Oulu Theatre opens its spring play next Saturday",
       "fi": "Oulun teatterin kevään näytelmä saa ensi-iltansa ensi lauantaina",
@@ -537,13 +1178,33 @@
         "fa": "اگر از قبل در مرکز شهری، تئاتر چند قدم با کتابخانه فاصله دارد."
       }
     },
-    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-22T12:00:00+03:00" }],
-    "translations": [
-      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T12:00:00+03:00"
+      }
     ],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-22T14:00:00+03:00" },
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T14:00:00+03:00"
+    },
     "createdAt": "2026-10-22T12:20:00+03:00",
     "updatedAt": "2026-10-22T14:00:00+03:00",
     "publishedAt": "2026-10-22T14:00:00+03:00"
@@ -554,15 +1215,30 @@
     "origin": "agent",
     "scale": "area",
     "placeId": "linnanmaa",
-    "location": { "coordinate": { "lat": 65.059, "lon": 25.466 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.059,
+        "lon": 25.466
+      },
+      "radiusMeters": 0
+    },
     "category": "transport",
-    "tags": ["bus", "campus"],
-    "needs": ["usefulness"],
+    "tags": [
+      "bus",
+      "campus"
+    ],
+    "needs": [
+      "usefulness"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.4,
     "mapObject": "campus",
-    "label": { "en": "Campus bus", "fi": "Kampusbussi", "fa": "اتوبوس پردیس" },
+    "label": {
+      "en": "Campus bus",
+      "fi": "Kampusbussi",
+      "fa": "اتوبوس پردیس"
+    },
     "title": {
       "en": "Bus 4 is skipping the university stop in Linnanmaa this week",
       "fi": "Bussi 4 ohittaa Linnanmaan yliopistopysäkin tällä viikolla",
@@ -580,13 +1256,33 @@
         "fa": "اگر در پردیس درس می‌خوانی یا کار می‌کنی، یک ایستگاه زودتر پیاده شو."
       }
     },
-    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-24T06:20:00+03:00" }],
-    "translations": [
-      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T06:20:00+03:00"
+      }
     ],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T06:50:00+03:00" },
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T06:50:00+03:00"
+    },
     "createdAt": "2026-10-24T06:25:00+03:00",
     "updatedAt": "2026-10-24T06:50:00+03:00",
     "publishedAt": "2026-10-24T06:50:00+03:00"
@@ -597,14 +1293,29 @@
     "origin": "agent",
     "scale": "area",
     "placeId": "ritaharju",
-    "location": { "coordinate": { "lat": 65.079, "lon": 25.522 }, "radiusMeters": 0 },
+    "location": {
+      "coordinate": {
+        "lat": 65.079,
+        "lon": 25.522
+      },
+      "radiusMeters": 0
+    },
     "category": "transport",
-    "tags": ["walking"],
-    "needs": ["usefulness", "safety"],
+    "tags": [
+      "walking"
+    ],
+    "needs": [
+      "usefulness",
+      "safety"
+    ],
     "risk": "none",
     "isOpinion": false,
     "importance": 0.35,
-    "label": { "en": "New crossing", "fi": "Uusi suojatie", "fa": "گذرگاه تازه" },
+    "label": {
+      "en": "New crossing",
+      "fi": "Uusi suojatie",
+      "fa": "گذرگاه تازه"
+    },
     "title": {
       "en": "A new pedestrian crossing is open by the Ritaharju school",
       "fi": "Ritaharjun koulun viereen on avattu uusi suojatie",
@@ -622,15 +1333,3561 @@
         "fa": "اگر پیاده به مدرسه یا آیدیاپارک می‌روی، از همین گذرگاه تازه استفاده کن."
       }
     },
-    "sources": [{ "name": "Sample data", "publishedAt": "2026-10-23T18:00:00+03:00" }],
-    "translations": [
-      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fi", "tier": 1, "reviewedBy": "Aino K." },
-      { "language": "fa", "tier": 1, "reviewedBy": "Aino K." }
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T18:00:00+03:00"
+      }
     ],
-    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T19:00:00+03:00" },
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T19:00:00+03:00"
+    },
     "createdAt": "2026-10-23T18:10:00+03:00",
     "updatedAt": "2026-10-23T19:00:00+03:00",
     "publishedAt": "2026-10-23T19:00:00+03:00"
+  },
+  {
+    "id": "kiiminki-bus-21",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "kiiminki",
+    "location": {
+      "coordinate": {
+        "lat": 65.1295,
+        "lon": 25.729
+      },
+      "radiusMeters": 0
+    },
+    "category": "transport",
+    "tags": [
+      "bus"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.55,
+    "label": {
+      "en": "Bus 21 every 30 min",
+      "fi": "Bussi 21 puolen tunnin välein",
+      "fa": "اتوبوس ۲۱ هر ۳۰ دقیقه"
+    },
+    "title": {
+      "en": "Bus 21 to Kiiminki runs every 30 minutes from Monday",
+      "fi": "Kiiminkiin kulkeva bussi 21 ajaa maanantaista puolen tunnin välein",
+      "fa": "اتوبوس ۲۱ به کیمینکی از دوشنبه هر ۳۰ دقیقه حرکت می‌کند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Oulu public transport adds evening departures on line 21 between the centre and Kiiminki.",
+        "fi": "Oulun joukkoliikenne lisää iltavuoroja linjalle 21 keskustan ja Kiimingin välille.",
+        "fa": "حمل‌ونقل عمومی اولو حرکت‌های عصر خط ۲۱ بین مرکز شهر و کیمینکی را بیشتر می‌کند."
+      },
+      "forYou": {
+        "en": "Getting home from the centre in the evening gets easier. Check the new times in the Waltti app.",
+        "fi": "Kotiin pääsee illalla helpommin. Katso uudet ajat Waltti-sovelluksesta.",
+        "fa": "برگشت به خانه از مرکز شهر در عصر آسان‌تر می‌شود. ساعت‌های جدید را در اپ Waltti ببین."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kiiminkiin kulkeva bussi 21 ajaa maanantaista puolen tunnin välein",
+        "en": "Bus 21 to Kiiminki runs every 30 minutes from Monday"
+      },
+      {
+        "fi": "Oulun joukkoliikenne lisää iltavuoroja linjalle 21 keskustan ja Kiimingin välille.",
+        "en": "Oulu public transport adds evening departures on line 21 between the centre and Kiiminki."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-24T08:00:00+03:00",
+    "updatedAt": "2026-10-24T10:00:00+03:00",
+    "publishedAt": "2026-10-24T10:00:00+03:00"
+  },
+  {
+    "id": "kiiminki-ice-rink",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "kiiminki",
+    "location": {
+      "coordinate": {
+        "lat": 65.133,
+        "lon": 25.742
+      },
+      "radiusMeters": 0
+    },
+    "category": "sport",
+    "tags": [
+      "winter",
+      "skating"
+    ],
+    "needs": [
+      "emotion",
+      "community"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "label": {
+      "en": "Ice rink opens",
+      "fi": "Luistinrata aukeaa",
+      "fa": "پیست یخ باز می‌شود"
+    },
+    "title": {
+      "en": "Kiiminki outdoor ice rink opens on Saturday, skates free to borrow",
+      "fi": "Kiimingin ulkoluistinrata aukeaa lauantaina, luistimia voi lainata ilmaiseksi",
+      "fa": "پیست یخ روباز کیمینکی شنبه باز می‌شود؛ قرض گرفتن اسکیت رایگان است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The school field is now frozen into a rink. The sports office lends skates and helmets on weekends.",
+        "fi": "Koulun kenttä on jäädytetty kaukaloksi. Liikuntatoimi lainaa luistimia ja kypäriä viikonloppuisin.",
+        "fa": "زمین مدرسه حالا یخ زده و پیست شده است. اداره ورزش آخر هفته‌ها اسکیت و کلاه ایمنی قرض می‌دهد."
+      },
+      "forYou": {
+        "en": "A free way to try skating this winter, close to home.",
+        "fi": "Ilmainen tapa kokeilla luistelua tänä talvena, lähellä kotia.",
+        "fa": "یک راه رایگان برای امتحان اسکیت در این زمستان، نزدیک خانه."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kiimingin ulkoluistinrata aukeaa lauantaina, luistimia voi lainata ilmaiseksi",
+        "en": "Kiiminki outdoor ice rink opens on Saturday, skates free to borrow"
+      },
+      {
+        "fi": "Koulun kenttä on jäädytetty kaukaloksi. Liikuntatoimi lainaa luistimia ja kypäriä viikonloppuisin.",
+        "en": "The school field is now frozen into a rink. The sports office lends skates and helmets on weekends."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "kiiminki-library-evenings",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "kiiminki",
+    "location": {
+      "coordinate": {
+        "lat": 65.131,
+        "lon": 25.738
+      },
+      "radiusMeters": 0
+    },
+    "category": "culture",
+    "tags": [
+      "library",
+      "study"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "Library open later",
+      "fi": "Kirjasto auki pidempään",
+      "fa": "کتابخانه تا دیرتر باز است"
+    },
+    "title": {
+      "en": "Kiiminki library stays open until 20:00 on weekdays",
+      "fi": "Kiimingin kirjasto on arkisin auki kello 20:een",
+      "fa": "کتابخانه کیمینکی روزهای کاری تا ساعت ۲۰ باز است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The library extends its evening hours for the winter and adds a quiet study room.",
+        "fi": "Kirjasto pidentää talven iltojen aukioloa ja avaa hiljaisen opiskeluhuoneen.",
+        "fa": "کتابخانه ساعت کار عصرها را برای زمستان بیشتر می‌کند و یک اتاق مطالعه بی‌صدا اضافه می‌کند."
+      },
+      "forYou": {
+        "en": "A warm, free place to study near home in the evenings.",
+        "fi": "Lämmin ja ilmainen paikka opiskella iltaisin lähellä kotia.",
+        "fa": "جایی گرم و رایگان برای درس خواندن نزدیک خانه در عصرها."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kiimingin kirjasto on arkisin auki kello 20:een",
+        "en": "Kiiminki library stays open until 20:00 on weekdays"
+      },
+      {
+        "fi": "Kirjasto pidentää talven iltojen aukioloa ja avaa hiljaisen opiskeluhuoneen.",
+        "en": "The library extends its evening hours for the winter and adds a quiet study room."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "linnanmaa-hackathon",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "linnanmaa",
+    "location": {
+      "coordinate": {
+        "lat": 65.0593,
+        "lon": 25.4663
+      },
+      "radiusMeters": 0
+    },
+    "category": "technology",
+    "tags": [
+      "university",
+      "events"
+    ],
+    "needs": [
+      "community",
+      "emotion"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "mapObject": "campus",
+    "label": {
+      "en": "Campus hackathon",
+      "fi": "Kampuksen hackathon",
+      "fa": "هکاتون دانشگاه"
+    },
+    "title": {
+      "en": "University of Oulu hosts a 48-hour hackathon on campus next weekend",
+      "fi": "Oulun yliopisto järjestää 48 tunnin hackathonin kampuksella ensi viikonloppuna",
+      "fa": "دانشگاه اولو آخر هفته آینده یک هکاتون ۴۸ ساعته در پردیس برگزار می‌کند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Teams of students and local companies build prototypes. Registration is open to all students.",
+        "fi": "Opiskelijoiden ja yritysten tiimit rakentavat prototyyppejä. Ilmoittautuminen on auki kaikille opiskelijoille.",
+        "fa": "تیم‌هایی از دانشجوها و شرکت‌های محلی نمونه‌اولیه می‌سازند. ثبت‌نام برای همه دانشجوها باز است."
+      },
+      "forYou": {
+        "en": "A good way to meet people and local employers. You can join without a team.",
+        "fi": "Hyvä tapa tutustua ihmisiin ja paikallisiin työnantajiin. Voit tulla ilman tiimiä.",
+        "fa": "راه خوبی برای آشنایی با آدم‌ها و کارفرماهای محلی. بدون تیم هم می‌توانی شرکت کنی."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Oulun yliopisto järjestää 48 tunnin hackathonin kampuksella ensi viikonloppuna",
+        "en": "University of Oulu hosts a 48-hour hackathon on campus next weekend"
+      },
+      {
+        "fi": "Opiskelijoiden ja yritysten tiimit rakentavat prototyyppejä. Ilmoittautuminen on auki kaikille opiskelijoille.",
+        "en": "Teams of students and local companies build prototypes. Registration is open to all students."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "linnanmaa-psoas-hot-water",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "linnanmaa",
+    "location": {
+      "coordinate": {
+        "lat": 65.061,
+        "lon": 25.472
+      },
+      "radiusMeters": 300
+    },
+    "category": "housing",
+    "tags": [
+      "psoas",
+      "maintenance"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "amber",
+    "isOpinion": false,
+    "importance": 0.45,
+    "label": {
+      "en": "No hot water Tue",
+      "fi": "Ei lämmintä vettä ti",
+      "fa": "سه‌شنبه آب گرم نیست"
+    },
+    "title": {
+      "en": "Hot water breaks in PSOAS buildings in Linnanmaa on Tuesday morning",
+      "fi": "PSOASin Linnanmaan taloissa lämminvesikatko tiistaiaamuna",
+      "fa": "قطعی آب گرم در ساختمان‌های PSOAS لینامآ صبح سه‌شنبه"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Pipe maintenance stops hot water from 8:00 to 12:00 in the Linnanmaa student buildings.",
+        "fi": "Putkihuolto katkaisee lämpimän veden klo 8–12 Linnanmaan opiskelijataloissa.",
+        "fa": "تعمیر لوله‌ها از ساعت ۸ تا ۱۲ آب گرم ساختمان‌های دانشجویی لینامآ را قطع می‌کند."
+      },
+      "forYou": {
+        "en": "If you live there, shower before 8:00 or after noon.",
+        "fi": "Jos asut siellä, käy suihkussa ennen kahdeksaa tai puolenpäivän jälkeen.",
+        "fa": "اگر آنجا زندگی می‌کنی، قبل از ساعت ۸ یا بعد از ظهر دوش بگیر."
+      }
+    },
+    "originals": [
+      {
+        "fi": "PSOASin Linnanmaan taloissa lämminvesikatko tiistaiaamuna",
+        "en": "Hot water breaks in PSOAS buildings in Linnanmaa on Tuesday morning"
+      },
+      {
+        "fi": "Putkihuolto katkaisee lämpimän veden klo 8–12 Linnanmaan opiskelijataloissa.",
+        "en": "Pipe maintenance stops hot water from 8:00 to 12:00 in the Linnanmaa student buildings."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-24T08:00:00+03:00",
+    "updatedAt": "2026-10-24T10:00:00+03:00",
+    "publishedAt": "2026-10-24T10:00:00+03:00"
+  },
+  {
+    "id": "tuira-bridge-nights",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "tuira",
+    "location": {
+      "coordinate": {
+        "lat": 65.0205,
+        "lon": 25.462
+      },
+      "radiusMeters": 0
+    },
+    "category": "transport",
+    "tags": [
+      "roadworks"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "label": {
+      "en": "Bridge closed at night",
+      "fi": "Silta suljettu öisin",
+      "fa": "پل شب‌ها بسته است"
+    },
+    "title": {
+      "en": "Tuira bridge closed to cars at night for two weeks",
+      "fi": "Tuiran silta suljetaan autoilta öisin kahdeksi viikoksi",
+      "fa": "پل تویرا دو هفته شب‌ها برای ماشین‌ها بسته است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Repairs close the bridge to cars from 22:00 to 5:00. Bikes and pedestrians can still cross.",
+        "fi": "Korjaustyöt sulkevat sillan autoilta klo 22–5. Pyöräilijät ja jalankulkijat pääsevät yli.",
+        "fa": "تعمیرات پل را از ساعت ۲۲ تا ۵ برای ماشین‌ها می‌بندد. دوچرخه و عابر پیاده می‌توانند رد شوند."
+      },
+      "forYou": {
+        "en": "Night buses take a detour through Merikoski; allow ten extra minutes.",
+        "fi": "Yöbussit kiertävät Merikosken kautta; varaa kymmenen minuuttia lisää.",
+        "fa": "اتوبوس‌های شبانه از مسیر مریکوسکی دور می‌زنند؛ ده دقیقه بیشتر وقت بگذار."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Tuiran silta suljetaan autoilta öisin kahdeksi viikoksi",
+        "en": "Tuira bridge closed to cars at night for two weeks"
+      },
+      {
+        "fi": "Korjaustyöt sulkevat sillan autoilta klo 22–5. Pyöräilijät ja jalankulkijat pääsevät yli.",
+        "en": "Repairs close the bridge to cars from 22:00 to 5:00. Bikes and pedestrians can still cross."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "toppila-bike-path",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "toppila",
+    "location": {
+      "coordinate": {
+        "lat": 65.036,
+        "lon": 25.435
+      },
+      "radiusMeters": 0
+    },
+    "category": "environment",
+    "tags": [
+      "cycling",
+      "winter"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.25,
+    "label": {
+      "en": "New bike path",
+      "fi": "Uusi pyörätie",
+      "fa": "مسیر دوچرخه جدید"
+    },
+    "title": {
+      "en": "New lit bike path connects Toppila to the city centre",
+      "fi": "Uusi valaistu pyörätie yhdistää Toppilan keskustaan",
+      "fa": "مسیر دوچرخه روشن جدید توپیلا را به مرکز شهر وصل می‌کند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The 2 km path along the shore is ploughed first in winter.",
+        "fi": "Rantaa myötäilevä 2 km:n reitti aurataan talvella ensimmäisenä.",
+        "fa": "این مسیر ۲ کیلومتری کنار ساحل در زمستان اول برف‌روبی می‌شود."
+      },
+      "forYou": {
+        "en": "Oulu is known for winter cycling; this path is one of the safest routes.",
+        "fi": "Oulu tunnetaan talvipyöräilystä; tämä reitti on yksi turvallisimmista.",
+        "fa": "اولو به دوچرخه‌سواری زمستانی معروف است؛ این مسیر یکی از امن‌ترین‌هاست."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Uusi valaistu pyörätie yhdistää Toppilan keskustaan",
+        "en": "New lit bike path connects Toppila to the city centre"
+      },
+      {
+        "fi": "Rantaa myötäilevä 2 km:n reitti aurataan talvella ensimmäisenä.",
+        "en": "The 2 km path along the shore is ploughed first in winter."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-20T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-20T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-20T08:00:00+03:00",
+    "updatedAt": "2026-10-20T10:00:00+03:00",
+    "publishedAt": "2026-10-20T10:00:00+03:00"
+  },
+  {
+    "id": "hietasaari-sea-sauna",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "hietasaari",
+    "location": {
+      "coordinate": {
+        "lat": 65.03,
+        "lon": 25.406
+      },
+      "radiusMeters": 0
+    },
+    "category": "cityLife",
+    "tags": [
+      "sauna"
+    ],
+    "needs": [
+      "emotion",
+      "community"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "Sea sauna open",
+      "fi": "Merisauna auki",
+      "fa": "سونای کنار دریا باز است"
+    },
+    "title": {
+      "en": "Public sauna by the sea at Hietasaari opens daily for the winter",
+      "fi": "Hietasaaren yleinen merisauna aukeaa päivittäin talveksi",
+      "fa": "سونای عمومی کنار دریا در هیتاساری برای زمستان هر روز باز است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The city's public sauna opens every day from 15:00. A hole in the ice follows once the sea freezes.",
+        "fi": "Kaupungin yleinen sauna on auki päivittäin klo 15 alkaen. Avanto tehdään, kun meri jäätyy.",
+        "fa": "سونای عمومی شهر هر روز از ساعت ۱۵ باز است. وقتی دریا یخ بزند، چاله یخ هم آماده می‌شود."
+      },
+      "forYou": {
+        "en": "A very Finnish thing to try; towels can be rented on site.",
+        "fi": "Hyvin suomalainen kokemus; pyyhkeitä voi vuokrata paikan päällä.",
+        "fa": "یک تجربه خیلی فنلاندی؛ حوله را می‌توانی همان‌جا کرایه کنی."
+      },
+      "context": {
+        "question": {
+          "en": "Do I need to know sauna rules?",
+          "fi": "Pitääkö tietää saunan säännöt?",
+          "fa": "آیا باید قوانین سونا را بدانم؟"
+        },
+        "answer": {
+          "en": "Shower first, sit on a towel, and keep it calm. Public saunas have separate or mixed hours shown at the door.",
+          "fi": "Käy ensin suihkussa, istu pyyhkeen päällä ja pidä tunnelma rauhallisena. Vuorot näkyvät ovessa.",
+          "fa": "اول دوش بگیر، روی حوله بنشین و آرام باش. ساعت‌های جداگانه یا مختلط روی در نوشته شده است."
+        }
+      }
+    },
+    "originals": [
+      {
+        "fi": "Hietasaaren yleinen merisauna aukeaa päivittäin talveksi",
+        "en": "Public sauna by the sea at Hietasaari opens daily for the winter"
+      },
+      {
+        "fi": "Kaupungin yleinen sauna on auki päivittäin klo 15 alkaen. Avanto tehdään, kun meri jäätyy.",
+        "en": "The city's public sauna opens every day from 15:00. A hole in the ice follows once the sea freezes."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "ritaharju-flu-vaccines",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "ritaharju",
+    "location": {
+      "coordinate": {
+        "lat": 65.078,
+        "lon": 25.53
+      },
+      "radiusMeters": 300
+    },
+    "category": "health",
+    "tags": [
+      "vaccine"
+    ],
+    "needs": [
+      "usefulness",
+      "safety"
+    ],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.5,
+    "label": {
+      "en": "Flu shots",
+      "fi": "Influenssarokotteet",
+      "fa": "واکسن آنفلوانزا"
+    },
+    "title": {
+      "en": "Free flu vaccinations at Ritaharju health station from Monday",
+      "fi": "Ritaharjun terveysasemalla maksuttomat influenssarokotukset maanantaista",
+      "fa": "واکسن رایگان آنفلوانزا در مرکز بهداشت ریتاهارجو از دوشنبه"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Walk-in vaccinations run on weekday afternoons for risk groups and families with small children.",
+        "fi": "Ilman ajanvarausta rokotetaan arkiiltapäivisin riskiryhmiä ja pikkulapsiperheitä.",
+        "fa": "واکسن بدون نوبت، بعدازظهرهای روزهای کاری برای گروه‌های پرخطر و خانواده‌های با بچه کوچک."
+      },
+      "forYou": {
+        "en": "Bring an ID. Students can also get vaccinated at the student health service (YTHS).",
+        "fi": "Ota henkilöllisyystodistus mukaan. Opiskelijat voivat rokotuttaa itsensä myös YTHS:ssä.",
+        "fa": "کارت شناسایی همراه داشته باش. دانشجوها در خدمات سلامت دانشجویی (YTHS) هم می‌توانند واکسن بزنند."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Ritaharjun terveysasemalla maksuttomat influenssarokotukset maanantaista",
+        "en": "Free flu vaccinations at Ritaharju health station from Monday"
+      },
+      {
+        "fi": "Ilman ajanvarausta rokotetaan arkiiltapäivisin riskiryhmiä ja pikkulapsiperheitä.",
+        "en": "Walk-in vaccinations run on weekday afternoons for risk groups and families with small children."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "oulu-market-indoors",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.0136,
+        "lon": 25.4636
+      },
+      "radiusMeters": 0
+    },
+    "category": "shopping",
+    "tags": [
+      "market",
+      "food"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "label": {
+      "en": "Market moves indoors",
+      "fi": "Tori siirtyy sisälle",
+      "fa": "بازار به داخل می‌رود"
+    },
+    "title": {
+      "en": "Saturday market moves into the market hall for the winter",
+      "fi": "Lauantaitori siirtyy talveksi kauppahalliin",
+      "fa": "بازار شنبه برای زمستان به سالن بازار می‌رود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Farmers and bakers sell in the old market hall by the sea from November to April.",
+        "fi": "Viljelijät ja leipurit myyvät vanhassa kauppahallissa marraskuusta huhtikuuhun.",
+        "fa": "کشاورزها و نانواها از نوامبر تا آوریل در سالن قدیمی بازار کنار دریا می‌فروشند."
+      },
+      "forYou": {
+        "en": "Local food at fair prices; many sellers take card payments.",
+        "fi": "Lähiruokaa reiluun hintaan; moni myyjä ottaa korttimaksun.",
+        "fa": "غذای محلی با قیمت منصفانه؛ خیلی از فروشنده‌ها کارت قبول می‌کنند."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Lauantaitori siirtyy talveksi kauppahalliin",
+        "en": "Saturday market moves into the market hall for the winter"
+      },
+      {
+        "fi": "Viljelijät ja leipurit myyvät vanhassa kauppahallissa marraskuusta huhtikuuhun.",
+        "en": "Farmers and bakers sell in the old market hall by the sea from November to April."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "karpat-home-game",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.0076,
+        "lon": 25.4904
+      },
+      "radiusMeters": 0
+    },
+    "category": "sport",
+    "tags": [
+      "ice hockey"
+    ],
+    "needs": [
+      "emotion",
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.45,
+    "mapObject": "arena",
+    "label": {
+      "en": "Kärpät at home",
+      "fi": "Kärpät kotona",
+      "fa": "بازی خانگی کارپت"
+    },
+    "title": {
+      "en": "Kärpät play at home on Saturday; extra buses after the game",
+      "fi": "Kärpät pelaa kotona lauantaina; pelin jälkeen lisäbusseja",
+      "fa": "کارپت شنبه بازی خانگی دارد؛ بعد از بازی اتوبوس اضافه است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Oulu's ice hockey team hosts Tappara at the Raksila arena at 17:00. Student tickets cost €12.",
+        "fi": "Kärpät kohtaa Tapparan Raksilan areenalla klo 17. Opiskelijalippu maksaa 12 €.",
+        "fa": "تیم هاکی روی یخ اولو ساعت ۱۷ در ورزشگاه راکسیلا میزبان تاپارا است. بلیت دانشجویی ۱۲ یورو است."
+      },
+      "forYou": {
+        "en": "Ice hockey is the big local sport; a home game is a good first Finnish experience.",
+        "fi": "Jääkiekko on paikallinen suurlaji; kotipeli on hyvä ensikokemus.",
+        "fa": "هاکی روی یخ ورزش اصلی اینجاست؛ یک بازی خانگی تجربه اول خوبی است."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kärpät pelaa kotona lauantaina; pelin jälkeen lisäbusseja",
+        "en": "Kärpät play at home on Saturday; extra buses after the game"
+      },
+      {
+        "fi": "Kärpät kohtaa Tapparan Raksilan areenalla klo 17. Opiskelijalippu maksaa 12 €.",
+        "en": "Oulu's ice hockey team hosts Tappara at the Raksila arena at 17:00. Student tickets cost €12."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "raatti-football-hall",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.0175,
+        "lon": 25.4545
+      },
+      "radiusMeters": 0
+    },
+    "category": "sport",
+    "tags": [
+      "football"
+    ],
+    "needs": [
+      "information"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.25,
+    "mapObject": "stadium",
+    "label": {
+      "en": "New football hall",
+      "fi": "Uusi jalkapallohalli",
+      "fa": "سالن فوتبال جدید"
+    },
+    "title": {
+      "en": "Raatti stadium gets an indoor football hall next to the main field",
+      "fi": "Raatin stadionille rakennetaan jalkapallohalli pääkentän viereen",
+      "fa": "ورزشگاه راتی کنار زمین اصلی یک سالن فوتبال سرپوشیده می‌گیرد"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The city council approved the hall; building starts in spring and it opens for winter 2027.",
+        "fi": "Kaupunginvaltuusto hyväksyi hallin; rakentaminen alkaa keväällä ja halli avataan talveksi 2027.",
+        "fa": "شورای شهر سالن را تصویب کرد؛ ساخت در بهار شروع می‌شود و برای زمستان ۲۰۲۷ باز می‌شود."
+      },
+      "forYou": {
+        "en": "More indoor pitches mean more evening slots for amateur teams in winter.",
+        "fi": "Lisää sisäkenttiä tarkoittaa enemmän iltavuoroja harrastajille talvella.",
+        "fa": "زمین‌های سرپوشیده بیشتر یعنی ساعت‌های عصر بیشتر برای تیم‌های آماتور در زمستان."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Raatin stadionille rakennetaan jalkapallohalli pääkentän viereen",
+        "en": "Raatti stadium gets an indoor football hall next to the main field"
+      },
+      {
+        "fi": "Kaupunginvaltuusto hyväksyi hallin; rakentaminen alkaa keväällä ja halli avataan talveksi 2027.",
+        "en": "The city council approved the hall; building starts in spring and it opens for winter 2027."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "music-centre-student-concert",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.0137,
+        "lon": 25.4648
+      },
+      "radiusMeters": 0
+    },
+    "category": "culture",
+    "tags": [
+      "music",
+      "events"
+    ],
+    "needs": [
+      "emotion"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "mapObject": "concertHall",
+    "label": {
+      "en": "Free student concert",
+      "fi": "Ilmainen opiskelijakonsertti",
+      "fa": "کنسرت رایگان دانشجویی"
+    },
+    "title": {
+      "en": "Oulu Symphony plays a free concert for students on Thursday",
+      "fi": "Oulu Sinfonia soittaa opiskelijoille ilmaisen konsertin torstaina",
+      "fa": "ارکستر سمفونی اولو پنجشنبه برای دانشجوها کنسرت رایگان اجرا می‌کند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The concert at the Music Centre's Madetoja hall is free with a student card.",
+        "fi": "Musiikkikeskuksen Madetojan salin konsertti on ilmainen opiskelijakortilla.",
+        "fa": "کنسرت سالن مادتویا در مرکز موسیقی با کارت دانشجویی رایگان است."
+      },
+      "forYou": {
+        "en": "Pick up a ticket at the door from 18:00; seats go first come, first served.",
+        "fi": "Hae lippu ovelta klo 18 alkaen; paikat jaetaan saapumisjärjestyksessä.",
+        "fa": "از ساعت ۱۸ بلیت را دم در بگیر؛ صندلی‌ها به ترتیب رسیدن است."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Oulu Sinfonia soittaa opiskelijoille ilmaisen konsertin torstaina",
+        "en": "Oulu Symphony plays a free concert for students on Thursday"
+      },
+      {
+        "fi": "Musiikkikeskuksen Madetojan salin konsertti on ilmainen opiskelijakortilla.",
+        "en": "The concert at the Music Centre's Madetoja hall is free with a student card."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "oys-emergency-waits",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.0074,
+        "lon": 25.5191
+      },
+      "radiusMeters": 0
+    },
+    "category": "health",
+    "tags": [
+      "hospital"
+    ],
+    "needs": [
+      "safety",
+      "usefulness"
+    ],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.6,
+    "mapObject": "hospital",
+    "label": {
+      "en": "ER waits longer",
+      "fi": "Päivystyksessä jonoa",
+      "fa": "انتظار طولانی‌تر اورژانس"
+    },
+    "title": {
+      "en": "OYS emergency department: expect longer waits this weekend",
+      "fi": "OYS:n päivystys: viikonloppuna odotus on tavallista pidempi",
+      "fa": "اورژانس بیمارستان OYS: این آخر هفته انتظار طولانی‌تر است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The hospital asks people to call 116 117 first for advice if it is not an emergency.",
+        "fi": "Sairaala pyytää soittamaan ensin numeroon 116 117, jos kyse ei ole hätätilanteesta.",
+        "fa": "بیمارستان می‌خواهد اگر وضعیت اورژانسی نیست، اول برای مشاوره با ۱۱۶۱۱۷ تماس بگیرید."
+      },
+      "forYou": {
+        "en": "Emergency: 112. Not urgent: 116 117 tells you where to go, in English too.",
+        "fi": "Hätätilanne: 112. Kiireetön: 116 117 neuvoo, myös englanniksi.",
+        "fa": "اورژانس: ۱۱۲. غیرفوری: ۱۱۶۱۱۷ راهنمایی می‌کند، به انگلیسی هم."
+      },
+      "context": {
+        "question": {
+          "en": "What is 116 117?",
+          "fi": "Mikä on 116 117?",
+          "fa": "۱۱۶۱۱۷ چیست؟"
+        },
+        "answer": {
+          "en": "The free medical helpline in Finland. A nurse tells you whether to go to the emergency department or a health station.",
+          "fi": "Maksuton päivystysapu. Hoitaja kertoo, kannattaako mennä päivystykseen vai terveysasemalle.",
+          "fa": "خط تلفن رایگان پزشکی در فنلاند. یک پرستار می‌گوید به اورژانس بروی یا مرکز بهداشت."
+        }
+      }
+    },
+    "originals": [
+      {
+        "fi": "OYS:n päivystys: viikonloppuna odotus on tavallista pidempi",
+        "en": "OYS emergency department: expect longer waits this weekend"
+      },
+      {
+        "fi": "Sairaala pyytää soittamaan ensin numeroon 116 117, jos kyse ei ole hätätilanteesta.",
+        "en": "The hospital asks people to call 116 117 first for advice if it is not an emergency."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-24T08:00:00+03:00",
+    "updatedAt": "2026-10-24T10:00:00+03:00",
+    "publishedAt": "2026-10-24T10:00:00+03:00"
+  },
+  {
+    "id": "psoas-rent-january",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.03,
+        "lon": 25.48
+      },
+      "radiusMeters": 0
+    },
+    "category": "housing",
+    "tags": [
+      "psoas",
+      "rent"
+    ],
+    "needs": [
+      "usefulness",
+      "understanding"
+    ],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.55,
+    "affects": [
+      "housing:psoas"
+    ],
+    "label": {
+      "en": "PSOAS rents +3 %",
+      "fi": "PSOAS-vuokrat +3 %",
+      "fa": "اجاره PSOAS ٪۳ بیشتر"
+    },
+    "title": {
+      "en": "PSOAS rents rise 3 % from January",
+      "fi": "PSOASin vuokrat nousevat 3 % tammikuusta",
+      "fa": "اجاره‌های PSOAS از ژانویه ٪۳ بالا می‌رود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The student housing foundation says higher heating and repair costs drive the rise.",
+        "fi": "Opiskelija-asuntosäätiön mukaan korotus johtuu lämmitys- ja korjauskuluista.",
+        "fa": "بنیاد مسکن دانشجویی می‌گوید افزایش هزینه گرمایش و تعمیرات دلیل آن است."
+      },
+      "forYou": {
+        "en": "A €400 room costs about €12 more a month. Kela's housing allowance may cover part of it.",
+        "fi": "400 euron huone maksaa noin 12 € enemmän kuussa. Kelan asumistuki voi kattaa osan.",
+        "fa": "یک اتاق ۴۰۰ یورویی ماهانه حدود ۱۲ یورو گران‌تر می‌شود. کمک هزینه مسکن Kela ممکن است بخشی را پوشش دهد."
+      }
+    },
+    "originals": [
+      {
+        "fi": "PSOASin vuokrat nousevat 3 % tammikuusta",
+        "en": "PSOAS rents rise 3 % from January"
+      },
+      {
+        "fi": "Opiskelija-asuntosäätiön mukaan korotus johtuu lämmitys- ja korjauskuluista.",
+        "en": "The student housing foundation says higher heating and repair costs drive the rise."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "international-job-fair",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.013,
+        "lon": 25.468
+      },
+      "radiusMeters": 0
+    },
+    "category": "work",
+    "tags": [
+      "jobs",
+      "events"
+    ],
+    "needs": [
+      "usefulness",
+      "community"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.45,
+    "mapObject": "cityHall",
+    "label": {
+      "en": "Job fair",
+      "fi": "Työmessut",
+      "fa": "نمایشگاه کار"
+    },
+    "title": {
+      "en": "Job fair for international talent at Oulu city hall next Wednesday",
+      "fi": "Kansainvälisten osaajien työmessut Oulun kaupungintalolla ensi keskiviikkona",
+      "fa": "نمایشگاه کار برای متخصصان بین‌المللی در شهرداری اولو چهارشنبه آینده"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Thirty local employers look for English-speaking staff in tech, health care and logistics.",
+        "fi": "Kolmekymmentä työnantajaa etsii englantia puhuvia osaajia teknologiaan, hoitoalalle ja logistiikkaan.",
+        "fa": "سی کارفرمای محلی دنبال نیروی انگلیسی‌زبان در فناوری، مراقبت سلامت و لجستیک هستند."
+      },
+      "forYou": {
+        "en": "Bring a short CV in English. Students with a residence permit can usually work part-time.",
+        "fi": "Ota mukaan lyhyt englanninkielinen CV. Oleskeluluvalla opiskelevat voivat yleensä tehdä osa-aikatyötä.",
+        "fa": "یک رزومه کوتاه انگلیسی همراه داشته باش. دانشجوهای دارای اجازه اقامت معمولاً می‌توانند پاره‌وقت کار کنند."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kansainvälisten osaajien työmessut Oulun kaupungintalolla ensi keskiviikkona",
+        "en": "Job fair for international talent at Oulu city hall next Wednesday"
+      },
+      {
+        "fi": "Kolmekymmentä työnantajaa etsii englantia puhuvia osaajia teknologiaan, hoitoalalle ja logistiikkaan.",
+        "en": "Thirty local employers look for English-speaking staff in tech, health care and logistics."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "snow-plough-parking",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.017,
+        "lon": 25.475
+      },
+      "radiusMeters": 0
+    },
+    "category": "cityLife",
+    "tags": [
+      "winter",
+      "parking"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "label": {
+      "en": "Parking for ploughs",
+      "fi": "Pysäköinti aurauksen ajan",
+      "fa": "پارک برای برف‌روبی"
+    },
+    "title": {
+      "en": "Snow ploughing: move your car to the odd-numbered side on Thursdays",
+      "fi": "Auraus: siirrä auto torstaisin parittomalle puolelle",
+      "fa": "برف‌روبی: پنجشنبه‌ها ماشینت را به سمت شماره‌های فرد ببر"
+    },
+    "explanation": {
+      "happened": {
+        "en": "From November the city ploughs residential streets on a fixed weekly plan.",
+        "fi": "Marraskuusta alkaen kaupunki auraa asuinkadut viikkosuunnitelman mukaan.",
+        "fa": "از نوامبر شهر خیابان‌های مسکونی را طبق برنامه هفتگی برف‌روبی می‌کند."
+      },
+      "forYou": {
+        "en": "Cars left on the wrong side can be towed; check the signs on your street.",
+        "fi": "Väärälle puolelle jätetyt autot voidaan siirtää; tarkista kadun merkit.",
+        "fa": "ماشین‌هایی که در سمت اشتباه بمانند ممکن است بکسل شوند؛ تابلوهای خیابانت را ببین."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Auraus: siirrä auto torstaisin parittomalle puolelle",
+        "en": "Snow ploughing: move your car to the odd-numbered side on Thursdays"
+      },
+      {
+        "fi": "Marraskuusta alkaen kaupunki auraa asuinkadut viikkosuunnitelman mukaan.",
+        "en": "From November the city ploughs residential streets on a fixed weekly plan."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-24T08:00:00+03:00",
+    "updatedAt": "2026-10-24T10:00:00+03:00",
+    "publishedAt": "2026-10-24T10:00:00+03:00"
+  },
+  {
+    "id": "oulu2026-light-festival",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.014,
+        "lon": 25.471
+      },
+      "radiusMeters": 0
+    },
+    "category": "culture",
+    "tags": [
+      "oulu2026",
+      "events"
+    ],
+    "needs": [
+      "emotion",
+      "community"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.45,
+    "label": {
+      "en": "Light festival",
+      "fi": "Valofestivaali",
+      "fa": "جشنواره نور"
+    },
+    "title": {
+      "en": "Culture year Oulu2026 closes with a light festival in November",
+      "fi": "Kulttuurivuosi Oulu2026 päättyy valofestivaaliin marraskuussa",
+      "fa": "سال فرهنگی Oulu2026 با یک جشنواره نور در نوامبر تمام می‌شود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Light art fills the city centre and the river banks for four evenings, free of charge.",
+        "fi": "Valotaide täyttää keskustan ja jokirannat neljänä iltana, maksutta.",
+        "fa": "هنر نور چهار شب مرکز شهر و کناره‌های رودخانه را پر می‌کند، رایگان."
+      },
+      "forYou": {
+        "en": "A good evening out in the dark season; dress warmly.",
+        "fi": "Hyvä ilta ulkona pimeään aikaan; pukeudu lämpimästi.",
+        "fa": "یک عصر خوب بیرون در فصل تاریکی؛ گرم بپوش."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kulttuurivuosi Oulu2026 päättyy valofestivaaliin marraskuussa",
+        "en": "Culture year Oulu2026 closes with a light festival in November"
+      },
+      {
+        "fi": "Valotaide täyttää keskustan ja jokirannat neljänä iltana, maksutta.",
+        "en": "Light art fills the city centre and the river banks for four evenings, free of charge."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "oulu-airport-stockholm",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 64.9301,
+        "lon": 25.3546
+      },
+      "radiusMeters": 0
+    },
+    "category": "transport",
+    "tags": [
+      "flights"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "mapObject": "station",
+    "label": {
+      "en": "Flights to Stockholm",
+      "fi": "Lennot Tukholmaan",
+      "fa": "پرواز به استکهلم"
+    },
+    "title": {
+      "en": "Direct flights from Oulu to Stockholm return in December",
+      "fi": "Suorat lennot Oulusta Tukholmaan palaavat joulukuussa",
+      "fa": "پروازهای مستقیم اولو به استکهلم از دسامبر برمی‌گردد"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Three weekly flights connect Oulu airport to Stockholm Arlanda.",
+        "fi": "Kolme viikoittaista lentoa yhdistää Oulun lentoaseman Tukholman Arlandaan.",
+        "fa": "سه پرواز در هفته فرودگاه اولو را به آرلاندای استکهلم وصل می‌کند."
+      },
+      "forYou": {
+        "en": "A shorter way to connect to flights abroad than travelling via Helsinki.",
+        "fi": "Lyhyempi reitti jatkolennoille kuin Helsingin kautta.",
+        "fa": "راهی کوتاه‌تر برای پروازهای خارجی نسبت به رفتن از هلسینکی."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Suorat lennot Oulusta Tukholmaan palaavat joulukuussa",
+        "en": "Direct flights from Oulu to Stockholm return in December"
+      },
+      {
+        "fi": "Kolme viikoittaista lentoa yhdistää Oulun lentoaseman Tukholman Arlandaan.",
+        "en": "Three weekly flights connect Oulu airport to Stockholm Arlanda."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-20T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-20T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-20T08:00:00+03:00",
+    "updatedAt": "2026-10-20T10:00:00+03:00",
+    "publishedAt": "2026-10-20T10:00:00+03:00"
+  },
+  {
+    "id": "oulu-grocery-prices",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.011,
+        "lon": 25.47
+      },
+      "radiusMeters": 0
+    },
+    "category": "economy",
+    "tags": [
+      "prices",
+      "food"
+    ],
+    "needs": [
+      "information",
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "Grocery prices",
+      "fi": "Ruoan hinnat",
+      "fa": "قیمت مواد غذایی"
+    },
+    "title": {
+      "en": "Grocery prices in Oulu stay stable in October",
+      "fi": "Ruoan hinnat pysyivät Oulussa vakaina lokakuussa",
+      "fa": "قیمت مواد غذایی در اولو در اکتبر ثابت ماند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "A price check of 30 basic products found almost no change from September.",
+        "fi": "30 perustuotteen hintavertailussa muutos syyskuuhun oli lähes olematon.",
+        "fa": "بررسی قیمت ۳۰ کالای اساسی تقریباً هیچ تغییری نسبت به سپتامبر نشان نداد."
+      },
+      "forYou": {
+        "en": "Discount stores and evening reductions on bread still save the most.",
+        "fi": "Halpakaupat ja iltaisin alennettu leipä säästävät eniten.",
+        "fa": "فروشگاه‌های ارزان و تخفیف شبانه نان هنوز بیشترین صرفه‌جویی را دارند."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Ruoan hinnat pysyivät Oulussa vakaina lokakuussa",
+        "en": "Grocery prices in Oulu stay stable in October"
+      },
+      {
+        "fi": "30 perustuotteen hintavertailussa muutos syyskuuhun oli lähes olematon.",
+        "en": "A price check of 30 basic products found almost no change from September."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "city-budget-2027",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.0128,
+        "lon": 25.4684
+      },
+      "radiusMeters": 0
+    },
+    "category": "politics",
+    "tags": [
+      "council"
+    ],
+    "needs": [
+      "understanding"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "mapObject": "cityHall",
+    "label": {
+      "en": "City budget 2027",
+      "fi": "Kaupungin budjetti 2027",
+      "fa": "بودجه شهر ۲۰۲۷"
+    },
+    "title": {
+      "en": "City council debates the 2027 budget: schools and buses first",
+      "fi": "Kaupunginvaltuusto keskustelee vuoden 2027 budjetista: koulut ja bussit ensin",
+      "fa": "شورای شهر بودجه ۲۰۲۷ را بررسی می‌کند: اول مدرسه‌ها و اتوبوس‌ها"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The proposal keeps bus fares unchanged and adds money for school repairs; a vote is due in December.",
+        "fi": "Esitys pitää bussiliput ennallaan ja lisää rahaa koulujen korjauksiin; äänestys joulukuussa.",
+        "fa": "پیشنهاد قیمت بلیت اتوبوس را ثابت نگه می‌دارد و پول بیشتری برای تعمیر مدرسه‌ها می‌گذارد؛ رأی‌گیری در دسامبر است."
+      },
+      "forYou": {
+        "en": "Nothing changes yet. Council meetings are public and streamed online.",
+        "fi": "Mikään ei vielä muutu. Valtuuston kokoukset ovat julkisia ja nähtävissä verkossa.",
+        "fa": "هنوز چیزی تغییر نمی‌کند. جلسات شورا عمومی است و آنلاین پخش می‌شود."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kaupunginvaltuusto keskustelee vuoden 2027 budjetista: koulut ja bussit ensin",
+        "en": "City council debates the 2027 budget: schools and buses first"
+      },
+      {
+        "fi": "Esitys pitää bussiliput ennallaan ja lisää rahaa koulujen korjauksiin; äänestys joulukuussa.",
+        "en": "The proposal keeps bus fares unchanged and adds money for school repairs; a vote is due in December."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "free-finnish-courses",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.012,
+        "lon": 25.472
+      },
+      "radiusMeters": 0
+    },
+    "category": "education",
+    "tags": [
+      "finnish",
+      "language"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.5,
+    "label": {
+      "en": "Free Finnish courses",
+      "fi": "Ilmaisia suomen kursseja",
+      "fa": "کلاس رایگان فنلاندی"
+    },
+    "title": {
+      "en": "Free Finnish courses for newcomers start in November",
+      "fi": "Maahan muuttaneille ilmaiset suomen kurssit alkavat marraskuussa",
+      "fa": "کلاس‌های رایگان زبان فنلاندی برای تازه‌واردها از نوامبر شروع می‌شود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The adult education centre offers beginner courses on weekday evenings and Saturday mornings.",
+        "fi": "Kansalaisopisto järjestää alkeiskursseja arki-iltaisin ja lauantaiaamuisin.",
+        "fa": "مرکز آموزش بزرگسالان کلاس‌های مقدماتی را عصرهای روزهای کاری و صبح شنبه برگزار می‌کند."
+      },
+      "forYou": {
+        "en": "Register online; places fill fast. Finnish helps with jobs and daily life.",
+        "fi": "Ilmoittaudu verkossa; paikat täyttyvät nopeasti.",
+        "fa": "آنلاین ثبت‌نام کن؛ جاها زود پر می‌شود. فنلاندی در کار و زندگی روزمره کمک می‌کند."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Maahan muuttaneille ilmaiset suomen kurssit alkavat marraskuussa",
+        "en": "Free Finnish courses for newcomers start in November"
+      },
+      {
+        "fi": "Kansalaisopisto järjestää alkeiskursseja arki-iltaisin ja lauantaiaamuisin.",
+        "en": "The adult education centre offers beginner courses on weekday evenings and Saturday mornings."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "first-sea-ice",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.025,
+        "lon": 25.4
+      },
+      "radiusMeters": 2000
+    },
+    "category": "environment",
+    "tags": [
+      "sea",
+      "winter"
+    ],
+    "needs": [
+      "information"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.25,
+    "label": {
+      "en": "First sea ice soon",
+      "fi": "Ensijää pian",
+      "fa": "اولین یخ دریا به‌زودی"
+    },
+    "title": {
+      "en": "Sea water cools fast; first ice expected off Oulu in November",
+      "fi": "Meri viilenee nopeasti; ensijäätä odotetaan Oulun edustalle marraskuussa",
+      "fa": "آب دریا سریع سرد می‌شود؛ اولین یخ در ساحل اولو در نوامبر انتظار می‌رود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The Finnish Meteorological Institute says the sea is two degrees colder than usual for late October.",
+        "fi": "Ilmatieteen laitoksen mukaan meri on kaksi astetta tavallista kylmempi lokakuun lopuksi.",
+        "fa": "مؤسسه هواشناسی فنلاند می‌گوید دریا برای اواخر اکتبر دو درجه سردتر از معمول است."
+      },
+      "forYou": {
+        "en": "Never walk on new ice; wait for official ice reports.",
+        "fi": "Älä koskaan kävele uudella jäällä; odota virallisia jäätiedotteita.",
+        "fa": "هرگز روی یخ تازه راه نرو؛ منتظر گزارش رسمی یخ بمان."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Meri viilenee nopeasti; ensijäätä odotetaan Oulun edustalle marraskuussa",
+        "en": "Sea water cools fast; first ice expected off Oulu in November"
+      },
+      {
+        "fi": "Ilmatieteen laitoksen mukaan meri on kaksi astetta tavallista kylmempi lokakuun lopuksi.",
+        "en": "The Finnish Meteorological Institute says the sea is two degrees colder than usual for late October."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "opinion-student-housing",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": {
+      "coordinate": {
+        "lat": 65.015,
+        "lon": 25.47
+      },
+      "radiusMeters": 0
+    },
+    "category": "housing",
+    "tags": [
+      "opinion"
+    ],
+    "needs": [
+      "understanding"
+    ],
+    "risk": "none",
+    "isOpinion": true,
+    "importance": 0.2,
+    "label": {
+      "en": "Opinion: housing",
+      "fi": "Mielipide: asuminen",
+      "fa": "نظر: مسکن"
+    },
+    "title": {
+      "en": "Opinion: Oulu needs more affordable student housing near campus",
+      "fi": "Mielipide: Oulu tarvitsee lisää edullisia opiskelija-asuntoja kampuksen lähelle",
+      "fa": "نظر: اولو به خوابگاه ارزان بیشتری نزدیک دانشگاه نیاز دارد"
+    },
+    "explanation": {
+      "happened": {
+        "en": "A student union columnist argues that long bus rides from cheap areas cost students time and money.",
+        "fi": "Ylioppilaskunnan kolumnistin mukaan pitkät bussimatkat edullisilta alueilta maksavat opiskelijoille aikaa ja rahaa.",
+        "fa": "یک ستون‌نویس اتحادیه دانشجویی می‌گوید رفت‌وآمد طولانی با اتوبوس از مناطق ارزان برای دانشجوها وقت و پول می‌برد."
+      },
+      "forYou": {
+        "en": "This is a writer's opinion, not a news report.",
+        "fi": "Tämä on kirjoittajan mielipide, ei uutinen.",
+        "fa": "این نظر نویسنده است، نه گزارش خبری."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Mielipide: Oulu tarvitsee lisää edullisia opiskelija-asuntoja kampuksen lähelle",
+        "en": "Opinion: Oulu needs more affordable student housing near campus"
+      },
+      {
+        "fi": "Ylioppilaskunnan kolumnistin mukaan pitkät bussimatkat edullisilta alueilta maksavat opiskelijoille aikaa ja rahaa.",
+        "en": "A student union columnist argues that long bus rides from cheap areas cost students time and money."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "rovaniemi-winter-tourism",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "rovaniemi",
+    "location": {
+      "coordinate": {
+        "lat": 66.5039,
+        "lon": 25.7294
+      },
+      "radiusMeters": 0
+    },
+    "category": "economy",
+    "tags": [
+      "lapland",
+      "jobs"
+    ],
+    "needs": [
+      "information"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "Record tourism",
+      "fi": "Ennätysmatkailu",
+      "fa": "رکورد گردشگری"
+    },
+    "title": {
+      "en": "Rovaniemi expects a record winter tourism season",
+      "fi": "Rovaniemi odottaa ennätyksellistä talvimatkailukautta",
+      "fa": "روانیمی انتظار یک فصل رکوردی گردشگری زمستانی دارد"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Hotels are 90 % booked for December, mostly by visitors from Europe and Asia.",
+        "fi": "Hotellit ovat joulukuulle 90-prosenttisesti varattuja.",
+        "fa": "هتل‌ها برای دسامبر ٪۹۰ رزرو شده‌اند، بیشتر برای مسافران اروپا و آسیا."
+      },
+      "forYou": {
+        "en": "Seasonal jobs in Lapland are open now; many need English rather than Finnish.",
+        "fi": "Lapin kausityöt ovat nyt haussa; moni vaatii englantia suomen sijaan.",
+        "fa": "کارهای فصلی لاپلند الان باز است؛ خیلی‌ها انگلیسی می‌خواهند نه فنلاندی."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Rovaniemi odottaa ennätyksellistä talvimatkailukautta",
+        "en": "Rovaniemi expects a record winter tourism season"
+      },
+      {
+        "fi": "Hotellit ovat joulukuulle 90-prosenttisesti varattuja.",
+        "en": "Hotels are 90 % booked for December, mostly by visitors from Europe and Asia."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "tampere-tram-extension",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "tampere",
+    "location": {
+      "coordinate": {
+        "lat": 61.4981,
+        "lon": 23.7608
+      },
+      "radiusMeters": 0
+    },
+    "category": "transport",
+    "tags": [
+      "tram"
+    ],
+    "needs": [
+      "information"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.2,
+    "label": {
+      "en": "Tampere tram",
+      "fi": "Tampereen ratikka",
+      "fa": "تراموای تامپره"
+    },
+    "title": {
+      "en": "Tampere's tram line extends to the western suburbs",
+      "fi": "Tampereen raitiotie jatkuu läntisiin lähiöihin",
+      "fa": "خط تراموای تامپره تا حومه غربی ادامه پیدا می‌کند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The new section adds eight stops and runs every 7.5 minutes at peak times.",
+        "fi": "Uusi osuus lisää kahdeksan pysäkkiä ja kulkee ruuhkassa 7,5 minuutin välein.",
+        "fa": "بخش جدید هشت ایستگاه اضافه می‌کند و در ساعت‌های شلوغ هر ۷٫۵ دقیقه حرکت می‌کند."
+      },
+      "forYou": {
+        "en": "Useful if you visit Tampere; Oulu has no tram plans.",
+        "fi": "Hyödyllinen Tampereella vieraillessa; Oululla ei ole raitiotiesuunnitelmia.",
+        "fa": "اگر به تامپره بروی به کار می‌آید؛ اولو برنامه تراموا ندارد."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Tampereen raitiotie jatkuu läntisiin lähiöihin",
+        "en": "Tampere's tram line extends to the western suburbs"
+      },
+      {
+        "fi": "Uusi osuus lisää kahdeksan pysäkkiä ja kulkee ruuhkassa 7,5 minuutin välein.",
+        "en": "The new section adds eight stops and runs every 7.5 minutes at peak times."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-20T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-20T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-20T08:00:00+03:00",
+    "updatedAt": "2026-10-20T10:00:00+03:00",
+    "publishedAt": "2026-10-20T10:00:00+03:00"
+  },
+  {
+    "id": "kela-housing-allowance",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "finland",
+    "category": "housing",
+    "tags": [
+      "kela",
+      "students"
+    ],
+    "needs": [
+      "usefulness",
+      "understanding"
+    ],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.55,
+    "affects": [
+      "students"
+    ],
+    "label": {
+      "en": "Housing allowance",
+      "fi": "Asumistuki",
+      "fa": "کمک هزینه مسکن"
+    },
+    "title": {
+      "en": "Kela: apply for the housing allowance before your lease starts",
+      "fi": "Kela: hae asumistukea ennen vuokrasopimuksen alkua",
+      "fa": "Kela: قبل از شروع قرارداد اجاره برای کمک هزینه مسکن درخواست بده"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Kela reminds students that the allowance can be paid at most one month backwards.",
+        "fi": "Kela muistuttaa, että tukea voi saada takautuvasti enintään kuukauden ajalta.",
+        "fa": "Kela یادآوری می‌کند که این کمک حداکثر برای یک ماه گذشته پرداخت می‌شود."
+      },
+      "forYou": {
+        "en": "Whether you can get it depends on your residence permit. Check Kela's page before you apply.",
+        "fi": "Oikeus riippuu oleskeluluvasta. Tarkista Kelan sivu ennen hakemista.",
+        "fa": "اینکه بتوانی بگیری به اجازه اقامتت بستگی دارد. قبل از درخواست صفحه Kela را ببین."
+      },
+      "context": {
+        "question": {
+          "en": "What is Kela?",
+          "fi": "Mikä on Kela?",
+          "fa": "Kela چیست؟"
+        },
+        "answer": {
+          "en": "Finland's social insurance institution. It pays benefits such as housing allowance and study grants.",
+          "fi": "Kansaneläkelaitos maksaa etuuksia, kuten asumistukea ja opintotukea.",
+          "fa": "سازمان بیمه اجتماعی فنلاند. مزایایی مثل کمک هزینه مسکن و کمک تحصیلی می‌پردازد."
+        }
+      }
+    },
+    "originals": [
+      {
+        "fi": "Kela: hae asumistukea ennen vuokrasopimuksen alkua",
+        "en": "Kela: apply for the housing allowance before your lease starts"
+      },
+      {
+        "fi": "Kela muistuttaa, että tukea voi saada takautuvasti enintään kuukauden ajalta.",
+        "en": "Kela reminds students that the allowance can be paid at most one month backwards."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "migri-processing-times",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "finland",
+    "category": "society",
+    "tags": [
+      "immigration",
+      "permits"
+    ],
+    "needs": [
+      "usefulness",
+      "understanding"
+    ],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.6,
+    "affects": [
+      "residence:nonEu"
+    ],
+    "label": {
+      "en": "Permits faster",
+      "fi": "Luvat nopeammin",
+      "fa": "اجازه اقامت سریع‌تر"
+    },
+    "title": {
+      "en": "Migri: student residence permit decisions are faster this autumn",
+      "fi": "Migri: opiskelijoiden oleskelulupapäätökset ovat syksyllä nopeampia",
+      "fa": "Migri: تصمیم‌گیری درباره اجازه اقامت دانشجویی این پاییز سریع‌تر است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The Finnish Immigration Service says most extended student permits are now decided within 30 days.",
+        "fi": "Maahanmuuttoviraston mukaan useimmat jatkoluvat ratkaistaan nyt 30 päivässä.",
+        "fa": "اداره مهاجرت فنلاند می‌گوید بیشتر تمدیدهای اجازه اقامت دانشجویی حالا ظرف ۳۰ روز تصمیم‌گیری می‌شود."
+      },
+      "forYou": {
+        "en": "Apply for an extension at least two months before your permit ends, through Enter Finland.",
+        "fi": "Hae jatkolupaa vähintään kaksi kuukautta ennen luvan päättymistä Enter Finlandin kautta.",
+        "fa": "دست‌کم دو ماه قبل از پایان اجازه اقامتت، از طریق Enter Finland برای تمدید درخواست بده."
+      },
+      "context": {
+        "question": {
+          "en": "What is Enter Finland?",
+          "fi": "Mikä on Enter Finland?",
+          "fa": "Enter Finland چیست؟"
+        },
+        "answer": {
+          "en": "Migri's online service for residence permit applications and extensions.",
+          "fi": "Migrin verkkopalvelu oleskelulupahakemuksille ja jatkoluville.",
+          "fa": "سرویس آنلاین Migri برای درخواست و تمدید اجازه اقامت."
+        }
+      }
+    },
+    "originals": [
+      {
+        "fi": "Migri: opiskelijoiden oleskelulupapäätökset ovat syksyllä nopeampia",
+        "en": "Migri: student residence permit decisions are faster this autumn"
+      },
+      {
+        "fi": "Maahanmuuttoviraston mukaan useimmat jatkoluvat ratkaistaan nyt 30 päivässä.",
+        "en": "The Finnish Immigration Service says most extended student permits are now decided within 30 days."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "euribor-falls",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "finland",
+    "category": "economy",
+    "tags": [
+      "interest rates"
+    ],
+    "needs": [
+      "information"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "label": {
+      "en": "Interest rates fall",
+      "fi": "Korot laskevat",
+      "fa": "نرخ بهره پایین می‌آید"
+    },
+    "title": {
+      "en": "Euribor falls again; loan payments get a little smaller",
+      "fi": "Euribor laskee taas; lainanlyhennykset pienenevät hieman",
+      "fa": "یوریبور دوباره پایین آمد؛ قسط وام‌ها کمی کمتر می‌شود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The 12-month Euribor rate dropped for the third month in a row.",
+        "fi": "12 kuukauden euribor laski kolmatta kuukautta peräkkäin.",
+        "fa": "نرخ یوریبور ۱۲ ماهه برای سومین ماه پیاپی کاهش یافت."
+      },
+      "forYou": {
+        "en": "Most Finnish home loans follow Euribor; renters see no direct change.",
+        "fi": "Useimmat asuntolainat seuraavat euriboria; vuokralaisille ei suoraa muutosta.",
+        "fa": "بیشتر وام‌های مسکن فنلاند تابع یوریبور هستند؛ برای مستأجرها تغییر مستقیمی نیست."
+      },
+      "context": {
+        "question": {
+          "en": "What is Euribor?",
+          "fi": "Mikä on euribor?",
+          "fa": "یوریبور چیست؟"
+        },
+        "answer": {
+          "en": "The interest rate banks in the euro area charge each other. Finnish loans usually follow it.",
+          "fi": "Euroalueen pankkien välinen korko. Suomalaiset lainat seuraavat yleensä sitä.",
+          "fa": "نرخ بهره‌ای که بانک‌های منطقه یورو از هم می‌گیرند. وام‌های فنلاند معمولاً تابع آن هستند."
+        }
+      }
+    },
+    "originals": [
+      {
+        "fi": "Euribor laskee taas; lainanlyhennykset pienenevät hieman",
+        "en": "Euribor falls again; loan payments get a little smaller"
+      },
+      {
+        "fi": "12 kuukauden euribor laski kolmatta kuukautta peräkkäin.",
+        "en": "The 12-month Euribor rate dropped for the third month in a row."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "flu-season-early",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "finland",
+    "category": "health",
+    "tags": [
+      "flu"
+    ],
+    "needs": [
+      "safety",
+      "information"
+    ],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.45,
+    "label": {
+      "en": "Flu season early",
+      "fi": "Flunssakausi aikaisin",
+      "fa": "فصل آنفلوانزا زودتر"
+    },
+    "title": {
+      "en": "Flu season starts early; vaccines are free for risk groups",
+      "fi": "Influenssakausi alkoi aikaisin; rokote on riskiryhmille maksuton",
+      "fa": "فصل آنفلوانزا زودتر شروع شد؛ واکسن برای گروه‌های پرخطر رایگان است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "THL reports more flu cases than usual for October.",
+        "fi": "THL:n mukaan influenssatapauksia on lokakuulle tavallista enemmän.",
+        "fa": "مؤسسه THL می‌گوید موارد آنفلوانزا برای اکتبر بیشتر از معمول است."
+      },
+      "forYou": {
+        "en": "Stay home when sick and ask your health station whether you can get a free vaccine.",
+        "fi": "Jää kotiin sairaana ja kysy terveysasemalta maksuttomasta rokotteesta.",
+        "fa": "وقتی بیماری در خانه بمان و از مرکز بهداشت بپرس آیا واکسن رایگان می‌گیری."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Influenssakausi alkoi aikaisin; rokote on riskiryhmille maksuton",
+        "en": "Flu season starts early; vaccines are free for risk groups"
+      },
+      {
+        "fi": "THL:n mukaan influenssatapauksia on lokakuulle tavallista enemmän.",
+        "en": "THL reports more flu cases than usual for October."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "helsinki-airport-security-strike",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "helsinki",
+    "location": {
+      "coordinate": {
+        "lat": 60.3172,
+        "lon": 24.9633
+      },
+      "radiusMeters": 0
+    },
+    "category": "work",
+    "tags": [
+      "strike",
+      "flights"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "mapObject": "station",
+    "label": {
+      "en": "Airport strike",
+      "fi": "Lentokenttälakko",
+      "fa": "اعتصاب فرودگاه"
+    },
+    "title": {
+      "en": "Security staff at Helsinki Airport plan a one-day strike on 12 November",
+      "fi": "Helsinki-Vantaan turvatarkastajat suunnittelevat lakkoa 12. marraskuuta",
+      "fa": "کارکنان بازرسی فرودگاه هلسینکی برای ۱۲ نوامبر یک روز اعتصاب برنامه‌ریزی کرده‌اند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The union announced the strike after pay talks stalled. Flights may be delayed.",
+        "fi": "Liitto ilmoitti lakosta, kun palkkaneuvottelut jumittuivat. Lennot voivat viivästyä.",
+        "fa": "اتحادیه پس از به‌بن‌بست رسیدن مذاکرات حقوق، اعتصاب را اعلام کرد. پروازها ممکن است تأخیر داشته باشند."
+      },
+      "forYou": {
+        "en": "Flying that day? Arrive early or check with your airline.",
+        "fi": "Lennätkö silloin? Saavu ajoissa tai tarkista lentoyhtiöltä.",
+        "fa": "آن روز پرواز داری؟ زودتر برو یا با شرکت هواپیمایی چک کن."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Helsinki-Vantaan turvatarkastajat suunnittelevat lakkoa 12. marraskuuta",
+        "en": "Security staff at Helsinki Airport plan a one-day strike on 12 November"
+      },
+      {
+        "fi": "Liitto ilmoitti lakosta, kun palkkaneuvottelut jumittuivat. Lennot voivat viivästyä.",
+        "en": "The union announced the strike after pay talks stalled. Flights may be delayed."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-24T08:00:00+03:00",
+    "updatedAt": "2026-10-24T10:00:00+03:00",
+    "publishedAt": "2026-10-24T10:00:00+03:00"
+  },
+  {
+    "id": "northern-lights-week",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "finland",
+    "location": {
+      "coordinate": {
+        "lat": 66.0,
+        "lon": 26.0
+      },
+      "radiusMeters": 50000
+    },
+    "category": "environment",
+    "tags": [
+      "aurora"
+    ],
+    "needs": [
+      "emotion"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "label": {
+      "en": "Northern lights",
+      "fi": "Revontulet",
+      "fa": "شفق قطبی"
+    },
+    "title": {
+      "en": "Strong northern lights expected over northern Finland this week",
+      "fi": "Pohjois-Suomeen odotetaan voimakkaita revontulia tällä viikolla",
+      "fa": "این هفته شفق قطبی قوی بر فراز شمال فنلاند انتظار می‌رود"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Solar activity is high; clear skies are forecast from Oulu northwards on Wednesday and Thursday.",
+        "fi": "Auringon aktiivisuus on korkea; Oulusta pohjoiseen ennustetaan selkeää keski- ja torstaina.",
+        "fa": "فعالیت خورشید زیاد است؛ برای چهارشنبه و پنجشنبه از اولو به شمال آسمان صاف پیش‌بینی شده است."
+      },
+      "forYou": {
+        "en": "Go somewhere dark after 21:00 and look north. Hietasaari beach is a good spot.",
+        "fi": "Mene pimeään paikkaan klo 21 jälkeen ja katso pohjoiseen. Hietasaaren ranta on hyvä paikka.",
+        "fa": "بعد از ساعت ۲۱ به جای تاریک برو و به شمال نگاه کن. ساحل هیتاساری جای خوبی است."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Pohjois-Suomeen odotetaan voimakkaita revontulia tällä viikolla",
+        "en": "Strong northern lights expected over northern Finland this week"
+      },
+      {
+        "fi": "Auringon aktiivisuus on korkea; Oulusta pohjoiseen ennustetaan selkeää keski- ja torstaina.",
+        "en": "Solar activity is high; clear skies are forecast from Oulu northwards on Wednesday and Thursday."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-24T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-24T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-24T08:00:00+03:00",
+    "updatedAt": "2026-10-24T10:00:00+03:00",
+    "publishedAt": "2026-10-24T10:00:00+03:00"
+  },
+  {
+    "id": "eu-roaming-prices",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "eu",
+    "location": {
+      "coordinate": {
+        "lat": 50.85,
+        "lon": 4.35
+      },
+      "radiusMeters": 0
+    },
+    "category": "technology",
+    "tags": [
+      "mobile"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "EU roaming",
+      "fi": "EU-verkkovierailu",
+      "fa": "رومینگ اروپا"
+    },
+    "title": {
+      "en": "EU roaming: calls and data in other EU countries stay at home prices",
+      "fi": "EU-verkkovierailu: puhelut ja data muissa EU-maissa pysyvät kotimaan hinnoissa",
+      "fa": "رومینگ اتحادیه اروپا: تماس و اینترنت در کشورهای دیگر اتحادیه با قیمت داخلی می‌ماند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The EU extended its roam-like-at-home rules; a fair-use limit for data still applies.",
+        "fi": "EU jatkoi verkkovierailusääntöjä; datan kohtuukäytön raja on edelleen voimassa.",
+        "fa": "اتحادیه اروپا قانون رومینگ با قیمت داخلی را تمدید کرد؛ سقف استفاده منصفانه از اینترنت همچنان هست."
+      },
+      "forYou": {
+        "en": "A Finnish SIM works in Sweden, Estonia and the rest of the EU at no extra cost.",
+        "fi": "Suomalainen SIM toimii Ruotsissa, Virossa ja muualla EU:ssa ilman lisämaksua.",
+        "fa": "سیم‌کارت فنلاندی در سوئد، استونی و بقیه اتحادیه اروپا بدون هزینه اضافه کار می‌کند."
+      }
+    },
+    "originals": [
+      {
+        "fi": "EU-verkkovierailu: puhelut ja data muissa EU-maissa pysyvät kotimaan hinnoissa",
+        "en": "EU roaming: calls and data in other EU countries stay at home prices"
+      },
+      {
+        "fi": "EU jatkoi verkkovierailusääntöjä; datan kohtuukäytön raja on edelleen voimassa.",
+        "en": "The EU extended its roam-like-at-home rules; a fair-use limit for data still applies."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "erasmus-grants-2027",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "eu",
+    "location": {
+      "coordinate": {
+        "lat": 50.85,
+        "lon": 4.35
+      },
+      "radiusMeters": 0
+    },
+    "category": "education",
+    "tags": [
+      "erasmus",
+      "students"
+    ],
+    "needs": [
+      "information"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "Erasmus grants up",
+      "fi": "Erasmus-apurahat kasvavat",
+      "fa": "افزایش کمک‌هزینه اراسموس"
+    },
+    "title": {
+      "en": "Erasmus+ study grants rise for 2027",
+      "fi": "Erasmus+-apurahat kasvavat vuonna 2027",
+      "fa": "کمک‌هزینه تحصیلی اراسموس پلاس برای ۲۰۲۷ افزایش می‌یابد"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The monthly grant for exchange students goes up by about 10 % across the EU.",
+        "fi": "Vaihto-opiskelijoiden kuukausiapuraha nousee noin 10 % koko EU:ssa.",
+        "fa": "کمک‌هزینه ماهانه دانشجویان تبادلی در سراسر اتحادیه اروپا حدود ٪۱۰ بالا می‌رود."
+      },
+      "forYou": {
+        "en": "Degree students in Oulu can apply for an exchange term through the university's international office.",
+        "fi": "Oulun tutkinto-opiskelijat voivat hakea vaihtoon yliopiston kansainvälisten asioiden kautta.",
+        "fa": "دانشجویان مقطع در اولو می‌توانند از طریق دفتر بین‌الملل دانشگاه برای ترم تبادلی درخواست دهند."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Erasmus+-apurahat kasvavat vuonna 2027",
+        "en": "Erasmus+ study grants rise for 2027"
+      },
+      {
+        "fi": "Vaihto-opiskelijoiden kuukausiapuraha nousee noin 10 % koko EU:ssa.",
+        "en": "The monthly grant for exchange students goes up by about 10 % across the EU."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-20T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-20T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-20T08:00:00+03:00",
+    "updatedAt": "2026-10-20T10:00:00+03:00",
+    "publishedAt": "2026-10-20T10:00:00+03:00"
+  },
+  {
+    "id": "tallinn-ferry-december",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "estonia",
+    "location": {
+      "coordinate": {
+        "lat": 59.444,
+        "lon": 24.766
+      },
+      "radiusMeters": 0
+    },
+    "category": "transport",
+    "tags": [
+      "ferry",
+      "travel"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.25,
+    "label": {
+      "en": "Extra ferries",
+      "fi": "Lisälauttoja",
+      "fa": "کشتی‌های اضافه"
+    },
+    "title": {
+      "en": "Helsinki–Tallinn ferries add extra departures in December",
+      "fi": "Helsinki–Tallinna-lautoille lisävuoroja joulukuussa",
+      "fa": "کشتی‌های هلسینکی–تالین در دسامبر حرکت‌های اضافه دارند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Ferry companies add evening crossings for the Christmas market season in Tallinn.",
+        "fi": "Varustamot lisäävät iltavuoroja Tallinnan joulumarkkinakaudeksi.",
+        "fa": "شرکت‌های کشتیرانی برای فصل بازار کریسمس تالین سفرهای عصر اضافه می‌کنند."
+      },
+      "forYou": {
+        "en": "A popular weekend trip; book early for student discounts.",
+        "fi": "Suosittu viikonloppumatka; varaa ajoissa opiskelija-alennuksella.",
+        "fa": "یک سفر آخر هفته محبوب؛ برای تخفیف دانشجویی زود رزرو کن."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Helsinki–Tallinna-lautoille lisävuoroja joulukuussa",
+        "en": "Helsinki–Tallinn ferries add extra departures in December"
+      },
+      {
+        "fi": "Varustamot lisäävät iltavuoroja Tallinnan joulumarkkinakaudeksi.",
+        "en": "Ferry companies add evening crossings for the Christmas market season in Tallinn."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "sweden-haparanda-shopping",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "sweden",
+    "location": {
+      "coordinate": {
+        "lat": 65.8355,
+        "lon": 24.1368
+      },
+      "radiusMeters": 0
+    },
+    "category": "shopping",
+    "tags": [
+      "travel"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.2,
+    "label": {
+      "en": "Haparanda shopping",
+      "fi": "Haaparannan ostokset",
+      "fa": "خرید در هاپاراندا"
+    },
+    "title": {
+      "en": "Shuttle bus from Oulu to Haparanda for weekend shopping",
+      "fi": "Oulusta Haaparantaan viikonlopun ostosbussi",
+      "fa": "اتوبوس رفت‌وبرگشت از اولو به هاپاراندا برای خرید آخر هفته"
+    },
+    "explanation": {
+      "happened": {
+        "en": "A private operator runs a Saturday bus to the Swedish border town and its shopping centre.",
+        "fi": "Yksityinen yhtiö ajaa lauantaisin bussia ruotsalaiseen rajakaupunkiin.",
+        "fa": "یک شرکت خصوصی شنبه‌ها اتوبوسی به شهر مرزی سوئد و مرکز خرید آن می‌برد."
+      },
+      "forYou": {
+        "en": "Bring your passport or residence permit card when you cross the border.",
+        "fi": "Ota passi tai oleskelulupakortti mukaan rajan ylitykseen.",
+        "fa": "برای عبور از مرز گذرنامه یا کارت اجازه اقامت همراه داشته باش."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Oulusta Haaparantaan viikonlopun ostosbussi",
+        "en": "Shuttle bus from Oulu to Haparanda for weekend shopping"
+      },
+      {
+        "fi": "Yksityinen yhtiö ajaa lauantaisin bussia ruotsalaiseen rajakaupunkiin.",
+        "en": "A private operator runs a Saturday bus to the Swedish border town and its shopping centre."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "iran-money-transfers",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "iran",
+    "location": {
+      "coordinate": {
+        "lat": 35.6892,
+        "lon": 51.389
+      },
+      "radiusMeters": 0
+    },
+    "category": "economy",
+    "tags": [
+      "money",
+      "exchange rates"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "Transfers to Iran",
+      "fi": "Rahansiirrot Iraniin",
+      "fa": "انتقال پول به ایران"
+    },
+    "title": {
+      "en": "Sending money to Iran costs more this month as exchange rates swing",
+      "fi": "Rahan lähettäminen Iraniin on tässä kuussa kalliimpaa valuuttakurssien heiluessa",
+      "fa": "ارسال پول به ایران این ماه به دلیل نوسان نرخ ارز گران‌تر است"
+    },
+    "explanation": {
+      "happened": {
+        "en": "Exchange offices report wider gaps between buying and selling rates for the rial.",
+        "fi": "Valuutanvaihtajien mukaan rialin osto- ja myyntikurssien ero on kasvanut.",
+        "fa": "صرافی‌ها می‌گویند فاصله نرخ خرید و فروش ریال بیشتر شده است."
+      },
+      "forYou": {
+        "en": "Compare a few services before you send, and keep receipts for your records.",
+        "fi": "Vertaa palveluja ennen lähettämistä ja säilytä kuitit.",
+        "fa": "قبل از ارسال چند سرویس را مقایسه کن و رسیدها را نگه دار."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Rahan lähettäminen Iraniin on tässä kuussa kalliimpaa valuuttakurssien heiluessa",
+        "en": "Sending money to Iran costs more this month as exchange rates swing"
+      },
+      {
+        "fi": "Valuutanvaihtajien mukaan rialin osto- ja myyntikurssien ero on kasvanut.",
+        "en": "Exchange offices report wider gaps between buying and selling rates for the rial."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
+  },
+  {
+    "id": "tehran-flights-istanbul",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "iran",
+    "location": {
+      "coordinate": {
+        "lat": 35.4161,
+        "lon": 51.1522
+      },
+      "radiusMeters": 0
+    },
+    "category": "transport",
+    "tags": [
+      "flights",
+      "travel"
+    ],
+    "needs": [
+      "usefulness"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.25,
+    "label": {
+      "en": "Flights to Tehran",
+      "fi": "Lennot Teheraniin",
+      "fa": "پرواز به تهران"
+    },
+    "title": {
+      "en": "New connection from Helsinki to Tehran via Istanbul in winter",
+      "fi": "Uusi talviyhteys Helsingistä Teheraniin Istanbulin kautta",
+      "fa": "اتصال جدید زمستانی از هلسینکی به تهران از طریق استانبول"
+    },
+    "explanation": {
+      "happened": {
+        "en": "An extra daily flight pair makes the transfer in Istanbul shorter.",
+        "fi": "Uusi päivittäinen lentopari lyhentää vaihtoa Istanbulissa.",
+        "fa": "یک جفت پرواز روزانه اضافه، توقف در استانبول را کوتاه‌تر می‌کند."
+      },
+      "forYou": {
+        "en": "Travelling home for the holidays? Total travel time drops to about nine hours.",
+        "fi": "Matkustatko kotiin lomalle? Matka-aika lyhenee noin yhdeksään tuntiin.",
+        "fa": "برای تعطیلات به خانه می‌روی؟ کل زمان سفر به حدود نه ساعت می‌رسد."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Uusi talviyhteys Helsingistä Teheraniin Istanbulin kautta",
+        "en": "New connection from Helsinki to Tehran via Istanbul in winter"
+      },
+      {
+        "fi": "Uusi päivittäinen lentopari lyhentää vaihtoa Istanbulissa.",
+        "en": "An extra daily flight pair makes the transfer in Istanbul shorter."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-22T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-22T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-22T08:00:00+03:00",
+    "updatedAt": "2026-10-22T10:00:00+03:00",
+    "publishedAt": "2026-10-22T10:00:00+03:00"
+  },
+  {
+    "id": "ai-rules-world",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "world",
+    "location": {
+      "coordinate": {
+        "lat": 46.2044,
+        "lon": 6.1432
+      },
+      "radiusMeters": 0
+    },
+    "category": "technology",
+    "tags": [
+      "ai"
+    ],
+    "needs": [
+      "understanding"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.3,
+    "label": {
+      "en": "AI rules",
+      "fi": "Tekoälysäännöt",
+      "fa": "قوانین هوش مصنوعی"
+    },
+    "title": {
+      "en": "Countries agree on first shared rules for AI safety testing",
+      "fi": "Maat sopivat ensimmäisistä yhteisistä tekoälyn turvallisuustestauksen säännöistä",
+      "fa": "کشورها بر سر اولین قوانین مشترک آزمایش ایمنی هوش مصنوعی توافق کردند"
+    },
+    "explanation": {
+      "happened": {
+        "en": "At a meeting in Geneva, governments agreed on how to test powerful AI models before release.",
+        "fi": "Genevessä hallitukset sopivat, miten tehokkaita tekoälymalleja testataan ennen julkaisua.",
+        "fa": "در نشستی در ژنو، دولت‌ها توافق کردند مدل‌های قدرتمند هوش مصنوعی را پیش از انتشار چطور آزمایش کنند."
+      },
+      "forYou": {
+        "en": "No direct effect on daily life in Oulu yet.",
+        "fi": "Ei vielä suoraa vaikutusta arkeen Oulussa.",
+        "fa": "هنوز اثر مستقیمی بر زندگی روزمره در اولو ندارد."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Maat sopivat ensimmäisistä yhteisistä tekoälyn turvallisuustestauksen säännöistä",
+        "en": "Countries agree on first shared rules for AI safety testing"
+      },
+      {
+        "fi": "Genevessä hallitukset sopivat, miten tehokkaita tekoälymalleja testataan ennen julkaisua.",
+        "en": "At a meeting in Geneva, governments agreed on how to test powerful AI models before release."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-21T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-21T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-21T08:00:00+03:00",
+    "updatedAt": "2026-10-21T10:00:00+03:00",
+    "publishedAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "ukraine-winter-energy",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "ukraine",
+    "location": {
+      "coordinate": {
+        "lat": 50.4501,
+        "lon": 30.5234
+      },
+      "radiusMeters": 0
+    },
+    "category": "world",
+    "tags": [
+      "ukraine",
+      "aid"
+    ],
+    "needs": [
+      "information"
+    ],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "label": {
+      "en": "Ukraine energy",
+      "fi": "Ukrainan energia",
+      "fa": "انرژی اوکراین"
+    },
+    "title": {
+      "en": "Finland sends generators to Ukraine ahead of winter",
+      "fi": "Suomi lähettää aggregaatteja Ukrainaan ennen talvea",
+      "fa": "فنلاند پیش از زمستان ژنراتور به اوکراین می‌فرستد"
+    },
+    "explanation": {
+      "happened": {
+        "en": "The aid package supports hospitals and schools during power cuts.",
+        "fi": "Tukipaketti auttaa sairaaloita ja kouluja sähkökatkojen aikana.",
+        "fa": "این بسته کمک به بیمارستان‌ها و مدرسه‌ها در زمان قطعی برق کمک می‌کند."
+      },
+      "forYou": {
+        "en": "Part of Finland's ongoing support; no change for life in Oulu.",
+        "fi": "Osa Suomen jatkuvaa tukea; ei muutoksia arkeen Oulussa.",
+        "fa": "بخشی از حمایت مداوم فنلاند؛ تغییری در زندگی اولو نیست."
+      }
+    },
+    "originals": [
+      {
+        "fi": "Suomi lähettää aggregaatteja Ukrainaan ennen talvea",
+        "en": "Finland sends generators to Ukraine ahead of winter"
+      },
+      {
+        "fi": "Tukipaketti auttaa sairaaloita ja kouluja sähkökatkojen aikana.",
+        "en": "The aid package supports hospitals and schools during power cuts."
+      }
+    ],
+    "sources": [
+      {
+        "name": "Sample data",
+        "publishedAt": "2026-10-23T08:00:00+03:00"
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fi",
+        "tier": 1,
+        "reviewedBy": "Aino K."
+      },
+      {
+        "language": "fa",
+        "tier": 2,
+        "reviewedBy": "Negar"
+      }
+    ],
+    "verification": {
+      "verifiedBy": "Aino K.",
+      "verifiedAt": "2026-10-23T10:00:00+03:00"
+    },
+    "createdAt": "2026-10-23T08:00:00+03:00",
+    "updatedAt": "2026-10-23T10:00:00+03:00",
+    "publishedAt": "2026-10-23T10:00:00+03:00"
   }
 ]

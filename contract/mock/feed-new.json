@@ -3,22 +3,575 @@
   "generatedAt": "2026-10-24T09:00:00+03:00",
   "personalization": 0,
   "items": [
-    { "storyId": "kiiminki-shooting", "relevance": 0.8, "mustSee": true, "reasons": [{ "en": "Safety in Oulu" }] },
-    { "storyId": "rotuaari-ice", "relevance": 0.7, "mustSee": false, "reasons": [{ "en": "In the centre of Oulu" }] },
-    { "storyId": "oulu-station-trains", "relevance": 0.62, "mustSee": false, "reasons": [{ "en": "Oulu railway station" }] },
-    { "storyId": "oulu-library-sunday", "relevance": 0.58, "mustSee": false, "reasons": [{ "en": "In the centre of Oulu" }] },
-    { "storyId": "orpo-kyiv", "relevance": 0.55, "mustSee": false, "reasons": [{ "en": "Top story in Finland" }] },
-    { "storyId": "oulu-theatre-season", "relevance": 0.52, "mustSee": false, "reasons": [{ "en": "In the centre of Oulu" }] },
-    { "storyId": "interpellation", "relevance": 0.5, "mustSee": false, "reasons": [{ "en": "Top story in Finland" }] },
-    { "storyId": "parkkipate-strike", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "Popular in Oulu" }] },
-    { "storyId": "un-climate-report", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "Top story in the world" }] },
-    { "storyId": "lidl-ideapark", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "Popular in Oulu" }] },
-    { "storyId": "city-site-down", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "Popular in Oulu" }] },
-    { "storyId": "muhos-data-centre", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "Near Oulu" }] },
-    { "storyId": "athletics-euros-2030", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "Sport in Finland" }] },
-    { "storyId": "icy-path-kiiminki", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "Reported by people in Oulu" }] },
-    { "storyId": "linnanmaa-campus-bus", "relevance": 0.33, "mustSee": false, "reasons": [{ "en": "University in Linnanmaa" }] },
-    { "storyId": "ritaharju-crossing", "relevance": 0.32, "mustSee": false, "reasons": [{ "en": "In Ritaharju" }] },
-    { "storyId": "editorial-social-media", "relevance": 0.2, "mustSee": false, "reasons": [{ "en": "Opinion, not news" }] }
+    {
+      "storyId": "kiiminki-shooting",
+      "relevance": 0.8,
+      "mustSee": true,
+      "reasons": [
+        {
+          "en": "Safety in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "rotuaari-ice",
+      "relevance": 0.7,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the centre of Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-station-trains",
+      "relevance": 0.62,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Oulu railway station"
+        }
+      ]
+    },
+    {
+      "storyId": "oys-emergency-waits",
+      "relevance": 0.6,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "migri-processing-times",
+      "relevance": 0.6,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-library-sunday",
+      "relevance": 0.58,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the centre of Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "orpo-kyiv",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-bus-21",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "psoas-rent-january",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "kela-housing-allowance",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-theatre-season",
+      "relevance": 0.52,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the centre of Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "interpellation",
+      "relevance": 0.5,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "ritaharju-flu-vaccines",
+      "relevance": 0.5,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "free-finnish-courses",
+      "relevance": 0.5,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "parkkipate-strike",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "un-climate-report",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-psoas-hot-water",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "karpat-home-game",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "international-job-fair",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu2026-light-festival",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "flu-season-early",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "lidl-ideapark",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "city-site-down",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "muhos-data-centre",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Near Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-hackathon",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "tuira-bridge-nights",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "snow-plough-parking",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "city-budget-2027",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "athletics-euros-2030",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Sport in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "icy-path-kiiminki",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Reported by people in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-ice-rink",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-market-indoors",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-airport-stockholm",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "euribor-falls",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "helsinki-airport-security-strike",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "northern-lights-week",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "ukraine-winter-energy",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-campus-bus",
+      "relevance": 0.33,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "University in Linnanmaa"
+        }
+      ]
+    },
+    {
+      "storyId": "ritaharju-crossing",
+      "relevance": 0.32,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Ritaharju"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-library-evenings",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "hietasaari-sea-sauna",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "music-centre-student-concert",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-grocery-prices",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "rovaniemi-winter-tourism",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "eu-roaming-prices",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "erasmus-grants-2027",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "iran-money-transfers",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "ai-rules-world",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "toppila-bike-path",
+      "relevance": 0.25,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "raatti-football-hall",
+      "relevance": 0.25,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "first-sea-ice",
+      "relevance": 0.25,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "tallinn-ferry-december",
+      "relevance": 0.25,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "tehran-flights-istanbul",
+      "relevance": 0.25,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    },
+    {
+      "storyId": "editorial-social-media",
+      "relevance": 0.2,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Opinion, not news"
+        }
+      ]
+    },
+    {
+      "storyId": "opinion-student-housing",
+      "relevance": 0.2,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Popular in Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "tampere-tram-extension",
+      "relevance": 0.2,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "sweden-haparanda-shopping",
+      "relevance": 0.2,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Top story in the world"
+        }
+      ]
+    }
   ]
 }

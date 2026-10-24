@@ -125,7 +125,7 @@ Status:
 - [x] Segmented control Area · City · Finland · World moves the camera; pinching updates the control (`Scale(cameraDistance:)`).
 - [x] Scales are relative to the reader (`ReaderScale`): your area → Area, rest of your city → City, rest of Finland → Finland, abroad → World; never smaller than the story's own scale. Readers without an area start on City.
 - [x] Pins: category colour, size by relevance, accent ring for must-see / relevance ≥ 0.7, dashed ring for opinion; labels only for relevant stories.
-- [x] Pins that would overlap at the current zoom are grouped (`PinGrouping`) with a count badge; area stories stay circles and are never grouped.
+- [x] Pins that would overlap at the current zoom are grouped (`PinGrouping`, 5 % of camera distance) with a count badge; tapping a group zooms in to fit it, like a map cluster, and lists its stories. Area stories stay circles and are never grouped.
 - [x] Area stories draw a dashed circle (`radiusMeters`), never a point; the circle opens its story.
 - [x] Stories with `mapObject` show a raised 3D tile; opening one flies the camera in (pitch 70°, 900 m) so MapKit's real 3D buildings show — checked with the Helsinki Olympic Stadium.
 - [x] News panel (`MapPanel`): iPhone = native sheet, never dismissed, detents collapsed (110 pt) / resting (default, 34 %) / medium / large, map usable up to medium, Community and Profile in its header; Mac = inspector, open by default, toolbar toggle. Lists the scale's stories ranked for the reader; a group pin narrows it ("Show all" to go back); a story pushes inside the panel with the system back button.
