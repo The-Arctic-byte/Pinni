@@ -2,6 +2,7 @@
 **/__pycache__
 **/.pytest_cache
 backend/data
+agent/data
 App
 Pinni.xcodeproj
 .git

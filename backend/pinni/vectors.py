@@ -58,13 +58,6 @@ def story_text(story: dict) -> str:
     return "\n".join(parts)
 
 
-def profile_text(profile: dict, learned_tags: list[str]) -> str:
-    """What a reader wants, as text to embed."""
-    strong = [c for c, w in profile.get("categoryWeights", {}).items() if w >= 0.7]
-    parts = profile.get("interests", []) + profile.get("wantedNews", []) + strong + learned_tags
-    return "\n".join(parts)
-
-
 class VectorStore:
     def __init__(self, client, embedder, collection: str = "stories"):
         self.embedder = embedder

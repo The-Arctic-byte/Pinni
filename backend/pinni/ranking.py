@@ -1,89 +1,16 @@
-"""Baseline ranking until the recommender (Track B, B4) replaces it.
-
-relevance = (1 - p) * importance + p * personal, where p (personalization) grows with the
-reader's events. `personal` mixes the stated profile, learned preferences, content similarity
-(vector store) and what similar people liked (knowledge graph). Product rules from the contract
-always hold:
-- hard filters (categories, tags, sources) and stories the reader rejected are never shown,
-- must-see items (safety near you, stories that affect your group) are never ranked away,
-- only published stories appear."""
+"""What the reader's events say (learned preferences) and channel suggestions. Feed ranking is
+done by the Track B recommender, see recommender.py."""
 
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime
 
 from . import db
-from .graph import Graph, signal, user_groups
-from .vectors import VectorStore, profile_text
+from .graph import Graph, signal
 
 EVENTS_FOR_FULL_PERSONALIZATION = 30
-MUST_SEE_FLOOR = 0.8
 SIMILAR_PEOPLE = 50
 # Contract: similarMembers is shown only from 20 people up.
 MIN_SIMILAR_MEMBERS = 20
-# Share of `personal` per signal. A signal with no data (e.g. no similar people yet) is left out.
-PERSONAL_WEIGHTS = {"category": 0.35, "place": 0.3, "tag": 0.1, "content": 0.15, "collaborative": 0.1}
-
-REASONS = {
-    "mustSeeHome": {"en": "Safety near your home in {place}", "fi": "Turvallisuus lähellä kotiasi: {place}",
-                    "fa": "امنیت نزدیک خانه تو در {place}", "sv": "Säkerhet nära ditt hem i {place}"},
-    "mustSeeCity": {"en": "Safety in {place}", "fi": "Turvallisuus: {place}",
-                    "fa": "امنیت در {place}", "sv": "Säkerhet i {place}"},
-    "affectsYou": {"en": "This affects people like you", "fi": "Tämä koskee kaltaisiasi",
-                   "fa": "این خبر روی افرادی مثل تو اثر دارد", "sv": "Det här berör personer som du"},
-    "inYourArea": {"en": "In your area", "fi": "Alueellasi", "fa": "در محله تو", "sv": "I ditt område"},
-    "placeYouFollow": {"en": "From {place}, which you follow", "fi": "Seuraamastasi paikasta: {place}",
-                       "fa": "از {place} که دنبالش می‌کنی", "sv": "Från {place}, som du följer"},
-    "category": {"en": "You care about {category}", "fi": "Sinua kiinnostaa: {category}",
-                 "fa": "به {category} اهمیت می‌دهی", "sv": "Du bryr dig om {category}"},
-    "wanted": {"en": "You asked for news about {tag}", "fi": "Halusit uutisia aiheesta {tag}",
-               "fa": "خواستی درباره {tag} خبر بگیری", "sv": "Du ville ha nyheter om {tag}"},
-    "similar": {"en": "You liked similar stories", "fi": "Pidit samankaltaisista uutisista",
-                "fa": "خبرهای مشابه را پسندیدی", "sv": "Du gillade liknande nyheter"},
-    "likedBySimilar": {"en": "Popular with people like you", "fi": "Suosittu kaltaistesi keskuudessa",
-                       "fa": "بین افرادی مثل تو محبوب است", "sv": "Populär bland personer som du"},
-    "matchesInterests": {"en": "Matches your interests", "fi": "Vastaa kiinnostuksiasi",
-                         "fa": "با علاقه‌هایت جور است", "sv": "Passar dina intressen"},
-    "opinion": {"en": "Opinion, not news", "fi": "Mielipide, ei uutinen", "fa": "نظر، نه خبر", "sv": "Åsikt, inte nyhet"},
-    "topWorld": {"en": "Top story in the world", "fi": "Maailman kärkiuutinen",
-                 "fa": "خبر مهم جهان", "sv": "Toppnyhet i världen"},
-    "top": {"en": "Top story in {place}", "fi": "Kärkiuutinen: {place}",
-            "fa": "خبر مهم در {place}", "sv": "Toppnyhet i {place}"},
-}
-
-CATEGORY_NAMES = {
-    "economy": {"fi": "talous", "fa": "اقتصاد", "sv": "ekonomi"},
-    "society": {"fi": "yhteiskunta", "fa": "جامعه", "sv": "samhälle"},
-    "politics": {"fi": "politiikka", "fa": "سیاست", "sv": "politik"},
-    "shopping": {"fi": "ostokset", "fa": "خرید", "sv": "shopping"},
-    "sport": {"fi": "urheilu", "fa": "ورزش", "sv": "sport"},
-    "safety": {"fi": "turvallisuus", "fa": "امنیت", "sv": "säkerhet"},
-    "culture": {"fi": "kulttuuri", "fa": "فرهنگ", "sv": "kultur"},
-    "transport": {"fi": "liikenne", "fa": "حمل‌ونقل", "sv": "trafik"},
-    "education": {"fi": "koulutus", "fa": "آموزش", "sv": "utbildning"},
-    "housing": {"fi": "asuminen", "fa": "مسکن", "sv": "boende"},
-    "health": {"fi": "terveys", "fa": "سلامت", "sv": "hälsa"},
-    "work": {"fi": "työ", "fa": "کار", "sv": "arbete"},
-    "environment": {"fi": "ympäristö", "fa": "محیط زیست", "sv": "miljö"},
-    "technology": {"fi": "teknologia", "fa": "فناوری", "sv": "teknik"},
-    "world": {"fi": "maailma", "fa": "جهان", "sv": "världen"},
-    "cityLife": {"fi": "kaupunkielämä", "fa": "زندگی شهری", "sv": "stadsliv"},
-}
-
-
-def _text(key: str, places: dict | None = None, place: str | None = None,
-          category: str | None = None, tag: str | None = None) -> dict:
-    out = {}
-    for lang, template in REASONS[key].items():
-        values = {}
-        if place:
-            name = places[place]["name"]
-            values["place"] = name.get(lang, name["en"])
-        if category:
-            values["category"] = category if lang == "en" else CATEGORY_NAMES[category].get(lang, category)
-        if tag:
-            values["tag"] = tag
-        out[lang] = template.format(**values)
-    return out
 
 
 def ancestors(places: dict, place_id: str | None) -> list[str]:
@@ -103,7 +30,7 @@ def default_profile(user_id: str, language: str = "en") -> dict:
     }
 
 
-def _events_since_reset(conn: sqlite3.Connection, user_id: str) -> list[dict]:
+def events_since_reset(conn: sqlite3.Connection, user_id: str) -> list[dict]:
     row = conn.execute("SELECT learned_reset_at FROM users WHERE id = ?", (user_id,)).fetchone()
     reset = row["learned_reset_at"] if row else None
     events = db.docs(conn, "SELECT doc FROM events WHERE user_id = ? ORDER BY occurred_at", (user_id,))
@@ -115,7 +42,7 @@ def _events_since_reset(conn: sqlite3.Connection, user_id: str) -> list[dict]:
 
 def learned(conn: sqlite3.Connection, user_id: str) -> dict:
     """What the reader's events say, separate from what they told us in the profile."""
-    events = _events_since_reset(conn, user_id)
+    events = events_since_reset(conn, user_id)
     stories = {s["id"]: s for s in db.docs(conn, "SELECT doc FROM stories")}
     category_score: dict[str, float] = {}
     place_score: dict[str, float] = {}
@@ -178,115 +105,6 @@ def collaborative(graph: Graph | None, user_id: str) -> dict[str, float]:
         for story_id in ratings:
             out[story_id] = out.get(story_id, 0.0) + weight[other]
     return {sid: v / total for sid, v in out.items()}
-
-
-def feed(conn: sqlite3.Connection, user_id: str, scale: str | None, place_id: str | None,
-         limit: int, cursor: str | None, graph: Graph | None = None, vectors: VectorStore | None = None) -> dict:
-    profile = db.get_doc(conn, "profiles", user_id) or default_profile(user_id)
-    places = {p["id"]: p for p in db.docs(conn, "SELECT doc FROM places")}
-    stories = db.docs(conn, "SELECT doc FROM stories WHERE status = 'published'")
-    l = learned(conn, user_id)
-    hf = profile["hardFilters"]
-    home = profile.get("homePlaceId")
-    home_chain = ancestors(places, home)
-    home_city = next((p for p in home_chain if places[p]["kind"] == "city"), "oulu")
-    followed = set(profile.get("followedPlaceIds", []))
-    learned_places = set(l["topPlaces"])
-    groups = user_groups(profile)
-    wanted = {t.lower() for t in profile.get("wantedNews", []) + profile.get("interests", [])}
-    stated = bool(profile.get("categoryWeights") or profile.get("targetGroups") or home
-                  or profile.get("interests") or profile.get("wantedNews"))
-    p = max(l["personalization"], 0.5 if stated else 0.0)
-    content = vectors.similarity(profile_text(profile, l["topTags"])) if vectors else {}
-    liked_by_similar = collaborative(graph, user_id)
-
-    items = []
-    for s in stories:
-        chain = ancestors(places, s["placeId"])
-        if scale and s["scale"] != scale:
-            continue
-        if place_id and place_id not in chain:
-            continue
-        if (s["category"] in hf["categories"] or set(s.get("tags", [])) & set(hf["tags"])
-                or {src["name"] for src in s["sources"]} & set(hf["sources"]) or s["id"] in l["rejectedStories"]):
-            continue
-
-        reasons = []
-        must_see = False
-        if s["category"] == "safety" and s["scale"] in ("area", "city") and home_city in chain:
-            must_see = True
-            if home and home in chain:
-                reasons.append(_text("mustSeeHome", places, place=home))
-            else:
-                reasons.append(_text("mustSeeCity", places, place=home_city))
-        if set(s.get("affects", [])) & groups:
-            must_see = True
-            reasons.append(_text("affectsYou"))
-
-        stated_w = profile["categoryWeights"].get(s["category"], 0.5)
-        learned_w = l["categories"].get(s["category"])
-        category_w = stated_w if learned_w is None else (stated_w + learned_w) / 2
-        if home and home in chain and s["scale"] == "area":
-            place_w = 1.0
-            reasons.append(_text("inYourArea"))
-        elif followed & set(chain[:1]):
-            place_w = 0.9
-            reasons.append(_text("placeYouFollow", places, place=chain[0]))
-        elif learned_places & set(chain[:1]) or (home_city in chain and s["scale"] in ("area", "city")):
-            place_w = 0.7
-        elif s["scale"] == "finland":
-            place_w = 0.4
-        else:
-            place_w = 0.2
-        tag_hit = next((t for t in s.get("tags", []) if t.lower() in wanted or t in l["topTags"]), None)
-        tag_w = 1.0 if tag_hit else 0.5
-        signals = {"category": category_w, "place": place_w, "tag": tag_w,
-                   "content": content.get(s["id"], 0.0) if content else None,
-                   "collaborative": liked_by_similar.get(s["id"], 0.0) if liked_by_similar else None}
-        used = {k: v for k, v in signals.items() if v is not None}
-        personal = sum(PERSONAL_WEIGHTS[k] * v for k, v in used.items()) / sum(PERSONAL_WEIGHTS[k] for k in used)
-        if s["isOpinion"]:
-            personal *= 0.5
-        relevance = (1 - p) * s["importance"] + p * personal
-        if must_see:
-            relevance = max(relevance, MUST_SEE_FLOOR)
-
-        if not reasons:
-            if s["isOpinion"]:
-                reasons.append(_text("opinion"))
-            elif category_w >= 0.7:
-                reasons.append(_text("category", category=s["category"]))
-            elif tag_hit and tag_hit.lower() in wanted:
-                reasons.append(_text("wanted", tag=tag_hit))
-            elif tag_hit:
-                reasons.append(_text("similar"))
-            elif (signals["collaborative"] or 0) >= 0.3:
-                reasons.append(_text("likedBySimilar"))
-            elif (signals["content"] or 0) >= 0.3:
-                reasons.append(_text("matchesInterests"))
-            elif s["placeId"] == "world":
-                reasons.append(_text("topWorld"))
-            else:
-                reasons.append(_text("top", places, place=s["placeId"]))
-        items.append({"storyId": s["id"], "relevance": round(min(relevance, 1.0), 3),
-                      "mustSee": must_see, "reasons": reasons[:2]})
-
-    items.sort(key=lambda i: (-i["relevance"], i["storyId"]))
-    start = int(cursor) if cursor and cursor.isdigit() else 0
-    page = items[start:start + limit]
-    out = {
-        "userId": user_id,
-        "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "personalization": round(p, 3),
-        "items": page,
-    }
-    if scale:
-        out["scale"] = scale
-    if place_id:
-        out["placeId"] = place_id
-    if start + limit < len(items):
-        out["nextCursor"] = str(start + limit)
-    return out
 
 
 def suggested_channels(conn: sqlite3.Connection, user_id: str, graph: Graph | None = None) -> list[dict]:

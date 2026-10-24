@@ -17,8 +17,9 @@ can be wiped and rebuilt with a restart. Without Neo4j configured the same graph
 without Ollama a hashing embedder stands in for the embedding model. Development and tests need
 nothing but Python.
 
-Next: member sign-up (C3), user and source management on the admin page (needs new contract endpoints), APNs (C5), Ollama embeddings once Track B picks the model (B1),
-and the real recommender (B4) behind the same `/v1/feed`.
+The feed is ranked by the Track B recommender ([`agent/`](../agent)), fed from these stores.
+
+Next: member sign-up (C3), user and source management on the admin page (needs new contract endpoints), APNs (C5), Ollama embeddings once Track B picks the model (B1).
 
 ## Run
 
@@ -82,7 +83,8 @@ pinni/
   vectors.py     Chroma store and embedders (Ollama or hashing)
   stores.py      keeps graph and vectors in step with SQLite writes
   auth.py        tokens (only the hash is stored), scrypt passwords, role checks
-  ranking.py     feed ranking and channel suggestions (until B4)
+  recommender.py /v1/feed: Track B recommender over the backend's stores
+  ranking.py     learned preferences and channel suggestions
   seed.py        contract/mock -> database
   routers/       auth, reader, community, admin
 tests/           one file per router, plus contract coverage
@@ -100,26 +102,19 @@ It is plain HTML/JS with no build step and only calls the `/v1/admin/*` and `/v1
 
 - Only published stories reach readers and members; editors see everything.
 - Feeds are sorted by relevance, never break the reader's hard filters, and drop stories they marked "not for me" or rejected.
-- Must-see items (safety in your area or city, stories that affect your group) are never ranked away.
+- Must-see items (red-risk safety, red-risk news from your home area, stories that affect your group) are never ranked away.
 - Readers cannot join channels, post or report (403).
 - A red-risk story cannot be published with a tier-3 (unchecked) translation (409).
 - Events are append-only and uploads are idempotent by event id.
 - Approving a community report creates a published story and notifies the reporter.
 
-## Ranking (temporary)
+## Ranking
 
-`relevance = (1 − p) · importance + p · personal`, where `p` grows with the reader's events (full at 30)
-and starts at 0.5 when the reader filled in a profile. `personal` mixes:
+`/v1/feed` is ranked by `RecommendationEngine` from Track B (`agent/pinni_agent/recommender`), which
+scores each story, decides must-see and writes the "why you see this" reasons. `pinni/recommender.py`
+gives it the backend's data through small adapters (profile and events from SQLite, content
+similarity from Chroma, what similar people liked from the knowledge graph) and keeps the parts that
+follow the contract's place tree here: the `scale`/`placeId` filters and paging.
 
-| Signal | Weight | From |
-|---|---|---|
-| category | 0.35 | stated weights averaged with learned ones |
-| place | 0.30 | home area, followed places, home city |
-| tag | 0.10 | wanted news, interests, learned tags |
-| content | 0.15 | vector similarity between the profile and the story |
-| collaborative | 0.10 | share of similar people (graph) who liked the story |
-
-A signal with no data yet (no similar people, empty profile) is left out and the rest are re-weighted.
 Channel suggestions blend what similar people follow (60%) with profile overlap (40%);
 `similarMembers` is shown from 20 people up, as the contract requires.
-This stays until the recommender from Track B (B4) takes over behind the same endpoints.

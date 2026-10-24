@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Query, Request, Response
 
-from .. import auth, db, ranking, stores
+from .. import auth, db, ranking, recommender, stores
 from ..auth import Conn, CurrentUser
 from ..errors import ApiError, forbidden, not_found
 from .auth import preferred_language
@@ -57,8 +57,8 @@ def get_feed(request: Request, conn: Conn, user: CurrentUser,
              placeId: str | None = None,
              limit: Annotated[int, Query(ge=1, le=100)] = 30,
              cursor: str | None = None):
-    return ranking.feed(conn, user["id"], scale, placeId, limit, cursor,
-                        graph=stores.graph(request), vectors=stores.vectors(request))
+    return recommender.feed(conn, user["id"], scale, placeId, limit, cursor,
+                            graph=stores.graph(request), vectors=stores.vectors(request))
 
 
 @router.get("/stories")
