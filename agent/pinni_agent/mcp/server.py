@@ -12,6 +12,7 @@ from typing import Any, Callable, Dict, List, Optional
 from ..config import Settings, default_settings
 from ..knowledge.graph import KnowledgeGraph
 from ..knowledge.vector_store import VectorStore
+from ..recommender.engine import RecommendationEngine
 from ..store import Store
 from .tools.geo import geocode_place
 from .tools.publishing import assess_risk, create_story_draft, route_to_human_queue
@@ -22,6 +23,7 @@ from .tools.sources import (
     gather_psoas_news,
     gather_university_news,
     gather_web_by_preferences_and_location,
+    retrieve_web_information,
     store_gathered_in_vector_db,
 )
 from .tools.stores import get_user_event_history, query_knowledge_graph, vector_search
@@ -41,6 +43,7 @@ class MCPServer:
         self.store = store or Store(self.s)
         self.vector_store = vector_store or VectorStore(self.s)
         self.graph = graph or KnowledgeGraph(self.s)
+        self.recommender = RecommendationEngine(self.s, self.store, self.vector_store, self.graph)
         self.tools: Dict[str, Dict[str, Any]] = {}
         self.handlers: Dict[str, Callable] = {}
         self._register_tools()
@@ -225,7 +228,79 @@ class MCPServer:
             handler=lambda args: self.graph.suggest_channels(args["userId"], args.get("limit", 5)),
         )
 
+        # 11. retrieve_web_news
+        self.register_tool(
+            name="retrieve_web_news",
+            description="Retrieve and scrape news/information from websites based on tags, words (keywords), URLs, and location, and store them in the vector database.",
+            input_schema={
+                "type": "object",
+                "properties": {
+                    "tags": {"type": "array", "items": {"type": "string"}},
+                    "words": {"type": ["string", "array"], "description": "Search keywords or query phrase"},
+                    "urls": {"type": "array", "items": {"type": "string"}, "description": "Specific website URLs to scrape"},
+                    "location": {"type": "string"},
+                    "categories": {"type": "array", "items": {"type": "string"}},
+                    "store_in_vector_db": {"type": "boolean", "default": True},
+                },
+            },
+            handler=self._handle_retrieve_web_news,
+        )
+
+        # 12. recommend_news_for_user
+        self.register_tool(
+            name="recommend_news_for_user",
+            description="Recommend personalized news stories for a user based on Knowledge Graph collaborative filtering, user interaction history, vector profile matching, and hard filters.",
+            input_schema={
+                "type": "object",
+                "required": ["userId"],
+                "properties": {
+                    "userId": {"type": "string"},
+                    "scale": {"type": "string"},
+                    "placeId": {"type": "string"},
+                    "limit": {"type": "integer", "default": 10},
+                    "includeStories": {"type": "boolean", "default": True},
+                },
+            },
+            handler=self._handle_recommend_news_for_user,
+        )
+
     # ---- Tool Handlers ----
+
+    def _handle_retrieve_web_news(self, args: Dict[str, Any]) -> Dict[str, Any]:
+        store_vec = args.get("store_in_vector_db", True)
+        items = retrieve_web_information(
+            tags=args.get("tags"),
+            words=args.get("words"),
+            urls=args.get("urls"),
+            location=args.get("location"),
+            categories=args.get("categories"),
+            vector_store=self.vector_store if store_vec else None,
+        )
+        return {
+            "retrievedCount": len(items),
+            "storedInVectorDb": store_vec,
+            "items": items,
+        }
+
+    def _handle_recommend_news_for_user(self, args: Dict[str, Any]) -> Dict[str, Any]:
+        user_id = args["userId"]
+        limit = args.get("limit", 10)
+        scale = args.get("scale")
+        place_id = args.get("placeId")
+        include_stories = args.get("includeStories", True)
+
+        feed_page = self.recommender.get_feed(
+            user_id=user_id,
+            scale=scale,
+            place_id=place_id,
+            limit=limit,
+        )
+        if include_stories:
+            for item in feed_page.get("items", []):
+                story = self.store.get_story(item["storyId"])
+                if story:
+                    item["story"] = story
+        return feed_page
 
     def _handle_gather_news(self, args: Dict[str, Any]) -> List[Dict[str, Any]]:
         src = args.get("source", "all")
