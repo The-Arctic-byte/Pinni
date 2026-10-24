@@ -168,9 +168,28 @@ final class AppModel {
     }
 
     /// Reading time is attention: a story read for a while says more than one opened and closed.
+    /// Left within two seconds counts as a skip.
     func read(_ story: Story, for seconds: TimeInterval) {
-        guard seconds >= 2 else { return }
-        record(.dwell, storyId: story.id, value: seconds.rounded(), screen: .story)
+        if seconds < 2 {
+            record(.skip, storyId: story.id, screen: .story)
+        } else {
+            record(.dwell, storyId: story.id, value: seconds.rounded(), screen: .story)
+        }
+    }
+
+    // MARK: Map interactions
+
+    /// The reader changed the map's scale (control or pinch). `value` is the scale's index, 0 = area … 3 = world.
+    func zoomed(to scale: Scale) {
+        record(.zoom, value: Double(Scale.allCases.firstIndex(of: scale) ?? 0), screen: .map, scale: scale)
+    }
+
+    func tappedPin(_ storyId: String, at scale: Scale) {
+        record(.mapTap, storyId: storyId, screen: .map, scale: scale)
+    }
+
+    func tappedChip(_ placeId: String) {
+        record(.placeChipTap, placeId: placeId, screen: .map)
     }
 
     // MARK: Profile
@@ -293,17 +312,19 @@ final class AppModel {
 
     // MARK: Events
 
-    private func record(_ kind: Event.Kind, storyId: String? = nil, channelId: String? = nil, value: Double? = nil,
-                        detail: [String: JSONValue]? = nil, screen: Event.Context.Screen? = nil) {
+    private func record(_ kind: Event.Kind, storyId: String? = nil, channelId: String? = nil, placeId: String? = nil,
+                        value: Double? = nil, detail: [String: JSONValue]? = nil,
+                        screen: Event.Context.Screen? = nil, scale: Scale? = nil) {
         let event = Event(
             id: "ev-" + UUID().uuidString.lowercased(),
             userId: persona.userId,
             type: kind,
             storyId: storyId,
             channelId: channelId,
+            placeId: placeId,
             value: value,
             detail: detail,
-            context: screen.map { .init(screen: $0) },
+            context: screen.map { .init(screen: $0, scale: scale) },
             occurredAt: Date()
         )
         pendingEvents.append(event)
@@ -343,6 +364,9 @@ final class AppModel {
     }
 
     #if DEBUG
+    /// Events waiting to be sent (tests).
+    var queuedEvents: [Event] { pendingEvents }
+
     /// Plays the editor on the mock (Track C's admin page does this for real). The demo has no push:
     /// the outcome shows on My reports, and a published tip appears on the map.
     func simulateEditor(_ report: Report, approve: Bool) async {

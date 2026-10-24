@@ -19,6 +19,11 @@ struct MapScreen: View {
     @State private var areaSelection: String?
     @State private var sheetDetent: PresentationDetent = .resting
     @State private var showsInspector = true
+    /// Asked only when the reader taps "my location"; the position is never sent anywhere.
+    @State private var locationManager = CLLocationManager()
+    #if os(iOS)
+    @State private var screenHeight: CGFloat = 800
+    #endif
     @State private var reportsNews = false
 
     var body: some View {
@@ -33,6 +38,10 @@ struct MapScreen: View {
     private var content: some View {
         #if os(iOS)
         map
+            // The camera centres in the part of the map the sheet leaves visible.
+            .safeAreaPadding(.bottom, sheetCover)
+            .animation(.snappy, value: sheetDetent)
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { screenHeight = $0 }
             .sheet(isPresented: showsSheet) {
                 panel
                     .presentationDetents([.collapsed, .resting, .medium, .large], selection: $sheetDetent)
@@ -61,6 +70,16 @@ struct MapScreen: View {
     }
 
     #if os(iOS)
+    /// How much of the map the sheet covers at its current height (large keeps the medium value: the map is hidden anyway).
+    private var sheetCover: CGFloat {
+        guard model.hasCompletedOnboarding else { return 0 }
+        switch sheetDetent {
+        case .collapsed: return 110
+        case .resting: return screenHeight * 0.34
+        default: return screenHeight * 0.5
+        }
+    }
+
     /// The sheet stays up for good once onboarding is done (it would block the onboarding cover otherwise).
     private var showsSheet: Binding<Bool> {
         Binding(get: { model.hasCompletedOnboarding }, set: { _ in })
@@ -83,6 +102,7 @@ struct MapScreen: View {
 
     private var map: some View {
         Map(position: $position, selection: $areaSelection) {
+            UserAnnotation()
             ForEach(visibleEntries, id: \.item.id) { entry in
                 if let location = entry.story.location, location.isArea {
                     MapCircle(center: location.coordinate.clLocation, radius: location.radiusMeters)
@@ -91,6 +111,7 @@ struct MapScreen: View {
                         .tag(entry.story.id)
                     Annotation(coordinate: location.coordinate.clLocation) {
                         Button {
+                            model.tappedPin(entry.story.id, at: scale)
                             open(entry.story.id)
                         } label: {
                             Color.clear.frame(width: 44, height: 44)
@@ -144,7 +165,15 @@ struct MapScreen: View {
             }
             if new.isEmpty { areaSelection = nil }
         }
-        .safeAreaInset(edge: .top) { scalePicker }
+        .safeAreaInset(edge: .top) {
+            HStack(spacing: 10) {
+                scalePicker
+                locationButton
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            .frame(maxWidth: 540)
+        }
         .onChange(of: model.profile?.homePlaceId, initial: true) {
             show(readerScale.startScale, animated: false)
             #if DEBUG
@@ -154,16 +183,33 @@ struct MapScreen: View {
     }
 
     private var scalePicker: some View {
-        Picker("Scale", selection: Binding(get: { scale }, set: { show($0, animated: true) })) {
+        Picker("Scale", selection: Binding(get: { scale }, set: { model.zoomed(to: $0); show($0, animated: true) })) {
             ForEach(Scale.allCases, id: \.self) { scale in
                 Text(scale.title).tag(scale)
             }
         }
         .pickerStyle(.segmented)
         .labelsHidden()
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .frame(maxWidth: 480)
+    }
+
+    private var locationButton: some View {
+        Button("My location", systemImage: "location", action: showMyLocation)
+            .labelStyle(.iconOnly)
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.circle)
+    }
+
+    /// Asks for when-in-use permission the first time, then follows the reader on the map.
+    /// Without permission the map stays where it is.
+    private func showMyLocation() {
+        if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        listFilter = nil
+        path = []
+        withAnimation(.smooth(duration: 1.0)) {
+            position = .userLocation(fallback: .camera(scale.camera(home: home)))
+        }
     }
 
     // MARK: Data
@@ -283,10 +329,14 @@ struct MapScreen: View {
         if abs(distance - cameraDistance) > cameraDistance * 0.05 { cameraDistance = distance }
         // Pinching moves the scale control without moving the camera again; a close-up on a story doesn't.
         let pinched = Scale(cameraDistance: distance)
-        if pinched != scale, path.isEmpty, listFilter == nil { scale = pinched }
+        if pinched != scale, path.isEmpty, listFilter == nil {
+            scale = pinched
+            model.zoomed(to: pinched)
+        }
     }
 
     private func select(_ group: PinGroup) {
+        model.tappedPin(group.lead.storyId, at: scale)
         guard group.isGroup else {
             open(group.lead.storyId)
             return
@@ -318,6 +368,7 @@ struct MapScreen: View {
             showAll()
             return
         }
+        model.tappedChip(id)
         path = []
         areaSelection = nil
         listFilter = .place(id)

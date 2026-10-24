@@ -8,12 +8,14 @@ struct MockNewsService: NewsService {
     }
 
     let bundle: Bundle
+    private let bundleDefaults: UserDefaults
     private let saved: SavedProfiles
     private let newsroom: MockNewsroom
     private let community: MockCommunity
 
     init(bundle: Bundle = .main, defaults: UserDefaults = .standard) {
         self.bundle = bundle
+        self.bundleDefaults = defaults
         self.saved = SavedProfiles(defaults: defaults)
         self.newsroom = MockNewsroom(defaults: defaults)
         self.community = MockCommunity(defaults: defaults)
@@ -162,8 +164,16 @@ struct MockNewsService: NewsService {
         return all.filter { $0.userId == userId }
     }
 
+    /// Keeps what it receives (last 500) so tests and the debug build can see which events were sent.
     func send(_ events: [Event]) async throws {
-        // shortcut: mock drops events; A8 keeps them in a local queue until the API exists.
+        let key = "mock.sentEvents"
+        let previous = bundleDefaults.data(forKey: key).flatMap { try? JSONDecoder.contract.decode([Event].self, from: $0) } ?? []
+        let kept = Array((previous + events).suffix(500))
+        bundleDefaults.set(try? JSONEncoder.contract.encode(kept), forKey: key)
+    }
+
+    var sentEvents: [Event] {
+        bundleDefaults.data(forKey: "mock.sentEvents").flatMap { try? JSONDecoder.contract.decode([Event].self, from: $0) } ?? []
     }
 
     private func load<T: Decodable>(_ name: String) throws -> T {

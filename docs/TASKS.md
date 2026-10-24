@@ -112,7 +112,7 @@ Status:
 - [x] Picked categories get weight 0.9; the rest are left out (= neutral). Residence and housing are only stored with consent.
 - [x] Profile saved through `NewsService.save` (mock keeps it across relaunch); feed reloads in the chosen language.
 - [x] Strings in fi / fa / sv (needs native review); Persian layout checked in the simulator.
-- [ ] Events are dropped by the mock until A8 adds the local queue.
+- [x] Onboarding events go through the A8 queue.
 - Debug: Profile → "Restart onboarding"; launch argument `-onboardingStep <step>` opens a step directly.
 
 ### A5 · Map
@@ -131,8 +131,8 @@ Status:
 - [x] News panel (`MapPanel`): iPhone = native sheet, never dismissed, detents collapsed (110 pt) / resting (default, 34 %) / medium / large, map usable up to medium, Community and Profile in its header; Mac = inspector, open by default, toolbar toggle. Lists the scale's stories ranked for the reader; a group pin narrows it ("Show all" to go back); a story pushes inside the panel with the system back button.
 - [x] Story text direction follows the language actually shown (English fallback stays left-to-right for Persian readers).
 - [ ] Thiings 3D images for map objects (SF Symbols stand in).
-- [ ] Camera ignores the sheet: pins near the bottom of the screen can sit under a medium sheet.
-- [ ] "Back to my location" button with when-in-use permission.
+- [x] Camera follows the sheet: on iPhone the map's bottom safe area is the sheet's current height, so the camera centres, flies in and places pins in the visible part.
+- [x] "My location" button next to the scale control: asks for when-in-use permission on first tap, then follows the reader (`UserAnnotation`); the position is never sent anywhere. macOS sandbox has location access.
 - [x] Mac: launch / resize crash fixed (camera updates were changing state inside AppKit's layout pass); resizing confirmed working.
 - Debug launch arguments: `-persona sara`, `-mapScale <scale>`, `-mapSelect <story id>`, `-mapPanel medium|large`, `-onboarding.completed YES`.
 
@@ -165,7 +165,8 @@ Log every event from T00 (open, dwell time, likes, skips, zoom, map taps, …) l
 
 Status:
 - [x] Queue in `AppModel` (kept in UserDefaults, sent through `NewsService.send`, kept on failure): open, dwell (≥ 2 s), like / dislike (value 0 = undo), notForMe (story or category), share, report, flagWrong, onboardingAnswer.
-- [ ] Skip, zoom, map tap, place-chip tap events; batch upload to the real API.
+- [x] Zoom (scale index + scale), map tap (story + scale), place-chip tap (place), skip (story left within 2 s) events; the mock keeps the last 500 sent events so tests can check them.
+- [ ] Batch upload to the real API (Integration).
 
 ### A9 · Community
 - Suggested channels ("people like you follow…"), join / leave.
