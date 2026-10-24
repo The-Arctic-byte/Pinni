@@ -92,7 +92,7 @@ struct MapScreen: View {
             entries: panelEntries,
             mustSee: mustSeeEntries,
             chips: chipItems,
-            selectedChip: listFilter?.placeId,
+            selectedChip: selectedChipId,
             isFiltered: listFilter != nil,
             path: $path,
             onSelectChip: select(chip:),
@@ -166,6 +166,15 @@ struct MapScreen: View {
             if new.isEmpty { areaSelection = nil }
         }
         .safeAreaInset(edge: .top) {
+            #if os(iOS)
+            // The sheet's chips are the scale control. Only the location button stays on the map.
+            HStack {
+                Spacer(minLength: 0)
+                locationButton
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            #else
             HStack(spacing: 10) {
                 scalePicker
                 locationButton
@@ -173,6 +182,7 @@ struct MapScreen: View {
             .padding(.horizontal)
             .padding(.vertical, 8)
             .frame(maxWidth: 540)
+            #endif
         }
         .onChange(of: model.profile?.homePlaceId, initial: true) {
             show(readerScale.startScale, animated: false)
@@ -230,7 +240,28 @@ struct MapScreen: View {
     }
 
     private var placeChips: PlaceChips {
-        PlaceChips(places: model.places, homeCityId: readerScale.homeCityId, homeCountryCode: model.profile?.homeCountryCode)
+        PlaceChips(
+            places: model.places,
+            homeAreaId: readerScale.homeAreaId,
+            homeCityId: readerScale.homeCityId,
+            homeCountryCode: model.profile?.homeCountryCode
+        )
+    }
+
+    /// The chip that matches where the reader is. On iPhone this stands in for the scale picker,
+    /// including while they pinch and no chip is tapped.
+    private var selectedChipId: String? {
+        if let place = listFilter?.placeId { return place }
+        #if os(iOS)
+        switch scale {
+        case .area: return readerScale.homeAreaId
+        case .city: return readerScale.homeCityId
+        case .finland: return ReaderScale.homeCountryId
+        case .world: return "world"
+        }
+        #else
+        return nil
+        #endif
     }
 
     private var chipItems: [MapPanel.Chip] {
@@ -374,6 +405,7 @@ struct MapScreen: View {
         listFilter = .place(id)
         // Keep the scale control in step with where the map goes.
         scale = switch id {
+        case readerScale.homeAreaId: .area
         case readerScale.homeCityId: .city
         case ReaderScale.homeCountryId: .finland
         default: .world
@@ -391,6 +423,7 @@ struct MapScreen: View {
 
     private func chipCamera(_ id: String) -> MapCamera {
         switch id {
+        case readerScale.homeAreaId: return Scale.area.camera(home: home)
         case readerScale.homeCityId: return Scale.city.camera(home: home)
         case ReaderScale.homeCountryId: return Scale.finland.camera(home: home)
         case "world": return Scale.world.camera(home: home)
