@@ -25,6 +25,12 @@ struct MockNewsService: NewsService {
         try load("places")
     }
 
+    func me(for userId: String) async throws -> User {
+        let users: [User] = try load("users")
+        guard let user = users.first(where: { $0.id == userId }) else { throw MockError.unknown(userId) }
+        return user
+    }
+
     func feed(for userId: String) async throws -> FeedPage {
         guard let persona = Persona(userId: userId) else { throw MockError.unknown(userId) }
         let page: FeedPage = try load(persona.feedFile)

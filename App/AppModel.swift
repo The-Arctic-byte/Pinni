@@ -26,6 +26,8 @@ final class AppModel {
     private let defaults: UserDefaults
 
     private(set) var persona: Persona
+    /// The reader's id as the data source knows it: the persona's on mock data, the signed-in user's on an API.
+    private(set) var userId: String
     private(set) var hasCompletedOnboarding: Bool
     private(set) var state: LoadState = .idle
     private(set) var profile: Profile?
@@ -56,6 +58,7 @@ final class AppModel {
         self.persona = persona
         #endif
         self.defaults = defaults
+        self.userId = persona.userId
         self.hasCompletedOnboarding = defaults.bool(forKey: Self.onboardingKey)
     }
 
@@ -82,7 +85,11 @@ final class AppModel {
         let generation = loadGeneration
         state = .loading
         do {
-            let userId = persona.userId
+            #if DEBUG
+            if let api = service as? APINewsService { await api.useDevAccount(for: persona) }
+            #endif
+            let userId = try await service.me(for: persona.userId).id
+            self.userId = userId
             async let profile = service.profile(for: userId)
             async let places = service.places()
             async let feed = service.feed(for: userId)
@@ -123,9 +130,16 @@ final class AppModel {
 
     /// Saves the onboarding result as the anonymous reader's first profile and logs one event per step.
     func completeOnboarding(with answers: OnboardingAnswers) async {
-        let userId = Persona.newUser.userId
         let now = Date()
         do {
+            if persona != .newUser {
+                persona = .newUser
+                #if DEBUG
+                if let api = service as? APINewsService { await api.useDevAccount(for: .newUser) }
+                #endif
+            }
+            let userId = try await service.me(for: persona.userId).id
+            self.userId = userId
             _ = try await service.save(answers.profile(userId: userId, now: now))
             try await service.send(answers.events(userId: userId, now: now) { "ev-" + UUID().uuidString.lowercased() })
         } catch {
@@ -220,7 +234,7 @@ final class AppModel {
     /// Forgets what the recommender learned and the reader's reactions and hidden stories; the stated profile stays.
     func resetLearned() async {
         do {
-            try await service.resetLearned(for: persona.userId)
+            try await service.resetLearned(for: userId)
         } catch {
             return
         }
@@ -265,7 +279,7 @@ final class AppModel {
     func setJoined(_ joined: Bool, channelId: String) async {
         guard joined != joinedChannelIds.contains(channelId) else { return }
         do {
-            try await service.setMembership(joined, channelId: channelId, userId: persona.userId)
+            try await service.setMembership(joined, channelId: channelId, userId: userId)
         } catch {
             return
         }
@@ -279,7 +293,7 @@ final class AppModel {
         let body = trimmed?.isEmpty == false ? trimmed : nil
         guard body != nil || (story != nil && parent == nil) else { return }
         let post = try await service.post(storyId: parent == nil ? story?.id : nil, text: body, replyToId: parent?.id,
-                                          in: channelId, authorId: persona.userId)
+                                          in: channelId, authorId: userId)
         posts[channelId, default: []].insert(post, at: 0)
         record(.postToChannel, storyId: story?.id, channelId: channelId,
                detail: parent.map { ["replyToId": .string($0.id)] }, screen: .community)
@@ -296,14 +310,14 @@ final class AppModel {
     }
 
     func isMine(_ post: ChannelPost) -> Bool {
-        post.authorId == persona.userId
+        post.authorId == userId
     }
 
     // MARK: Reports
 
     /// Sends a report for a human editor (contract/processes/report-review.md). The reader follows it on My reports.
     func submit(_ draft: ReportDraft) async throws -> Report {
-        let report = try await service.submit(draft, reporterId: persona.userId)
+        let report = try await service.submit(draft, reporterId: userId)
         reports.insert(report, at: 0)
         record(.report, storyId: draft.kind == .problem ? draft.storyId : nil, detail: ["reportId": .string(report.id)])
         if draft.kind == .problem, let id = draft.storyId { record(.flagWrong, storyId: id) }
@@ -317,7 +331,7 @@ final class AppModel {
                         screen: Event.Context.Screen? = nil, scale: Scale? = nil) {
         let event = Event(
             id: "ev-" + UUID().uuidString.lowercased(),
-            userId: persona.userId,
+            userId: userId,
             type: kind,
             storyId: storyId,
             channelId: channelId,
@@ -348,7 +362,7 @@ final class AppModel {
     // MARK: Local storage
 
     private func saveFeedback() {
-        defaults.set(try? JSONEncoder.contract.encode(feedback), forKey: "feedback." + persona.userId)
+        defaults.set(try? JSONEncoder.contract.encode(feedback), forKey: "feedback." + userId)
     }
 
     private static func storedFeedback(for userId: String, in defaults: UserDefaults) -> LocalFeedback {

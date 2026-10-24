@@ -3,6 +3,8 @@ import Foundation
 /// Everything the app reads from or sends to the backend. One implementation per data source:
 /// `MockNewsService` now (reads `contract/mock`), an HTTP client against `contract/openapi.yaml` at Integration.
 protocol NewsService: Sendable {
+    /// Who the reader is (GET /v1/me). The mock answers with the persona; a backend with the signed-in user.
+    func me(for userId: String) async throws -> User
     func places() async throws -> [Place]
     func feed(for userId: String) async throws -> FeedPage
     func stories(ids: [String]) async throws -> [Story]

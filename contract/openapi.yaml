@@ -198,13 +198,17 @@ paths:
   /v1/channels:
     get:
       tags: [community]
-      summary: Channels by id, or the reader's joined channels when no ids are given
+      summary: Channels by id, every channel (all=true, for the app's "More channels"), or the reader's joined channels (default)
       parameters:
         - name: ids
           in: query
           style: form
           explode: false
           schema: { type: array, items: { type: string } }
+        - name: all
+          in: query
+          description: Every channel. Takes precedence over ids (as the backend implements it).
+          schema: { type: boolean, default: false }
       responses:
         "200":
           description: OK
