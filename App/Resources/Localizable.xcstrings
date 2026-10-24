@@ -530,29 +530,6 @@
         }
       }
     },
-    "Close" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fa" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "بستن"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Sulje"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Stäng"
-          }
-        }
-      }
-    },
     "Comment (optional)" : {
       "localizations" : {
         "fa" : {
@@ -2315,29 +2292,6 @@
         }
       }
     },
-    "Personalization" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fa" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "شخصی‌سازی"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Personointi"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Anpassning"
-          }
-        }
-      }
-    },
     "Pick all that fit. No account needed, and you can skip anything you don’t want to answer." : {
       "localizations" : {
         "fa" : {
@@ -2642,52 +2596,6 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Läs den publicerade nyheten"
-          }
-        }
-      }
-    },
-    "Reader" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fa" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "خواننده"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Lukija"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Läsare"
-          }
-        }
-      }
-    },
-    "Relevance %lld of 4" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "fa" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "میزان ارتباط %lld از ۴"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Osuvuus %lld/4"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Relevans %lld av 4"
           }
         }
       }
