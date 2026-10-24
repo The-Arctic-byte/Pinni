@@ -1,4 +1,10 @@
+import json
+
 import pytest
+
+from pinni.config import BACKEND
+
+CONTRACT = BACKEND.parent / "contract"
 
 
 def stories_by_id(client, headers, ids):
@@ -57,7 +63,9 @@ def test_feed_scale_and_paging(client, login, valid):
 def test_feed_by_place(client, login):
     headers = login("sara")
     feed = client.get("/v1/feed", params={"placeId": "kiiminki"}, headers=headers).json()
-    assert {i["storyId"] for i in feed["items"]} == {"kiiminki-shooting", "icy-path-kiiminki"}
+    ids = [i["storyId"] for i in feed["items"]]
+    assert {"kiiminki-shooting", "icy-path-kiiminki"} <= set(ids)
+    assert all(s["placeId"] == "kiiminki" for s in stories_by_id(client, headers, ids).values())
 
 
 def test_stories(client, login, valid):
@@ -75,7 +83,7 @@ def test_places(client, anonymous, valid):
     headers, _ = anonymous()
     places = client.get("/v1/places", headers=headers).json()
     valid("place.schema.json", places)
-    assert len(places) == 11
+    assert len(places) == len(json.loads((CONTRACT / "mock" / "places.json").read_text(encoding="utf-8")))
 
 
 def test_events(client, anonymous):
