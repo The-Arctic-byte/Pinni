@@ -33,6 +33,7 @@ final class AppModel {
     private(set) var feed: FeedPage?
     private(set) var stories: [String: Story] = [:]
     private(set) var reports: [Report] = []
+    private(set) var learned: LearnedPreferences = .none
     private(set) var channels: [String: Channel] = [:]
     private(set) var channelSuggestions: [ChannelSuggestion] = []
     private(set) var joinedChannelIds: Set<String> = []
@@ -90,6 +91,7 @@ final class AppModel {
             let loadedProfile = try await profile
             let loadedPlaces = try await places
             let loadedReports = try await service.reports(for: userId)
+            let loadedLearned = try await service.learned(for: userId)
             let loadedChannels = try await service.channels()
             let loadedSuggestions = try await service.suggestedChannels(for: userId)
             let joined = try await service.joinedChannels(for: userId)
@@ -101,6 +103,7 @@ final class AppModel {
             self.feedback = Self.storedFeedback(for: userId, in: defaults)
             self.pendingEvents = Self.storedEvents(in: defaults)
             self.reports = loadedReports
+            self.learned = loadedLearned
             self.profile = loadedProfile
             self.places = Dictionary(uniqueKeysWithValues: loadedPlaces.map { ($0.id, $0) })
             self.feed = page
@@ -165,9 +168,72 @@ final class AppModel {
     }
 
     /// Reading time is attention: a story read for a while says more than one opened and closed.
+    /// Left within two seconds counts as a skip.
     func read(_ story: Story, for seconds: TimeInterval) {
-        guard seconds >= 2 else { return }
-        record(.dwell, storyId: story.id, value: seconds.rounded(), screen: .story)
+        if seconds < 2 {
+            record(.skip, storyId: story.id, screen: .story)
+        } else {
+            record(.dwell, storyId: story.id, value: seconds.rounded(), screen: .story)
+        }
+    }
+
+    // MARK: Map interactions
+
+    /// The reader changed the map's scale (control or pinch). `value` is the scale's index, 0 = area … 3 = world.
+    func zoomed(to scale: Scale) {
+        record(.zoom, value: Double(Scale.allCases.firstIndex(of: scale) ?? 0), screen: .map, scale: scale)
+    }
+
+    func tappedPin(_ storyId: String, at scale: Scale) {
+        record(.mapTap, storyId: storyId, screen: .map, scale: scale)
+    }
+
+    func tappedChip(_ placeId: String) {
+        record(.placeChipTap, placeId: placeId, screen: .map)
+    }
+
+    // MARK: Profile
+
+    /// Saves one edited onboarding step (Profile → edit). Everything else in the profile stays.
+    func updateProfile(_ answers: OnboardingAnswers, step: OnboardingAnswers.Step) async {
+        guard var updated = profile else { return }
+        updated.apply(answers, step: step, now: Date())
+        guard updated != profile else { return }
+        await save(updated, detail: ["field": .string(step.rawValue)])
+    }
+
+    /// Shows a category that "Not for me" turned off again.
+    func unblock(_ category: Category) async {
+        guard var updated = profile, updated.hardFilters.categories.contains(category) else { return }
+        updated.hardFilters.categories.removeAll { $0 == category }
+        updated.updatedAt = Date()
+        await save(updated, detail: ["field": .string("hardFilters"), "unblocked": .string(category.rawValue)])
+    }
+
+    var hiddenStoryCount: Int { feedback.hidden.count }
+
+    func unhideAllStories() {
+        feedback.hidden = []
+        saveFeedback()
+    }
+
+    /// Forgets what the recommender learned and the reader's reactions and hidden stories; the stated profile stays.
+    func resetLearned() async {
+        do {
+            try await service.resetLearned(for: persona.userId)
+        } catch {
+            return
+        }
+        learned = .none
+        feedback = LocalFeedback()
+        saveFeedback()
+        record(.profileEdit, detail: ["field": .string("learned"), "reset": .bool(true)], screen: .profile)
+    }
+
+    private func save(_ updated: Profile, detail: [String: JSONValue]) async {
+        guard let saved = try? await service.save(updated) else { return }
+        profile = saved
+        record(.profileEdit, detail: detail, screen: .profile)
     }
 
     // MARK: Community
@@ -207,14 +273,26 @@ final class AppModel {
         record(joined ? .joinChannel : .leaveChannel, channelId: channelId, screen: .community)
     }
 
-    /// Shares a story and/or text in a channel the reader joined.
-    func post(text: String?, story: Story?, in channelId: String) async throws {
+    /// Shares a story and/or text in a channel the reader joined, or replies to a post (text required).
+    func post(text: String?, story: Story?, in channelId: String, replyTo parent: ChannelPost? = nil) async throws {
         let trimmed = text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let body = trimmed?.isEmpty == false ? trimmed : nil
-        guard body != nil || story != nil else { return }
-        let post = try await service.post(storyId: story?.id, text: body, in: channelId, authorId: persona.userId)
+        guard body != nil || (story != nil && parent == nil) else { return }
+        let post = try await service.post(storyId: parent == nil ? story?.id : nil, text: body, replyToId: parent?.id,
+                                          in: channelId, authorId: persona.userId)
         posts[channelId, default: []].insert(post, at: 0)
-        record(.postToChannel, storyId: story?.id, channelId: channelId, screen: .community)
+        record(.postToChannel, storyId: story?.id, channelId: channelId,
+               detail: parent.map { ["replyToId": .string($0.id)] }, screen: .community)
+    }
+
+    /// A channel's posts without replies, newest first.
+    func topLevelPosts(in channelId: String) -> [ChannelPost] {
+        (posts[channelId] ?? []).filter { $0.replyToId == nil }
+    }
+
+    /// The replies to a post, oldest first, like a conversation.
+    func replies(to post: ChannelPost) -> [ChannelPost] {
+        (posts[post.channelId] ?? []).filter { $0.replyToId == post.id }.sorted { $0.createdAt < $1.createdAt }
     }
 
     func isMine(_ post: ChannelPost) -> Bool {
@@ -234,17 +312,19 @@ final class AppModel {
 
     // MARK: Events
 
-    private func record(_ kind: Event.Kind, storyId: String? = nil, channelId: String? = nil, value: Double? = nil,
-                        detail: [String: JSONValue]? = nil, screen: Event.Context.Screen? = nil) {
+    private func record(_ kind: Event.Kind, storyId: String? = nil, channelId: String? = nil, placeId: String? = nil,
+                        value: Double? = nil, detail: [String: JSONValue]? = nil,
+                        screen: Event.Context.Screen? = nil, scale: Scale? = nil) {
         let event = Event(
             id: "ev-" + UUID().uuidString.lowercased(),
             userId: persona.userId,
             type: kind,
             storyId: storyId,
             channelId: channelId,
+            placeId: placeId,
             value: value,
             detail: detail,
-            context: screen.map { .init(screen: $0) },
+            context: screen.map { .init(screen: $0, scale: scale) },
             occurredAt: Date()
         )
         pendingEvents.append(event)
@@ -284,6 +364,9 @@ final class AppModel {
     }
 
     #if DEBUG
+    /// Events waiting to be sent (tests).
+    var queuedEvents: [Event] { pendingEvents }
+
     /// Plays the editor on the mock (Track C's admin page does this for real). The demo has no push:
     /// the outcome shows on My reports, and a published tip appears on the map.
     func simulateEditor(_ report: Report, approve: Bool) async {

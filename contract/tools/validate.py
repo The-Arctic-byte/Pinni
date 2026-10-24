@@ -181,8 +181,19 @@ def check_references(d: dict) -> None:
     for name in ("channel-suggestions-sara.json", "channel-suggestions-matti.json", "channel-suggestions-new.json"):
         for s in d.get(name, []):
             need("channel", s["channelId"], channels, f"{name} suggestion")
+    posts_by_id = {p["id"]: p for p in d.get("channel-posts.json", [])}
     for p in d.get("channel-posts.json", []):
         need("channel", p["channelId"], channels, f"post {p['id']}.channelId")
+        if "replyToId" in p:
+            parent = posts_by_id.get(p["replyToId"])
+            if parent is None:
+                fail(f"post {p['id']}: replyToId '{p['replyToId']}' does not exist")
+            elif parent["channelId"] != p["channelId"]:
+                fail(f"post {p['id']}: reply is in another channel than its post")
+            elif "replyToId" in parent:
+                fail(f"post {p['id']}: replies are one level deep")
+            elif p["createdAt"] < parent["createdAt"]:
+                fail(f"post {p['id']}: reply is older than its post")
         need("user", p["authorId"], users, f"post {p['id']}.authorId")
         need("story", p.get("storyId"), stories, f"post {p['id']}.storyId")
         author = users.get(p["authorId"])

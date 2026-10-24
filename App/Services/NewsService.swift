@@ -8,6 +8,10 @@ protocol NewsService: Sendable {
     func stories(ids: [String]) async throws -> [Story]
     func profile(for userId: String) async throws -> Profile
     func save(_ profile: Profile) async throws -> Profile
+    /// What the recommender has learned (GET /v1/profile/learned).
+    func learned(for userId: String) async throws -> LearnedPreferences
+    /// Forget it; the stated profile stays (DELETE /v1/profile/learned).
+    func resetLearned(for userId: String) async throws
     func suggestedChannels(for userId: String) async throws -> [ChannelSuggestion]
     func channels() async throws -> [Channel]
     /// The channels the reader joined (GET /v1/channels without ids).
@@ -15,8 +19,8 @@ protocol NewsService: Sendable {
     /// Join or leave (PUT / DELETE /v1/channels/{id}/membership).
     func setMembership(_ joined: Bool, channelId: String, userId: String) async throws
     func posts(in channelId: String) async throws -> [ChannelPost]
-    /// Share a story and/or write text in a channel (POST /v1/channels/{id}/posts).
-    func post(storyId: String?, text: String?, in channelId: String, authorId: String) async throws -> ChannelPost
+    /// Share a story, write text, or reply to a post in a channel (POST /v1/channels/{id}/posts).
+    func post(storyId: String?, text: String?, replyToId: String?, in channelId: String, authorId: String) async throws -> ChannelPost
     func reports(for userId: String) async throws -> [Report]
     /// A news tip or a problem with a story. The backend queues it for a human editor.
     func submit(_ draft: ReportDraft, reporterId: String) async throws -> Report

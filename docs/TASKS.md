@@ -112,7 +112,7 @@ Status:
 - [x] Picked categories get weight 0.9; the rest are left out (= neutral). Residence and housing are only stored with consent.
 - [x] Profile saved through `NewsService.save` (mock keeps it across relaunch); feed reloads in the chosen language.
 - [x] Strings in fi / fa / sv (needs native review); Persian layout checked in the simulator.
-- [ ] Events are dropped by the mock until A8 adds the local queue.
+- [x] Onboarding events go through the A8 queue.
 - Debug: Profile → "Restart onboarding"; launch argument `-onboardingStep <step>` opens a step directly.
 
 ### A5 · Map
@@ -131,8 +131,8 @@ Status:
 - [x] News panel (`MapPanel`): iPhone = native sheet, never dismissed, detents collapsed (110 pt) / resting (default, 34 %) / medium / large, map usable up to medium, Community and Profile in its header; Mac = inspector, open by default, toolbar toggle. Lists the scale's stories ranked for the reader; a group pin narrows it ("Show all" to go back); a story pushes inside the panel with the system back button.
 - [x] Story text direction follows the language actually shown (English fallback stays left-to-right for Persian readers).
 - [ ] Thiings 3D images for map objects (SF Symbols stand in).
-- [ ] Camera ignores the sheet: pins near the bottom of the screen can sit under a medium sheet.
-- [ ] "Back to my location" button with when-in-use permission.
+- [x] Camera follows the sheet: on iPhone the map's bottom safe area is the sheet's current height, so the camera centres, flies in and places pins in the visible part.
+- [x] "My location" button next to the scale control: asks for when-in-use permission on first tap, then follows the reader (`UserAnnotation`); the position is never sent anywhere. macOS sandbox has location access.
 - [x] Mac: launch / resize crash fixed (camera updates were changing state inside AppKit's layout pass); resizing confirmed working.
 - Debug launch arguments: `-persona sara`, `-mapScale <scale>`, `-mapSelect <story id>`, `-mapPanel medium|large`, `-onboarding.completed YES`.
 
@@ -165,7 +165,8 @@ Log every event from T00 (open, dwell time, likes, skips, zoom, map taps, …) l
 
 Status:
 - [x] Queue in `AppModel` (kept in UserDefaults, sent through `NewsService.send`, kept on failure): open, dwell (≥ 2 s), like / dislike (value 0 = undo), notForMe (story or category), share, report, flagWrong, onboardingAnswer.
-- [ ] Skip, zoom, map tap, place-chip tap events; batch upload to the real API.
+- [x] Zoom (scale index + scale), map tap (story + scale), place-chip tap (place), skip (story left within 2 s) events; the mock keeps the last 500 sent events so tests can check them.
+- [ ] Batch upload to the real API (Integration).
 
 ### A9 · Community
 - Suggested channels ("people like you follow…"), join / leave.
@@ -174,7 +175,9 @@ Status:
 
 Status:
 - [x] Community: "Suggested for you" (from similar people, with the reason; counts only when ≥ 20), "Your channels", "More channels"; every channel in exactly one section.
-- [x] Channel page: description, members, Join / Leave, posts (shared stories open the story view), composer once joined; authors shown as "You" or "A member".
+- [x] Channel page: description, members, Join / Leave, top-level posts with reply counts, composer once joined; authors shown as "You" or "A member".
+- [x] Post page: the post, its shared story (opens the story view), members' replies oldest first, and a reply box once joined. Contract: `Post.replyToId` (one level deep, text required, same channel; checked by `validate.py`).
+- [x] All community destinations (channel, post, story) are declared on `CommunityScreen`'s root, so links on pushed pages always resolve.
 - [x] "Post to a channel" on every story, with an optional comment.
 - [x] Join, leave and post are events for the recommender / knowledge graph; memberships and posts persist in the mock (`MockCommunity`).
 - [x] Mock data: 12 channels, 13 posts, suggestions for Sara, Matti and the new user. A reader starts in the channels they posted in (the contract has no membership file).
@@ -184,6 +187,13 @@ Status:
 
 ### A10 · Profile
 Edit everything from onboarding, see and reset what the app has learned, language, notification settings, my reports with status.
+
+Status:
+- [x] Your preferences: story language, who you are, most important categories, area / home country / residence / housing — each opens its onboarding step as an edit page and saves right away (`Profile.apply(_:step:)`; weights ≥ 0.7 count as "most important"). Residence and housing only with consent.
+- [x] Hidden with "Not for me": turned-off categories and hidden stories, each with "Show again".
+- [x] What Pinni has learned (`GET /v1/profile/learned`): how personal the feed is, top topics, followed places; "Reset what Pinni learned" (`DELETE`) also forgets reactions and hidden stories, preferences stay.
+- [x] My reports (A11).
+- Notification settings left out: no notifications in the demo.
 
 ### A11 · Report
 Report a story or submit news, by topic. Shows status: Sent → Editor review → Published / Edited / Rejected. Local notification on publish (push in Integration).

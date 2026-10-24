@@ -230,6 +230,7 @@ paths:
   /v1/channels/{channelId}/posts:
     get:
       tags: [community]
+      summary: All posts in the channel, replies included (newest first); the app groups replies under their post
       parameters: [{ $ref: "#/components/parameters/channelId" }]
       responses:
         "200":
@@ -239,7 +240,8 @@ paths:
               schema: { type: array, items: { $ref: "./schemas/channel.schema.json#/$defs/Post" } }
     post:
       tags: [community]
-      summary: Share a story or post text to a channel (members only)
+      summary: Share a story, post text, or reply to a post in a channel (members only)
+      description: A reply sets `replyToId` to a top-level post in the same channel and must have `text`.
       parameters: [{ $ref: "#/components/parameters/channelId" }]
       requestBody:
         required: true
@@ -251,6 +253,7 @@ paths:
               properties:
                 storyId: { type: string }
                 text: { type: string, maxLength: 2000 }
+                replyToId: { type: string, description: The post this replies to. }
       responses:
         "201":
           description: Created

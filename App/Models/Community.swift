@@ -31,6 +31,8 @@ struct ChannelPost: Codable, Hashable, Identifiable, Sendable {
     let id: String
     let channelId: String
     let authorId: String
+    /// Set on a reply: the post it comments on (same channel, one level deep).
+    let replyToId: String?
     let storyId: String?
     let text: String?
     let likes: Int?

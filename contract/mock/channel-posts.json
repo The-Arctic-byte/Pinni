@@ -108,5 +108,86 @@
     "text": "Tänään klo 17 kirjastossa! Everyone welcome, all levels.",
     "likes": 12,
     "createdAt": "2026-10-21T08:00:00+03:00"
+  },
+  {
+    "id": "post-0014",
+    "channelId": "psoas-residents",
+    "authorId": "u-matti",
+    "replyToId": "post-0007",
+    "text": "Thanks! Same in Kiiminki on Thursday, I heard.",
+    "likes": 2,
+    "createdAt": "2026-10-24T07:45:00+03:00"
+  },
+  {
+    "id": "post-0015",
+    "channelId": "psoas-residents",
+    "authorId": "u-sara",
+    "replyToId": "post-0008",
+    "text": "Good tip, I did not know the allowance changes with the rent.",
+    "likes": 3,
+    "createdAt": "2026-10-23T16:10:00+03:00"
+  },
+  {
+    "id": "post-0016",
+    "channelId": "psoas-residents",
+    "authorId": "u-matti",
+    "replyToId": "post-0008",
+    "text": "You can update it online in OmaKela, takes five minutes.",
+    "likes": 4,
+    "createdAt": "2026-10-23T16:30:00+03:00"
+  },
+  {
+    "id": "post-0017",
+    "channelId": "winter-cycling-oulu",
+    "authorId": "u-matti",
+    "replyToId": "post-0005",
+    "text": "Get tyres with at least 100 studs. Worth every euro on Pohjantie.",
+    "likes": 6,
+    "createdAt": "2026-10-21T10:00:00+03:00"
+  },
+  {
+    "id": "post-0018",
+    "channelId": "winter-cycling-oulu",
+    "authorId": "u-sara",
+    "replyToId": "post-0005",
+    "text": "Thank you! Any shop you recommend?",
+    "likes": 1,
+    "createdAt": "2026-10-21T10:20:00+03:00"
+  },
+  {
+    "id": "post-0019",
+    "channelId": "persian-oulu",
+    "authorId": "u-matti",
+    "replyToId": "post-0006",
+    "text": "Ilmoittauduin! Tiistain ryhmä on hyvä aloittelijoille.",
+    "likes": 2,
+    "createdAt": "2026-10-22T08:00:00+03:00"
+  },
+  {
+    "id": "post-0020",
+    "channelId": "international-jobs-oulu",
+    "authorId": "u-sara",
+    "replyToId": "post-0003",
+    "text": "Are there jobs for designers too?",
+    "likes": 0,
+    "createdAt": "2026-10-22T13:00:00+03:00"
+  },
+  {
+    "id": "post-0021",
+    "channelId": "karpat-fans",
+    "authorId": "u-sara",
+    "replyToId": "post-0009",
+    "text": "First game for me, any tips?",
+    "likes": 5,
+    "createdAt": "2026-10-23T12:00:00+03:00"
+  },
+  {
+    "id": "post-0022",
+    "channelId": "karpat-fans",
+    "authorId": "u-matti",
+    "replyToId": "post-0009",
+    "text": "Dress warm, stand in section C, and learn the Kärpät chant!",
+    "likes": 8,
+    "createdAt": "2026-10-23T12:30:00+03:00"
   }
 ]
