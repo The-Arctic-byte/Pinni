@@ -8,10 +8,12 @@ COPY backend/pyproject.toml backend/uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
 COPY contract /app/contract
+COPY admin /app/admin
 COPY backend/pinni ./pinni
 
 ENV PINNI_DB_PATH=/data/pinni.db \
-    PINNI_CONTRACT_DIR=/app/contract
+    PINNI_CONTRACT_DIR=/app/contract \
+    PINNI_ADMIN_DIR=/app/admin
 VOLUME /data
 EXPOSE 8000
 CMD ["uv", "run", "--no-sync", "uvicorn", "pinni.main:app", "--host", "0.0.0.0", "--port", "8000"]

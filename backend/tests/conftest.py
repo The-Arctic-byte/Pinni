@@ -11,6 +11,7 @@ from pinni.seed import DEV_PASSWORD, dev_email
 @pytest.fixture
 def app(tmp_path):
     settings = Settings(db_path=tmp_path / "test.db", contract_dir=BACKEND.parent / "contract",
+                        admin_dir=BACKEND.parent / "admin",
                         seed_mock=True, dev_accounts=True, neo4j_uri=os.environ.get("PINNI_TEST_NEO4J_URI", ""),
                         neo4j_user="neo4j", neo4j_password=os.environ.get("PINNI_TEST_NEO4J_PASSWORD", ""),
                         chroma="memory", ollama_url="", embed_model="")

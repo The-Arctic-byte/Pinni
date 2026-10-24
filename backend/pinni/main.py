@@ -3,7 +3,8 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from . import db, errors, graph, vectors
 from .config import Settings
@@ -52,6 +53,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/openapi.yaml", include_in_schema=False)
     def contract_spec():
         return FileResponse(settings.contract_dir / "openapi.yaml", media_type="application/yaml")
+
+    if settings.admin_dir.is_dir():
+        @app.get("/admin", include_in_schema=False)
+        def admin_root():
+            return RedirectResponse("/admin/")
+
+        app.mount("/admin", StaticFiles(directory=settings.admin_dir, html=True), name="admin")
 
     return app
 

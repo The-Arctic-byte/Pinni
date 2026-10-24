@@ -379,6 +379,21 @@ paths:
               schema: { $ref: "./schemas/story.schema.json" }
         "403": { $ref: "#/components/responses/Error" }
 
+  /v1/admin/reports/{reportId}:
+    get:
+      tags: [admin]
+      summary: One report with its text, for the review queue (reporters see theirs via /v1/reports/mine)
+      parameters:
+        - { name: reportId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "./schemas/report.schema.json" }
+        "403": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+
   /v1/admin/reports/{reportId}/decision:
     post:
       tags: [admin]

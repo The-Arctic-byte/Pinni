@@ -18,6 +18,8 @@ def _flag(name: str, default: bool) -> bool:
 class Settings:
     db_path: Path
     contract_dir: Path
+    # Static files of the admin web page (C4), served at /admin.
+    admin_dir: Path
     # Seed the database from contract/mock on first start (empty database only).
     seed_mock: bool
     # Give the mock users sign-in credentials (see seed.DEV_PASSWORD). Never enable in production.
@@ -37,6 +39,7 @@ class Settings:
         return cls(
             db_path=Path(os.environ.get("PINNI_DB_PATH", BACKEND / "data" / "pinni.db")),
             contract_dir=Path(os.environ.get("PINNI_CONTRACT_DIR", BACKEND.parent / "contract")),
+            admin_dir=Path(os.environ.get("PINNI_ADMIN_DIR", BACKEND.parent / "admin")),
             seed_mock=_flag("PINNI_SEED_MOCK", True),
             dev_accounts=_flag("PINNI_DEV_ACCOUNTS", True),
             neo4j_uri=os.environ.get("PINNI_NEO4J_URI", ""),
