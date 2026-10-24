@@ -37,7 +37,8 @@ def _adopt_anonymous(conn, anonymous_id: str, user_id: str) -> None:
 
 
 @router.post("/auth/login")
-def login(request: Request, conn: Conn, body: dict = Body(...)):
+def login(request: Request, conn: Conn,
+          body: dict = Body(..., examples=[{"email": "sara@pinni.test", "password": "pinni-dev"}])):
     email, password = body.get("email"), body.get("password")
     if not isinstance(email, str) or not isinstance(password, str):
         raise ApiError(422, "invalid", "email and password are required")

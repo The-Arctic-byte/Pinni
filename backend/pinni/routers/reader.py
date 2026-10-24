@@ -85,8 +85,12 @@ def get_places(conn: Conn, user: CurrentUser):
     return db.docs(conn, "SELECT doc FROM places ORDER BY id")
 
 
+EVENTS_EXAMPLE = [{"id": "ev-test-1", "userId": "u-sara", "type": "notForMe", "storyId": "orpo-kyiv",
+                   "occurredAt": "2026-10-24T12:00:00Z"}]
+
+
 @router.post("/events", status_code=202)
-def post_events(request: Request, conn: Conn, user: CurrentUser, body: list = Body(...)):
+def post_events(request: Request, conn: Conn, user: CurrentUser, body: list = Body(..., examples=[EVENTS_EXAMPLE])):
     if len(body) > 500:
         raise ApiError(422, "invalid", "At most 500 events per batch")
     c = contract(request)

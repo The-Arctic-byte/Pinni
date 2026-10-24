@@ -95,8 +95,12 @@ def create_post(request: Request, channel_id: str, conn: Conn, user: Member, bod
     return post
 
 
+REPORT_EXAMPLE = {"kind": "newsTip", "category": "transport", "sensitive": False, "text": "Road works on Kiimingintie",
+                  "location": {"coordinate": {"lat": 65.13, "lon": 25.74}, "radiusMeters": 200}}
+
+
 @router.post("/reports", status_code=201)
-def create_report(request: Request, conn: Conn, user: Member, body: dict = Body(...)):
+def create_report(request: Request, conn: Conn, user: Member, body: dict = Body(..., examples=[REPORT_EXAMPLE])):
     allowed = {"kind", "storyId", "category", "sensitive", "text", "location"}
     extra = set(body) - allowed
     if extra:
