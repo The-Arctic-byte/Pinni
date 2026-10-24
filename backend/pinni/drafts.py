@@ -53,6 +53,57 @@ def place_on_map(conn: sqlite3.Connection, story: dict) -> None:
         story["location"] = {"coordinate": dict(place["center"]), "radiusMeters": 0}
 
 
+# Pins show a short label (contract: Story.label); mock labels are a few words, about this long.
+LABEL_LENGTH = 20
+
+
+def short_label(title: str) -> str:
+    """Whole words of the title, up to LABEL_LENGTH characters."""
+    out = ""
+    for word in title.split():
+        if len(out) + len(word) + (1 if out else 0) > LABEL_LENGTH:
+            break
+        out = f"{out} {word}" if out else word
+    return out or title[:LABEL_LENGTH]
+
+
+def fit_for_the_app(story: dict) -> None:
+    """Make an agent story look like the rest of the map (App/Views/Map):
+    - a point, not an area: the agent's radius is the size of the place, and the app draws any
+      radius as a circle that is never grouped into a pin;
+    - no fake translations: offline, the agent "translates" by putting a word before the English
+      title. Those languages are left out, so the app shows English (LocalizedText falls back to it);
+    - a label of whole words, not the title cut after 15 characters."""
+    location = story.get("location")
+    if location and location.get("radiusMeters", 0) > 0:
+        location["radiusMeters"] = 0
+    english = story["title"].get("en", "")
+    fake = {lang for lang, text in story["title"].items() if lang != "en" and english and english in text}
+    for lang in fake:
+        story["title"].pop(lang)
+    story["translations"] = [t for t in story.get("translations", []) if t["language"] not in fake]
+    story["label"] = {lang: short_label(text) for lang, text in story["title"].items()}
+
+
+def tidy_agent_stories(conn: sqlite3.Connection, contract: Contract) -> int:
+    """At startup: bring stories the agent stored before fit_for_the_app existed in line."""
+    ids = [r[0] for r in conn.execute("SELECT DISTINCT story_id FROM audit WHERE actor = ? AND story_id IS NOT NULL",
+                                      (AGENT,))]
+    changed = 0
+    with conn:
+        for story_id in ids:
+            story = db.get_doc(conn, "stories", story_id)
+            if story is None or story.get("origin") != "agent":
+                continue
+            before = dict(story, location=dict(story.get("location") or {}), title=dict(story["title"]))
+            fit_for_the_app(story)
+            if story != before:
+                contract.check("story.schema.json", story)
+                db.put_story(conn, story)
+                changed += 1
+    return changed
+
+
 def save_agent_story(conn: sqlite3.Connection, contract: Contract, story: dict, publish: bool = False) -> dict:
     """Store one agent story.
 
@@ -63,6 +114,7 @@ def save_agent_story(conn: sqlite3.Connection, contract: Contract, story: dict, 
     story = _whole_seconds(_without_nulls(story))
     story["origin"] = "agent"
     place_on_map(conn, story)
+    fit_for_the_app(story)
     now = db.now()
     wants = publish or story.get("status") == "published"
     if wants and story.get("risk") != "red" and not publish_problems(story):

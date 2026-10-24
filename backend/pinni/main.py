@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import db, errors, graph, vectors
+from . import db, drafts, errors, graph, vectors
 from .config import Settings
 from .contract import Contract
 from .routers import admin, auth, community, reader
@@ -40,6 +40,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if settings.dev_accounts:
                 ensure_dev_editors(conn)
             upgrade_reports(conn)
+            drafts.tidy_agent_stories(conn, app.state.contract)
             app.state.graph = graph.connect(settings)
             if app.state.graph.is_empty():
                 graph.rebuild(conn, app.state.graph)

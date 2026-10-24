@@ -33,6 +33,10 @@ def test_site_news_is_published_on_the_map(client, login):
         here, centre = s["location"]["coordinate"], places[s["placeId"]]["center"]
         assert abs(here["lat"] - centre["lat"]) < 0.1 and abs(here["lon"] - centre["lon"]) < 0.2
         assert s["scale"] == places[s["placeId"]]["kind"]
+        # Looks like the rest of the map: a point, a label of whole words, no fake translations.
+        assert s["location"]["radiusMeters"] == 0
+        assert s["title"]["en"].startswith(s["label"]["en"]) and len(s["label"]["en"]) <= 20
+        assert not any(s["title"]["en"] in t for lang, t in s["title"].items() if lang != "en")
         # The app's date decoder reads whole seconds only.
         assert all(SWIFT_DATE.match(s[k]) for k in ("createdAt", "updatedAt", "publishedAt"))
 
@@ -68,6 +72,12 @@ def test_editor_signs_off_a_red_risk_agent_story(client, login):
            if i["kind"] == "agentDraft" and i["id"] not in MOCK_IDS]
     story = client.get(f"/v1/stories/{ids[0]}", headers=editor).json()
     assert story["risk"] == "red"
+    # Offline the agent writes English only (its fake translations are left out). With Ollama it
+    # adds machine translations (tier 3), which an editor must check before a red-risk story goes out.
+    assert [t["language"] for t in story["translations"]] == ["en"]
+    story = {**story, "title": {**story["title"], "fi": "Ammuskelun tutkinta jatkuu Kiimingissä"},
+             "translations": story["translations"] + [{"language": "fi", "tier": 3}]}
+    assert client.patch(f"/v1/admin/stories/{story['id']}", json=story, headers=editor).status_code == 200
     approve = lambda: client.post(f"/v1/admin/stories/{story['id']}/decision", json={"action": "approve"}, headers=editor)
     assert approve().status_code == 409
     checked = [{"language": t["language"], "tier": 1, "reviewedBy": "Admin"} if t["tier"] == 3 else t
