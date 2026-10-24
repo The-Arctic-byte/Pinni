@@ -2,50 +2,200 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "report.schema.json",
   "title": "Report",
-  "description": "A reader submits news (newsTip) or reports a problem with a story (problem). Sensitive reports are never auto-published.",
+  "description": "A reader submits news (newsTip) or reports a problem with a story (problem). A human editor reviews every report; the full process is in contract/processes/report-review.md. Sensitive reports are never published.",
   "type": "object",
-  "required": ["id", "kind", "reporterId", "category", "sensitive", "text", "status", "createdAt", "updatedAt"],
+  "required": [
+    "id",
+    "kind",
+    "reporterId",
+    "category",
+    "sensitive",
+    "text",
+    "status",
+    "history",
+    "createdAt",
+    "updatedAt"
+  ],
   "additionalProperties": false,
   "properties": {
-    "id": { "$ref": "common.schema.json#/$defs/Id" },
-    "kind": { "enum": ["newsTip", "problem"] },
-    "reporterId": { "$ref": "common.schema.json#/$defs/Id" },
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "kind": {
+      "enum": [
+        "newsTip",
+        "problem"
+      ]
+    },
+    "reporterId": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
     "storyId": {
       "description": "Required for kind = problem.",
       "$ref": "common.schema.json#/$defs/Id"
     },
-    "category": { "$ref": "common.schema.json#/$defs/Category" },
-    "sensitive": { "type": "boolean" },
-    "text": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "category": {
+      "$ref": "common.schema.json#/$defs/Category"
+    },
+    "sensitive": {
+      "description": "Set by the backend, not the app: always true for the safety category; an editor may also set it. Sensitive reports end as editorLead or rejected, never published.",
+      "type": "boolean"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
     "location": {
-      "description": "Rounded to street level by the app before sending.",
+      "description": "News tips only: an area of at least 300 m radius around the reader's area, never an exact point.",
       "$ref": "common.schema.json#/$defs/Location"
     },
     "status": {
-      "description": "sent → inReview → published | edited (published after editor changes) | rejected | editorLead (kept private, e.g. safety).",
-      "enum": ["sent", "inReview", "published", "edited", "rejected", "editorLead"]
+      "description": "sent → inReview → published (news tip, story created) | edited (problem, story corrected) | rejected | editorLead (kept private, e.g. safety). See contract/processes/report-review.md.",
+      "enum": [
+        "sent",
+        "inReview",
+        "published",
+        "edited",
+        "rejected",
+        "editorLead"
+      ]
     },
     "editorNote": {
       "description": "Shown to the reporter, e.g. why it was rejected.",
       "type": "string"
     },
-    "resultStoryId": { "$ref": "common.schema.json#/$defs/Id" },
+    "resultStoryId": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
     "reach": {
       "description": "People the published story reached.",
       "type": "integer",
       "minimum": 0
     },
-    "createdAt": { "$ref": "common.schema.json#/$defs/Timestamp" },
-    "updatedAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+    "history": {
+      "description": "Every status the report went through, oldest first. Starts with sent; the last entry equals status. Shown on the reader's My reports page.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "status",
+          "at"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "sent",
+              "inReview",
+              "published",
+              "edited",
+              "rejected",
+              "editorLead"
+            ]
+          },
+          "at": {
+            "$ref": "common.schema.json#/$defs/Timestamp"
+          },
+          "note": {
+            "description": "Editor note shown to the reporter for this step.",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "createdAt": {
+      "$ref": "common.schema.json#/$defs/Timestamp"
+    },
+    "updatedAt": {
+      "$ref": "common.schema.json#/$defs/Timestamp"
+    }
   },
   "allOf": [
     {
-      "if": { "properties": { "kind": { "const": "problem" } } },
-      "then": { "required": ["storyId"] }
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "problem"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "storyId"
+        ]
+      }
     },
     {
-      "if": { "properties": { "status": { "enum": ["published", "edited"] } } },
-      "then": { "required": ["resultStoryId"] }
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "published",
+              "edited"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "resultStoryId"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sensitive": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "not": {
+              "enum": [
+                "published",
+                "edited"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "category": {
+            "const": "safety"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "sensitive": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "problem"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "location"
+          ]
+        }
+      }
     }
   ]
 }

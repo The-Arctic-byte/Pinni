@@ -186,13 +186,37 @@ def check_references(d: dict) -> None:
         if author and author["role"] == "reader":
             fail(f"post {p['id']}: readers cannot post; author must be a member or above")
 
+    # Report review process: contract/processes/report-review.md
+    notifications = d.get("notifications.json", [])
+    outcome_kind = {"published": "reportPublished", "edited": "reportCorrected",
+                    "editorLead": "reportEditorLead", "rejected": "reportRejected"}
     for r in reports.values():
         w = f"report {r['id']}"
         need("user", r["reporterId"], users, f"{w}.reporterId")
         need("story", r.get("storyId"), stories, f"{w}.storyId")
         need("story", r.get("resultStoryId"), stories, f"{w}.resultStoryId")
-        if r["sensitive"] and r["status"] in ("published", "edited") and not stories.get(r.get("resultStoryId"), {}).get("verification"):
-            fail(f"{w}: sensitive report published without editor verification")
+        history = r["history"]
+        if history[0]["status"] != "sent":
+            fail(f"{w}: history must start with sent")
+        if history[-1]["status"] != r["status"]:
+            fail(f"{w}: last history status {history[-1]['status']} != status {r['status']}")
+        times = [h["at"] for h in history]
+        if times != sorted(times):
+            fail(f"{w}: history is not in time order")
+        if r["status"] == "published":
+            story = stories.get(r.get("resultStoryId"), {})
+            if r["kind"] != "newsTip":
+                fail(f"{w}: only news tips are published; problems end as edited")
+            if story and story.get("origin") != "community":
+                fail(f"{w}: published tip's story must have origin community")
+        if r["status"] == "edited" and r["kind"] != "problem":
+            fail(f"{w}: only problem reports end as edited")
+        loc = r.get("location")
+        if loc and loc["radiusMeters"] < 300:
+            fail(f"{w}: report area must be at least 300 m, got {loc['radiusMeters']}")
+        kind = outcome_kind.get(r["status"])
+        if kind and not any(n["kind"] == kind and n.get("reportId") == r["id"] and n["userId"] == r["reporterId"] for n in notifications):
+            fail(f"{w}: {r['status']} needs a {kind} notification for {r['reporterId']}")
 
     for n in d.get("notifications.json", []):
         w = f"notification {n['id']}"

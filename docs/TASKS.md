@@ -139,14 +139,27 @@ Status:
 ### A6 · Place chips (news without a point)
 A strip like the demo with places: "Oulu", "Finland", "EU", "World", and the reader's home country. Tapping one shows that place's news ranked for the reader.
 
+Status:
+- [x] Chip row under the panel title (iPhone sheet and Mac inspector): home city, Finland, home country (if not Finland), EU, World, each with a story count.
+- [x] A chip lists that place's stories ranked for the reader and leaves out stories that belong to a smaller chip inside it (`PlaceChips`): every story sits under exactly one chip.
+- [x] Tapping a chip flies the map there, shows that place's stories on the map, and moves the scale control to match; tapping it again or "Show all" goes back.
+- [x] Chip names and panel titles follow the app's language; stories follow the story language.
+- Debug launch argument: `-mapChip <place id>`.
+
 ### A7 · Feed, News tab, story detail
 - Sheet / sidebar with stories of the current scale, sorted by relevance.
 - "Most important" slot that is never personalized away (safety near you, official changes that affect you).
 - Story detail with the explanation sections, sources, verified-by, language switch (mine · EN · FI ⇄).
 - Like, dislike, "not for me" (hard filter), share, report.
 
+Status (feedback part): [x] `StoryFeedbackBar` on every story — like, dislike, not for me (this story / whole category; must-see never hidden), share, something wrong?. Full story layout still open.
+
 ### A8 · Interaction tracking
 Log every event from T00 (open, dwell time, likes, skips, zoom, map taps, …) locally; batch-upload once the API exists.
+
+Status:
+- [x] Queue in `AppModel` (kept in UserDefaults, sent through `NewsService.send`, kept on failure): open, dwell (≥ 2 s), like / dislike (value 0 = undo), notForMe (story or category), share, report, flagWrong, onboardingAnswer.
+- [ ] Skip, zoom, map tap, place-chip tap events; batch upload to the real API.
 
 ### A9 · Community
 - Suggested channels ("people like you follow…"), join / leave.
@@ -158,6 +171,15 @@ Edit everything from onboarding, see and reset what the app has learned, languag
 
 ### A11 · Report
 Report a story or submit news, by topic. Shows status: Sent → Editor review → Published / Edited / Rejected. Local notification on publish (push in Integration).
+
+Status:
+- [x] Entry points: "Report news" in the iPhone sheet header and the Mac toolbar; "Something wrong?" on every story; "+" on Profile → My reports.
+- [x] `ReportForm`: topic, details (≤ 4000), optional area (≥ 300 m, never an exact point; news tips only); 112 hint for safety. No sensitivity switch: the backend marks safety reports sensitive. `ReportDraft` holds the rules; output validates against `report.schema.json`.
+- [x] Process in the contract: `contract/processes/report-review.md` (sent → inReview → published / edited / editorLead / rejected, outcome notification to the reporter); `history` on every report; `GET /v1/reports/{id}`, `GET /v1/admin/reports/{id}`; rules checked by `validate.py`.
+- [x] Profile → My reports page: every report with its progress; a report opens as a read-only form (what was sent, area, date) with its full history, editor note, reach and a link to the published or corrected story.
+- [x] Mock editor (debug builds, on a report's page): approve / reject; an approved tip becomes a community story on the map for every reader; safety → editor lead, never published; problem → corrected.
+- No notification in the demo: the outcome shows on My reports. Push comes with C5.
+- [ ] Sign-in gate: reporting is open to everyone on mock data; members-only comes with C3.
 
 ---
 

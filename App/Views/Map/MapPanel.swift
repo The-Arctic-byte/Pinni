@@ -1,24 +1,48 @@
 import SwiftUI
 
 /// The news list that goes with the map: the stories under the current scale, ranked for the reader,
-/// or the stories of one tapped group pin. Tapping a story pushes it; the map follows `path`.
+/// the stories of one tapped group pin, or those of a place chip (city, Finland, home country, EU, world),
+/// which is where news without a useful map point lives. Tapping a story pushes it; the map follows `path`.
 /// Shown in the map's native sheet on iPhone (with Community and Profile in its header) and in the inspector on Mac.
 struct MapPanel: View {
+    struct Chip: Identifiable {
+        let id: String
+        let name: String
+        let count: Int
+    }
+
     @Environment(AppModel.self) private var model
     let title: Text
     let entries: [(item: FeedItem, story: Story)]
-    let isGroup: Bool
+    let chips: [Chip]
+    let selectedChip: String?
+    let isFiltered: Bool
     @Binding var path: [String]
+    let onSelectChip: (String) -> Void
     let onShowAll: () -> Void
 
     #if os(iOS)
     /// iPhone has no tab bar: the sections that are not the map open from the sheet's header.
     private enum Destination: Identifiable {
-        case community, profile
+        case report, community, profile
         var id: Self { self }
     }
 
-    @State private var presented: Destination?
+    @State private var presented: Destination? = MapPanel.launchDestination
+
+    /// Debug builds accept `-panelSheet report|community|profile` as a launch argument (screenshots).
+    private static var launchDestination: Destination? {
+        #if DEBUG
+        switch UserDefaults.standard.string(forKey: "panelSheet") {
+        case "report": .report
+        case "community": .community
+        case "profile": .profile
+        default: nil
+        }
+        #else
+        nil
+        #endif
+    }
     #endif
 
     var body: some View {
@@ -26,13 +50,14 @@ struct MapPanel: View {
             list
                 .navigationTitle(title)
                 .toolbar {
-                    if isGroup {
+                    if isFiltered {
                         ToolbarItem(placement: showAllPlacement) {
                             Button("Show all", action: onShowAll)
                         }
                     }
                     #if os(iOS)
                     ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button("Report news", systemImage: "exclamationmark.bubble") { presented = .report }
                         Button("Community", systemImage: "person.2") { presented = .community }
                         Button("Profile", systemImage: "person.crop.circle") { presented = .profile }
                     }
@@ -44,14 +69,11 @@ struct MapPanel: View {
                             .panelBackground()
                     }
                 }
-                #if os(iOS)
-                .navigationBarTitleDisplayMode(.inline)
-                #endif
         }
-        .panelBackground()
         #if os(iOS)
         .sheet(item: $presented) { destination in
             switch destination {
+            case .report: ReportForm(draft: .newsTip())
             case .community: CommunityScreen()
             case .profile: ProfileScreen()
             }
@@ -67,26 +89,65 @@ struct MapPanel: View {
         #endif
     }
 
+    private var chipRow: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal) {
+                HStack(spacing: 8) {
+                    ForEach(chips) { chip in
+                        ChoiceChip(isSelected: chip.id == selectedChip) {
+                            onSelectChip(chip.id)
+                        } label: {
+                            HStack(spacing: 6) {
+                                Text(verbatim: chip.name)
+                                Text(chip.count, format: .number)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .id(chip.id)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 6)
+            }
+            .scrollIndicators(.hidden)
+            .onChange(of: selectedChip, initial: true) { _, id in
+                guard let id else { return }
+                withAnimation { proxy.scrollTo(id, anchor: .center) }
+            }
+        }
+    }
+
     @ViewBuilder
     private var list: some View {
-        if entries.isEmpty {
-            ContentUnavailableView("No stories here yet", systemImage: "map", description: Text("Try another scale."))
-                .panelBackground()
-        } else {
-            List {
-                Section {
-                    ForEach(entries, id: \.item.id) { entry in
-                        NavigationLink(value: entry.story.id) {
-                            StoryRow(story: entry.story, item: entry.item, language: model.contentLanguage)
-                        }
-                    }
-                } footer: {
-                    Text("Sorted by how much it matters to you")
+        Group {
+            if entries.isEmpty {
+                // Keep the chips: an empty chip (e.g. the EU) must not trap the reader on it.
+                VStack(spacing: 0) {
+                    chipRow
+                    ContentUnavailableView("No stories here yet", systemImage: "map", description: Text("Try another scale or place."))
                 }
+            } else {
+                storyList
             }
-            .listStyle(.plain)
-            .panelBackground()
         }
+    }
+
+    private var storyList: some View {
+        List {
+            chipRow
+                .listRowSeparator(.hidden)
+                .listRowInsets(.init())
+            Section {
+                ForEach(entries, id: \.item.id) { entry in
+                    NavigationLink(value: entry.story.id) {
+                        StoryRow(story: entry.story, item: entry.item, language: model.contentLanguage)
+                    }
+                }
+            } footer: {
+                Text("Sorted by how much it matters to you")
+            }
+        }
+        .listStyle(.plain)
     }
 }
 
