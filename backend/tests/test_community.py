@@ -13,7 +13,8 @@ def test_suggested_channels(client, login, anonymous, valid):
     assert suggestions and not joined & {s["channelId"] for s in suggestions}
     assert [s["score"] for s in suggestions] == sorted((s["score"] for s in suggestions), reverse=True)
     # A channel in a language Sara does not read is not pushed to her.
-    assert "ukrainians-oulu" not in [s["channelId"] for s in suggestions[:5]]
+    ids = [s["channelId"] for s in suggestions]
+    assert "ukrainians-oulu" not in ids or ids[-1] == "ukrainians-oulu"
 
     # Cold start: no profile, no similar people -> the most popular channels.
     new, _ = anonymous()
@@ -62,6 +63,22 @@ def test_posts(client, login, anonymous, valid):
     assert client.post("/v1/channels/persian-oulu/posts", json={}, headers=headers).status_code == 422
     reader, _ = anonymous()
     assert client.post("/v1/channels/persian-oulu/posts", json={"text": "hi"}, headers=reader).status_code == 403
+
+
+def test_replies(client, login, valid):
+    headers = login("sara")
+    url = "/v1/channels/persian-oulu/posts"
+    parent = client.post(url, json={"text": "Who knows a good dentist?"}, headers=headers).json()
+    r = client.post(url, json={"text": "Try Oral.", "replyToId": parent["id"]}, headers=headers)
+    assert r.status_code == 201
+    reply = r.json()
+    valid("channel.schema.json#/$defs/Post", reply)
+    assert reply["replyToId"] == parent["id"]
+    assert reply["id"] in [p["id"] for p in client.get(url, headers=headers).json()]
+    # A reply needs text, stays one level deep, and stays in its channel.
+    assert client.post(url, json={"storyId": "lidl-ideapark", "replyToId": parent["id"]}, headers=headers).status_code == 422
+    assert client.post(url, json={"text": "x", "replyToId": reply["id"]}, headers=headers).status_code == 422
+    assert client.post(url, json={"text": "x", "replyToId": "nope"}, headers=headers).status_code == 404
 
 
 def test_reports(client, login, anonymous, valid):

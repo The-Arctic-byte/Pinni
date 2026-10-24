@@ -75,9 +75,18 @@ def get_posts(channel_id: str, conn: Conn, user: CurrentUser):
 @router.post("/channels/{channel_id}/posts", status_code=201)
 def create_post(request: Request, channel_id: str, conn: Conn, user: Member, body: dict = Body(...)):
     _channel(conn, channel_id)
-    story_id, text = body.get("storyId"), body.get("text")
+    story_id, text, reply_to = body.get("storyId"), body.get("text"), body.get("replyToId")
     if story_id is None and text is None:
         raise ApiError(422, "invalid", "A post needs storyId or text")
+    if reply_to is not None:
+        # Replies are one level deep, in the same channel, and always have text.
+        if text is None:
+            raise ApiError(422, "invalid", "A reply needs text")
+        parent = db.get_doc(conn, "posts", reply_to) if isinstance(reply_to, str) else None
+        if parent is None or parent["channelId"] != channel_id:
+            raise not_found("Post")
+        if "replyToId" in parent:
+            raise ApiError(422, "invalid", "Reply to the original post, not to a reply")
     if story_id is not None:
         story = db.get_doc(conn, "stories", story_id) if isinstance(story_id, str) else None
         if story is None or story["status"] != "published":
@@ -87,6 +96,8 @@ def create_post(request: Request, channel_id: str, conn: Conn, user: Member, bod
         post["storyId"] = story_id
     if text is not None:
         post["text"] = text
+    if reply_to is not None:
+        post["replyToId"] = reply_to
     request.app.state.contract.check("channel.schema.json#/$defs/Post", post)
     with conn:
         db.put_post(conn, post)
