@@ -78,12 +78,22 @@ Done when:
 - SF Symbols for UI; Thiings (licensed) for topic icons.
 - `Localizable.xcstrings`: en, fi, fa, sv. RTL safe (Persian).
 
+Status:
+- [x] `AccentColor` (light `#12806A`, dark `#5FD3B5`); category map colours in `Category+Style.swift`.
+- [x] String Catalog with fi / fa / sv for every current UI string — marked "needs review" for native speakers.
+- [x] App runs in Persian with right-to-left layout; story text follows the story's language direction.
+- [ ] Thiings topic images (SF Symbols stand in via `Category.symbolName`).
+
 ### A2 · App shell
 Tabs: Map · News · Community · Profile. Report button on the map and on every story.
 Mac: `NavigationSplitView` sidebar, map as detail, story in `.inspector`.
 
+Status: [x] tabs (iPhone) and sidebar (Mac) with placeholder Map, News, Community, Profile. Report button and inspector come with A7/A11.
+
 ### A3 · Mock data layer
 `NewsService` protocol with a mock implementation that reads `contract/mock/`. The real API implementation comes in Integration.
+
+Status: [x] Swift models for every contract type (`App/Models`), all 13 mock files decode; `contract/mock` is bundled as a project folder, so contract changes reach the app on the next build. Debug persona switch (Sara / Matti / new user) in Profile.
 
 ### A4 · Onboarding
 Steps, in order:

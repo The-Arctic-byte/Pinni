@@ -8,14 +8,14 @@
     "development": "en",
     "supported": [
       "Base",
-      "en",
-      "fi",
       "fa",
+      "fi",
       "sv",
     ],
   },
   "files": [
     { "kind": "folder", "path": "App", "target-membership": [ "Pinni" ] },
+    { "kind": "folder", "path": "contract/mock", "target-membership": [ "Pinni" ] },
     {
       "kind": "group",
       "name": "Products",

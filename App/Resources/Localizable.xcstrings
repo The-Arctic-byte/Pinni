@@ -1,0 +1,645 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Area" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "محله"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alue"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Område"
+          }
+        }
+      }
+    },
+    "Channels suggested from people like you are coming soon." : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "کانال‌هایی که افراد مشابه تو دنبال می‌کنند به‌زودی می‌آیند."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaltaistesi ihmisten suosittelemat kanavat ovat tulossa pian."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kanaler som föreslås av personer som du kommer snart."
+          }
+        }
+      }
+    },
+    "City life" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "زندگی شهری"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kaupunkielämä"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stadsliv"
+          }
+        }
+      }
+    },
+    "Community" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "جامعه"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yhteisö"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gemenskap"
+          }
+        }
+      }
+    },
+    "Couldn’t load news" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "بارگیری خبرها ممکن نشد"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Uutisten lataus epäonnistui"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Det gick inte att läsa in nyheter"
+          }
+        }
+      }
+    },
+    "Culture" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "فرهنگ"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kulttuuri"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kultur"
+          }
+        }
+      }
+    },
+    "Economy" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "اقتصاد"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Talous"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ekonomi"
+          }
+        }
+      }
+    },
+    "Education" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "آموزش"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Koulutus"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Utbildning"
+          }
+        }
+      }
+    },
+    "Environment" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "محیط زیست"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ympäristö"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Miljö"
+          }
+        }
+      }
+    },
+    "Health" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "سلامت"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Terveys"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Hälsa"
+          }
+        }
+      }
+    },
+    "Housing" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "مسکن"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Asuminen"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Boende"
+          }
+        }
+      }
+    },
+    "Map" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نقشه"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kartta"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Karta"
+          }
+        }
+      }
+    },
+    "Must see" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حتماً ببین"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tärkeä"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Viktigt"
+          }
+        }
+      }
+    },
+    "News" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خبرها"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Uutiset"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nyheter"
+          }
+        }
+      }
+    },
+    "Personalization" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "شخصی‌سازی"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Personointi"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Anpassning"
+          }
+        }
+      }
+    },
+    "Politics" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "سیاست"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Politiikka"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Politik"
+          }
+        }
+      }
+    },
+    "Profile" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نمایه"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Profiili"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Profil"
+          }
+        }
+      }
+    },
+    "Reader" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خواننده"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lukija"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Läsare"
+          }
+        }
+      }
+    },
+    "Relevance %lld of 4" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "میزان ارتباط %lld از ۴"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Osuvuus %lld/4"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Relevans %lld av 4"
+          }
+        }
+      }
+    },
+    "Safety" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ایمنی"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Turvallisuus"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Säkerhet"
+          }
+        }
+      }
+    },
+    "Shopping" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "خرید"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ostokset"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Shopping"
+          }
+        }
+      }
+    },
+    "Society" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "جامعه"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Yhteiskunta"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Samhälle"
+          }
+        }
+      }
+    },
+    "Sport" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "ورزش"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Urheilu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sport"
+          }
+        }
+      }
+    },
+    "Story language" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "زبان خبرها"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Uutisten kieli"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nyhetsspråk"
+          }
+        }
+      }
+    },
+    "Technology" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "فناوری"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Teknologia"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Teknik"
+          }
+        }
+      }
+    },
+    "Transport" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "حمل‌ونقل"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Liikenne"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Trafik"
+          }
+        }
+      }
+    },
+    "Work" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "کار"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Työ"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Arbete"
+          }
+        }
+      }
+    },
+    "World" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "جهان"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Maailma"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Världen"
+          }
+        }
+      }
+    },
+    "Your profile" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نمایه تو"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Profiilisi"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Din profil"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
