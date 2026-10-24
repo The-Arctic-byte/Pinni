@@ -46,6 +46,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     for module in (auth, reader, community, admin):
         app.include_router(module.router)
 
+    @app.get("/", include_in_schema=False)
+    def root():
+        return RedirectResponse("/docs")
+
     @app.get("/health", include_in_schema=False)
     def health():
         return {"status": "ok"}
