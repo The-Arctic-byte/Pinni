@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// Profile → My reports: everything the reader reported and where each report is in the review
-/// (contract/processes/report-review.md). Opens one report as a read-only form with its history.
+/// (contract/processes/report-review.md). Opens one report as a read-only form with its history;
+/// the report destination is declared on `ProfileScreen`, the stack's root.
 struct MyReportsScreen: View {
     @Environment(AppModel.self) private var model
     @State private var reportsNews = false
@@ -22,9 +23,6 @@ struct MyReportsScreen: View {
             }
         }
         .navigationTitle(Text("My reports"))
-        .navigationDestination(for: String.self) { id in
-            ReportDetailView(reportId: id)
-        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Report news", systemImage: "plus") { reportsNews = true }

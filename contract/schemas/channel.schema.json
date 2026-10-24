@@ -3,50 +3,147 @@
   "$id": "channel.schema.json",
   "title": "Channel",
   "type": "object",
-  "required": ["id", "kind", "name", "description", "categories", "memberCount", "createdAt"],
+  "required": [
+    "id",
+    "kind",
+    "name",
+    "description",
+    "categories",
+    "memberCount",
+    "createdAt"
+  ],
   "additionalProperties": false,
   "properties": {
-    "id": { "$ref": "common.schema.json#/$defs/Id" },
-    "kind": { "enum": ["topic", "place", "language", "community"] },
-    "name": { "$ref": "common.schema.json#/$defs/LocalizedText" },
-    "description": { "$ref": "common.schema.json#/$defs/LocalizedText" },
-    "categories": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/Category" }, "uniqueItems": true },
-    "placeId": { "$ref": "common.schema.json#/$defs/Id" },
-    "language": { "$ref": "common.schema.json#/$defs/Language" },
-    "memberCount": { "type": "integer", "minimum": 0 },
-    "createdAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+    "id": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "kind": {
+      "enum": [
+        "topic",
+        "place",
+        "language",
+        "community"
+      ]
+    },
+    "name": {
+      "$ref": "common.schema.json#/$defs/LocalizedText"
+    },
+    "description": {
+      "$ref": "common.schema.json#/$defs/LocalizedText"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/Category"
+      },
+      "uniqueItems": true
+    },
+    "placeId": {
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "language": {
+      "$ref": "common.schema.json#/$defs/Language"
+    },
+    "memberCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "createdAt": {
+      "$ref": "common.schema.json#/$defs/Timestamp"
+    }
   },
   "$defs": {
     "Suggestion": {
       "description": "A channel suggested from similar people in the knowledge graph.",
       "type": "object",
-      "required": ["channelId", "score", "reason"],
+      "required": [
+        "channelId",
+        "score",
+        "reason"
+      ],
       "additionalProperties": false,
       "properties": {
-        "channelId": { "$ref": "common.schema.json#/$defs/Id" },
-        "score": { "$ref": "common.schema.json#/$defs/Score" },
+        "channelId": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "score": {
+          "$ref": "common.schema.json#/$defs/Score"
+        },
         "similarMembers": {
           "description": "How many similar people follow it. Shown only when at least 20.",
           "type": "integer",
           "minimum": 20
         },
-        "reason": { "$ref": "common.schema.json#/$defs/LocalizedText" }
+        "reason": {
+          "$ref": "common.schema.json#/$defs/LocalizedText"
+        }
       }
     },
     "Post": {
       "type": "object",
-      "required": ["id", "channelId", "authorId", "createdAt"],
+      "required": [
+        "id",
+        "channelId",
+        "authorId",
+        "createdAt"
+      ],
       "additionalProperties": false,
-      "anyOf": [{ "required": ["storyId"] }, { "required": ["text"] }],
+      "anyOf": [
+        {
+          "required": [
+            "storyId"
+          ]
+        },
+        {
+          "required": [
+            "text"
+          ]
+        }
+      ],
       "properties": {
-        "id": { "$ref": "common.schema.json#/$defs/Id" },
-        "channelId": { "$ref": "common.schema.json#/$defs/Id" },
-        "authorId": { "$ref": "common.schema.json#/$defs/Id" },
-        "storyId": { "$ref": "common.schema.json#/$defs/Id" },
-        "text": { "type": "string", "maxLength": 2000 },
-        "likes": { "type": "integer", "minimum": 0 },
-        "createdAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
-      }
+        "id": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "channelId": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "authorId": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "replyToId": {
+          "description": "The post this one replies to (same channel). Replies are one level deep.",
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "storyId": {
+          "$ref": "common.schema.json#/$defs/Id"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "likes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "createdAt": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      },
+      "description": "A post in a channel: a shared story and/or text. A reply (replyToId) is a member's comment on another post in the same channel; replies always have text.",
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "replyToId"
+            ]
+          },
+          "then": {
+            "required": [
+              "text"
+            ]
+          }
+        }
+      ]
     }
   }
 }

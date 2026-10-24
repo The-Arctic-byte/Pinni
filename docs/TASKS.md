@@ -174,7 +174,9 @@ Status:
 
 Status:
 - [x] Community: "Suggested for you" (from similar people, with the reason; counts only when ≥ 20), "Your channels", "More channels"; every channel in exactly one section.
-- [x] Channel page: description, members, Join / Leave, posts (shared stories open the story view), composer once joined; authors shown as "You" or "A member".
+- [x] Channel page: description, members, Join / Leave, top-level posts with reply counts, composer once joined; authors shown as "You" or "A member".
+- [x] Post page: the post, its shared story (opens the story view), members' replies oldest first, and a reply box once joined. Contract: `Post.replyToId` (one level deep, text required, same channel; checked by `validate.py`).
+- [x] All community destinations (channel, post, story) are declared on `CommunityScreen`'s root, so links on pushed pages always resolve.
 - [x] "Post to a channel" on every story, with an optional comment.
 - [x] Join, leave and post are events for the recommender / knowledge graph; memberships and posts persist in the mock (`MockCommunity`).
 - [x] Mock data: 12 channels, 13 posts, suggestions for Sara, Matti and the new user. A reader starts in the channels they posted in (the contract has no membership file).
@@ -184,6 +186,13 @@ Status:
 
 ### A10 · Profile
 Edit everything from onboarding, see and reset what the app has learned, language, notification settings, my reports with status.
+
+Status:
+- [x] Your preferences: story language, who you are, most important categories, area / home country / residence / housing — each opens its onboarding step as an edit page and saves right away (`Profile.apply(_:step:)`; weights ≥ 0.7 count as "most important"). Residence and housing only with consent.
+- [x] Hidden with "Not for me": turned-off categories and hidden stories, each with "Show again".
+- [x] What Pinni has learned (`GET /v1/profile/learned`): how personal the feed is, top topics, followed places; "Reset what Pinni learned" (`DELETE`) also forgets reactions and hidden stories, preferences stay.
+- [x] My reports (A11).
+- Notification settings left out: no notifications in the demo.
 
 ### A11 · Report
 Report a story or submit news, by topic. Shows status: Sent → Editor review → Published / Edited / Rejected. Local notification on publish (push in Integration).

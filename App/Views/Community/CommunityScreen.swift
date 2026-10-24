@@ -3,16 +3,7 @@ import SwiftUI
 /// Channels: the ones people like you follow, the ones you joined, and the rest.
 struct CommunityScreen: View {
     @Environment(AppModel.self) private var model
-    @State private var path: [String] = CommunityScreen.launchPath
-
-    /// Debug builds accept `-openChannel <channel id>` as a launch argument (screenshots).
-    private static var launchPath: [String] {
-        #if DEBUG
-        UserDefaults.standard.string(forKey: "openChannel").map { [$0] } ?? []
-        #else
-        []
-        #endif
-    }
+    @State private var path = NavigationPath()
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -54,12 +45,37 @@ struct CommunityScreen: View {
                 }
             }
             .navigationTitle(Text("Community"))
+            // Every destination of the community stack is declared here, at its root, so links on pushed
+            // pages (posts, shared stories) always find one.
             .navigationDestination(for: String.self) { id in
                 ChannelScreen(channelId: id)
             }
+            .navigationDestination(for: ChannelPost.self) { post in
+                PostScreen(post: post)
+            }
+            .navigationDestination(for: Story.self) { story in
+                StoryDetailView(story: story)
+            }
+            #if DEBUG
+            .task { await openFromLaunchArguments() }
+            #endif
         }
     }
 }
+
+#if DEBUG
+extension CommunityScreen {
+    /// `-openChannel <channel id>` and `-openPost <post id>` as launch arguments (screenshots).
+    fileprivate func openFromLaunchArguments() async {
+        let defaults = UserDefaults.standard
+        guard path.isEmpty, let channelId = defaults.string(forKey: "openChannel") else { return }
+        path.append(channelId)
+        guard let postId = defaults.string(forKey: "openPost") else { return }
+        await model.loadPosts(in: channelId)
+        if let post = model.posts[channelId]?.first(where: { $0.id == postId }) { path.append(post) }
+    }
+}
+#endif
 
 struct ChannelRow: View {
     @Environment(AppModel.self) private var model

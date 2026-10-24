@@ -60,6 +60,25 @@ struct MockNewsService: NewsService {
         return profile
     }
 
+    /// The mock has no recommender: it reports the profile's strongest categories and followed places,
+    /// with the feed's personalization, until the reader resets it.
+    func learned(for userId: String) async throws -> LearnedPreferences {
+        guard !saved.wasReset(userId) else { return .none }
+        let profile = try await profile(for: userId)
+        let page = try await feed(for: userId)
+        let top = profile.categoryWeights.sorted { $0.value > $1.value }.prefix(3)
+        return LearnedPreferences(
+            personalization: page.personalization,
+            topCategories: top.map { .init(category: $0.key, weight: $0.value) },
+            topPlaces: profile.followedPlaceIds ?? [],
+            topTags: profile.interests.isEmpty ? nil : profile.interests
+        )
+    }
+
+    func resetLearned(for userId: String) async throws {
+        saved.markReset(userId)
+    }
+
     func suggestedChannels(for userId: String) async throws -> [ChannelSuggestion] {
         guard let persona = Persona(userId: userId) else { return [] }
         let suggestions: [ChannelSuggestion] = try load(persona.suggestionsFile)
@@ -88,11 +107,12 @@ struct MockNewsService: NewsService {
         return (file + community.posts).filter { $0.channelId == channelId }.sorted { $0.createdAt > $1.createdAt }
     }
 
-    func post(storyId: String?, text: String?, in channelId: String, authorId: String) async throws -> ChannelPost {
+    func post(storyId: String?, text: String?, replyToId: String?, in channelId: String, authorId: String) async throws -> ChannelPost {
         let post = ChannelPost(
             id: "post-" + UUID().uuidString.lowercased(),
             channelId: channelId,
             authorId: authorId,
+            replyToId: replyToId,
             storyId: storyId,
             text: text,
             likes: 0,
@@ -175,6 +195,15 @@ final class SavedProfiles {
     private var all: [String: Profile] {
         guard let data = defaults.data(forKey: key) else { return [:] }
         return (try? JSONDecoder.contract.decode([String: Profile].self, from: data)) ?? [:]
+    }
+
+    func wasReset(_ userId: String) -> Bool {
+        defaults.stringArray(forKey: key + ".reset")?.contains(userId) == true
+    }
+
+    func markReset(_ userId: String) {
+        let reset = Set(defaults.stringArray(forKey: key + ".reset") ?? []).union([userId])
+        defaults.set(Array(reset), forKey: key + ".reset")
     }
 }
 
