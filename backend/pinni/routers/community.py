@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body, Query, Request, Response
 
-from .. import db, ranking
+from .. import db, ranking, stores
 from ..auth import Conn, CurrentUser, Member
 from ..errors import ApiError, not_found
 
@@ -15,8 +15,8 @@ def _channel(conn, channel_id: str) -> dict:
 
 
 @router.get("/channels/suggested")
-def suggested(conn: Conn, user: CurrentUser):
-    return ranking.suggested_channels(conn, user["id"])
+def suggested(request: Request, conn: Conn, user: CurrentUser):
+    return ranking.suggested_channels(conn, user["id"], graph=stores.graph(request))
 
 
 @router.get("/channels")
@@ -29,7 +29,7 @@ def get_channels(conn: Conn, user: CurrentUser, ids: str | None = Query(None)):
                          "WHERE m.user_id = ? ORDER BY m.joined_at", (user["id"],))
 
 
-def _set_membership(conn, user_id: str, channel: dict, join: bool) -> None:
+def _set_membership(conn, user_id: str, channel: dict, join: bool) -> bool:
     if join:
         changed = conn.execute("INSERT OR IGNORE INTO memberships (user_id, channel_id, joined_at) VALUES (?, ?, ?)",
                                (user_id, channel["id"], db.now())).rowcount
@@ -41,19 +41,24 @@ def _set_membership(conn, user_id: str, channel: dict, join: bool) -> None:
         db.put_doc(conn, "channels", channel)
         db.add_event(conn, {"id": db.new_id("ev"), "userId": user_id, "type": "joinChannel" if join else "leaveChannel",
                             "channelId": channel["id"], "context": {"screen": "community"}, "occurredAt": db.now()})
+    return bool(changed)
 
 
 @router.put("/channels/{channel_id}/membership", status_code=204)
-def join(channel_id: str, conn: Conn, user: Member):
+def join(request: Request, channel_id: str, conn: Conn, user: Member):
     with conn:
-        _set_membership(conn, user["id"], _channel(conn, channel_id), True)
+        changed = _set_membership(conn, user["id"], _channel(conn, channel_id), True)
+    if changed:
+        stores.membership_changed(request, user["id"], channel_id, True)
     return Response(status_code=204)
 
 
 @router.delete("/channels/{channel_id}/membership", status_code=204)
-def leave(channel_id: str, conn: Conn, user: CurrentUser):
+def leave(request: Request, channel_id: str, conn: Conn, user: CurrentUser):
     with conn:
-        _set_membership(conn, user["id"], _channel(conn, channel_id), False)
+        changed = _set_membership(conn, user["id"], _channel(conn, channel_id), False)
+    if changed:
+        stores.membership_changed(request, user["id"], channel_id, False)
     return Response(status_code=204)
 
 
@@ -86,6 +91,7 @@ def create_post(request: Request, channel_id: str, conn: Conn, user: Member, bod
         if story_id is not None:
             event["storyId"] = story_id
         db.add_event(conn, event)
+    stores.events_added(request, [event])
     return post
 
 

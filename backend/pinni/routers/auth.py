@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body, Request
 
-from .. import auth, db
+from .. import auth, db, stores
 from ..auth import Conn, CurrentUser
 from ..errors import ApiError
 
@@ -37,20 +37,25 @@ def _adopt_anonymous(conn, anonymous_id: str, user_id: str) -> None:
 
 
 @router.post("/auth/login")
-def login(conn: Conn, body: dict = Body(...)):
+def login(request: Request, conn: Conn, body: dict = Body(...)):
     email, password = body.get("email"), body.get("password")
     if not isinstance(email, str) or not isinstance(password, str):
         raise ApiError(422, "invalid", "email and password are required")
     row = conn.execute("SELECT * FROM users WHERE email = ?", (email.strip().lower(),)).fetchone()
     if row is None or not auth.verify_password(password, row["password_hash"]):
         raise ApiError(401, "unauthorized", "Wrong email or password")
+    adopted = None
     with conn:
         anonymous_token = body.get("anonymousToken")
         if isinstance(anonymous_token, str):
             anon = auth.user_for_token(conn, anonymous_token)
             if anon is not None and anon["role"] == "reader" and anon["id"] != row["id"]:
                 _adopt_anonymous(conn, anon["id"], row["id"])
+                adopted = anon["id"]
         token = auth.new_session(conn, row["id"])
+    if adopted:
+        stores.replay_user(request, conn, adopted)
+        stores.replay_user(request, conn, row["id"])
     return {"token": token, "user": db.user_doc(row)}
 
 

@@ -1,7 +1,9 @@
 """Baseline ranking until the recommender (Track B, B4) replaces it.
 
 relevance = (1 - p) * importance + p * personal, where p (personalization) grows with the
-reader's events. Product rules from the contract always hold:
+reader's events. `personal` mixes the stated profile, learned preferences, content similarity
+(vector store) and what similar people liked (knowledge graph). Product rules from the contract
+always hold:
 - hard filters (categories, tags, sources) and stories the reader rejected are never shown,
 - must-see items (safety near you, stories that affect your group) are never ranked away,
 - only published stories appear."""
@@ -10,14 +12,16 @@ import sqlite3
 from datetime import datetime, timezone
 
 from . import db
+from .graph import Graph, signal, user_groups
+from .vectors import VectorStore, profile_text
 
-# Event weight for learned preferences. Unlisted types carry no taste signal.
-SIGNAL = {
-    "like": 1.0, "share": 1.0, "save": 1.0, "confirm": 0.5, "open": 0.3,
-    "skip": -0.2, "dislike": -1.0, "notForMe": -1.0, "reject": -1.5, "flagWrong": -0.3,
-}
 EVENTS_FOR_FULL_PERSONALIZATION = 30
 MUST_SEE_FLOOR = 0.8
+SIMILAR_PEOPLE = 50
+# Contract: similarMembers is shown only from 20 people up.
+MIN_SIMILAR_MEMBERS = 20
+# Share of `personal` per signal. A signal with no data (e.g. no similar people yet) is left out.
+PERSONAL_WEIGHTS = {"category": 0.35, "place": 0.3, "tag": 0.1, "content": 0.15, "collaborative": 0.1}
 
 REASONS = {
     "mustSeeHome": {"en": "Safety near your home in {place}", "fi": "Turvallisuus lähellä kotiasi: {place}",
@@ -35,6 +39,10 @@ REASONS = {
                "fa": "خواستی درباره {tag} خبر بگیری", "sv": "Du ville ha nyheter om {tag}"},
     "similar": {"en": "You liked similar stories", "fi": "Pidit samankaltaisista uutisista",
                 "fa": "خبرهای مشابه را پسندیدی", "sv": "Du gillade liknande nyheter"},
+    "likedBySimilar": {"en": "Popular with people like you", "fi": "Suosittu kaltaistesi keskuudessa",
+                       "fa": "بین افرادی مثل تو محبوب است", "sv": "Populär bland personer som du"},
+    "matchesInterests": {"en": "Matches your interests", "fi": "Vastaa kiinnostuksiasi",
+                         "fa": "با علاقه‌هایت جور است", "sv": "Passar dina intressen"},
     "opinion": {"en": "Opinion, not news", "fi": "Mielipide, ei uutinen", "fa": "نظر، نه خبر", "sv": "Åsikt, inte nyhet"},
     "topWorld": {"en": "Top story in the world", "fi": "Maailman kärkiuutinen",
                  "fa": "خبر مهم جهان", "sv": "Toppnyhet i världen"},
@@ -115,9 +123,7 @@ def learned(conn: sqlite3.Connection, user_id: str) -> dict:
     rejected: set[str] = set()
     signals = 0
     for e in events:
-        weight = SIGNAL.get(e["type"], 0.0)
-        if e["type"] == "dwell":
-            weight = min(e.get("value", 0) / 60, 1.0) * 0.5
+        weight = signal(e)
         if e["type"] in ("followPlace", "placeChipTap") and e.get("placeId"):
             place_score[e["placeId"]] = place_score.get(e["placeId"], 0) + (1.0 if e["type"] == "followPlace" else 0.3)
             signals += 1
@@ -158,20 +164,24 @@ def learned_preferences(conn: sqlite3.Connection, user_id: str) -> dict:
     }
 
 
-def user_groups(profile: dict) -> set[str]:
-    """Matches Story.affects, e.g. 'residents:kiiminki', 'residence:nonEu', 'student'."""
-    groups = set(profile.get("targetGroups", []))
-    if profile.get("homePlaceId"):
-        groups.add(f"residents:{profile['homePlaceId']}")
-    if profile.get("residence"):
-        groups.add(f"residence:{profile['residence']['status']}")
-    if profile.get("housing"):
-        groups.add(f"housing:{profile['housing']['provider']}")
-    return groups
+def collaborative(graph: Graph | None, user_id: str) -> dict[str, float]:
+    """Story id -> share of similar people (weighted by similarity) who liked it, in [0, 1]."""
+    if graph is None:
+        return {}
+    similar = graph.similar_users(user_id, SIMILAR_PEOPLE)
+    total = sum(score for _, score in similar)
+    if not total:
+        return {}
+    weight = dict(similar)
+    out: dict[str, float] = {}
+    for other, ratings in graph.positive_ratings([u for u, _ in similar]).items():
+        for story_id in ratings:
+            out[story_id] = out.get(story_id, 0.0) + weight[other]
+    return {sid: v / total for sid, v in out.items()}
 
 
 def feed(conn: sqlite3.Connection, user_id: str, scale: str | None, place_id: str | None,
-         limit: int, cursor: str | None) -> dict:
+         limit: int, cursor: str | None, graph: Graph | None = None, vectors: VectorStore | None = None) -> dict:
     profile = db.get_doc(conn, "profiles", user_id) or default_profile(user_id)
     places = {p["id"]: p for p in db.docs(conn, "SELECT doc FROM places")}
     stories = db.docs(conn, "SELECT doc FROM stories WHERE status = 'published'")
@@ -184,8 +194,11 @@ def feed(conn: sqlite3.Connection, user_id: str, scale: str | None, place_id: st
     learned_places = set(l["topPlaces"])
     groups = user_groups(profile)
     wanted = {t.lower() for t in profile.get("wantedNews", []) + profile.get("interests", [])}
-    stated = bool(profile.get("categoryWeights") or profile.get("targetGroups") or home)
+    stated = bool(profile.get("categoryWeights") or profile.get("targetGroups") or home
+                  or profile.get("interests") or profile.get("wantedNews"))
     p = max(l["personalization"], 0.5 if stated else 0.0)
+    content = vectors.similarity(profile_text(profile, l["topTags"])) if vectors else {}
+    liked_by_similar = collaborative(graph, user_id)
 
     items = []
     for s in stories:
@@ -227,7 +240,11 @@ def feed(conn: sqlite3.Connection, user_id: str, scale: str | None, place_id: st
             place_w = 0.2
         tag_hit = next((t for t in s.get("tags", []) if t.lower() in wanted or t in l["topTags"]), None)
         tag_w = 1.0 if tag_hit else 0.5
-        personal = 0.45 * category_w + 0.4 * place_w + 0.15 * tag_w
+        signals = {"category": category_w, "place": place_w, "tag": tag_w,
+                   "content": content.get(s["id"], 0.0) if content else None,
+                   "collaborative": liked_by_similar.get(s["id"], 0.0) if liked_by_similar else None}
+        used = {k: v for k, v in signals.items() if v is not None}
+        personal = sum(PERSONAL_WEIGHTS[k] * v for k, v in used.items()) / sum(PERSONAL_WEIGHTS[k] for k in used)
         if s["isOpinion"]:
             personal *= 0.5
         relevance = (1 - p) * s["importance"] + p * personal
@@ -243,6 +260,10 @@ def feed(conn: sqlite3.Connection, user_id: str, scale: str | None, place_id: st
                 reasons.append(_text("wanted", tag=tag_hit))
             elif tag_hit:
                 reasons.append(_text("similar"))
+            elif (signals["collaborative"] or 0) >= 0.3:
+                reasons.append(_text("likedBySimilar"))
+            elif (signals["content"] or 0) >= 0.3:
+                reasons.append(_text("matchesInterests"))
             elif s["placeId"] == "world":
                 reasons.append(_text("topWorld"))
             else:
@@ -268,12 +289,16 @@ def feed(conn: sqlite3.Connection, user_id: str, scale: str | None, place_id: st
     return out
 
 
-def suggested_channels(conn: sqlite3.Connection, user_id: str) -> list[dict]:
-    """Until the knowledge graph exists (C2), suggest by overlap with the stated profile.
-    `similarMembers` needs the graph, so it is left out."""
+def suggested_channels(conn: sqlite3.Connection, user_id: str, graph: Graph | None = None) -> list[dict]:
+    """Channels that similar people (knowledge graph) follow, blended with overlap with the
+    stated profile so new readers with no similar people still get suggestions."""
     profile = db.get_doc(conn, "profiles", user_id) or default_profile(user_id)
     places = {p["id"]: p for p in db.docs(conn, "SELECT doc FROM places")}
     joined = {r[0] for r in conn.execute("SELECT channel_id FROM memberships WHERE user_id = ?", (user_id,))}
+    similar = graph.similar_users(user_id, SIMILAR_PEOPLE * 2) if graph else []
+    total = sum(score for _, score in similar)
+    weight = dict(similar)
+    followers = graph.channel_counts([u for u, _ in similar]) if similar else {}
     my_places = set(ancestors(places, profile.get("homePlaceId"))) | set(profile.get("followedPlaceIds", []))
     out = []
     for c in db.docs(conn, "SELECT doc FROM channels"):
@@ -284,15 +309,27 @@ def suggested_channels(conn: sqlite3.Connection, user_id: str) -> list[dict]:
         lang = 1.0 if c.get("language") and c["language"] == profile["language"] else 0.5
         housing = profile.get("housing", {}).get("provider")
         community = 1.0 if housing and housing in c["id"] else 0.5
-        score = round(0.4 * cat + 0.25 * place + 0.2 * lang + 0.15 * community, 3)
-        if c.get("language") and c["language"] == profile["language"]:
+        score = 0.4 * cat + 0.25 * place + 0.2 * lang + 0.15 * community
+        people = followers.get(c["id"], [])
+        suggestion = {"channelId": c["id"]}
+        if total and people:
+            score = 0.6 * (sum(weight[u] for u in people) / total) + 0.4 * score
+        if len(people) >= MIN_SIMILAR_MEMBERS:
+            n = len(people)
+            suggestion["similarMembers"] = n
+            reason = {"en": f"{n} people like you follow this", "fi": f"{n} kaltaistasi seuraa tätä",
+                      "fa": f"{n} نفر مثل تو این را دنبال می‌کنند", "sv": f"{n} personer som du följer den här"}
+        elif people:
+            reason = {"en": "People like you follow this", "fi": "Kaltaisesi seuraavat tätä",
+                      "fa": "افرادی مثل تو این را دنبال می‌کنند", "sv": "Personer som du följer den här"}
+        elif c.get("language") and c["language"] == profile["language"]:
             reason = {"en": "In your language", "fi": "Omalla kielelläsi", "fa": "به زبان خودت", "sv": "På ditt språk"}
         elif c.get("placeId") in my_places:
             reason = {"en": "Near you", "fi": "Lähelläsi", "fa": "نزدیک تو", "sv": "Nära dig"}
         else:
             reason = {"en": "Matches your interests", "fi": "Vastaa kiinnostuksiasi",
                       "fa": "با علاقه‌هایت جور است", "sv": "Passar dina intressen"}
-        out.append({"channelId": c["id"], "score": score, "reason": reason})
+        out.append({**suggestion, "score": round(min(score, 1.0), 3), "reason": reason})
     out.sort(key=lambda s: -s["score"])
     return out[:10]
 

@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -9,12 +11,21 @@ from pinni.seed import DEV_PASSWORD, dev_email
 @pytest.fixture
 def app(tmp_path):
     settings = Settings(db_path=tmp_path / "test.db", contract_dir=BACKEND.parent / "contract",
-                        seed_mock=True, dev_accounts=True)
+                        seed_mock=True, dev_accounts=True, neo4j_uri=os.environ.get("PINNI_TEST_NEO4J_URI", ""),
+                        neo4j_user="neo4j", neo4j_password=os.environ.get("PINNI_TEST_NEO4J_PASSWORD", ""),
+                        chroma="memory", ollama_url="", embed_model="")
     return create_app(settings)
 
 
 @pytest.fixture
 def client(app):
+    if app.state.settings.neo4j_uri:
+        # Integration run against a real Neo4j: start each test from an empty graph.
+        from neo4j import GraphDatabase
+
+        s = app.state.settings
+        with GraphDatabase.driver(s.neo4j_uri, auth=(s.neo4j_user, s.neo4j_password)) as driver:
+            driver.execute_query("MATCH (n) DETACH DELETE n")
     with TestClient(app) as c:
         yield c
 

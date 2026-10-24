@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
-from . import db, errors
+from . import db, errors, graph, vectors
 from .config import Settings
 from .contract import Contract
 from .routers import admin, auth, community, reader
@@ -22,9 +22,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             db.init(conn)
             if settings.seed_mock and db.is_empty(conn):
                 seed(conn, app.state.contract, settings.dev_accounts)
+            app.state.graph = graph.connect(settings)
+            if app.state.graph.is_empty():
+                graph.rebuild(conn, app.state.graph)
+            app.state.vectors = vectors.connect(settings)
+            if app.state.vectors.count() == 0:
+                app.state.vectors.index(db.docs(conn, "SELECT doc FROM stories"))
         finally:
             conn.close()
         yield
+        app.state.graph.close()
 
     app = FastAPI(
         title="Pinni API",

@@ -22,6 +22,15 @@ class Settings:
     seed_mock: bool
     # Give the mock users sign-in credentials (see seed.DEV_PASSWORD). Never enable in production.
     dev_accounts: bool
+    # Knowledge graph. Empty URI = in-memory graph rebuilt from SQLite at startup.
+    neo4j_uri: str
+    neo4j_user: str
+    neo4j_password: str
+    # Vector store: a directory (embedded Chroma), an http(s):// Chroma server, or "memory".
+    chroma: str
+    # Embeddings. Empty URL = hashing embedder (no model needed).
+    ollama_url: str
+    embed_model: str
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -30,4 +39,10 @@ class Settings:
             contract_dir=Path(os.environ.get("PINNI_CONTRACT_DIR", BACKEND.parent / "contract")),
             seed_mock=_flag("PINNI_SEED_MOCK", True),
             dev_accounts=_flag("PINNI_DEV_ACCOUNTS", True),
+            neo4j_uri=os.environ.get("PINNI_NEO4J_URI", ""),
+            neo4j_user=os.environ.get("PINNI_NEO4J_USER", "neo4j"),
+            neo4j_password=os.environ.get("PINNI_NEO4J_PASSWORD", ""),
+            chroma=os.environ.get("PINNI_CHROMA", str(BACKEND / "data" / "chroma")),
+            ollama_url=os.environ.get("PINNI_OLLAMA_URL", ""),
+            embed_model=os.environ.get("PINNI_EMBED_MODEL", "bge-m3"),
         )
