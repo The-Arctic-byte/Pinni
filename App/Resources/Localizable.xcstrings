@@ -288,6 +288,28 @@
         }
       }
     },
+    "EU citizen": {
+      "localizations": {
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "شهروند اتحادیه اروپا"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "EU-kansalainen"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "EU-medborgare"
+          }
+        }
+      }
+    },
     "Economy": {
       "localizations": {
         "fa": {
@@ -350,28 +372,6 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Miljö"
-          }
-        }
-      }
-    },
-    "EU citizen": {
-      "localizations": {
-        "fa": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "شهروند اتحادیه اروپا"
-          }
-        },
-        "fi": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "EU-kansalainen"
-          }
-        },
-        "sv": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "EU-medborgare"
           }
         }
       }
@@ -1499,24 +1499,24 @@
         }
       }
     },
-    "Try another scale.": {
+    "Try another scale or place.": {
       "localizations": {
-        "fa": {
-          "stringUnit": {
-            "state": "needs_review",
-            "value": "مقیاس دیگری را امتحان کن."
-          }
-        },
         "fi": {
           "stringUnit": {
             "state": "needs_review",
-            "value": "Kokeile toista mittakaavaa."
+            "value": "Kokeile toista mittakaavaa tai paikkaa."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "needs_review",
+            "value": "مقیاس یا مکان دیگری را امتحان کن."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "needs_review",
-            "value": "Prova en annan skala."
+            "value": "Prova en annan skala eller plats."
           }
         }
       }

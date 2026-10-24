@@ -48,20 +48,22 @@ struct ReaderScale {
 
     /// How far a place is from the reader, as a scale.
     func distance(to placeId: String) -> Scale {
-        let chain = ancestors(of: placeId)
+        let chain = places.chain(from: placeId)
         if let homeAreaId, chain.contains(homeAreaId) { return .area }
         if chain.contains(homeCityId) { return .city }
         if chain.contains(Self.homeCountryId) { return .finland }
         return .world
     }
+}
 
-    /// The place and every parent above it.
-    private func ancestors(of placeId: String) -> [String] {
+extension Dictionary where Key == String, Value == Place {
+    /// The place and every parent above it, e.g. kiiminki → oulu → finland → eu → world.
+    func chain(from placeId: String) -> [String] {
         var chain: [String] = []
         var current: String? = placeId
         while let id = current, !chain.contains(id) {
             chain.append(id)
-            current = places[id]?.parentId
+            current = self[id]?.parentId
         }
         return chain
     }

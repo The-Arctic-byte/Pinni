@@ -139,6 +139,13 @@ Status:
 ### A6 · Place chips (news without a point)
 A strip like the demo with places: "Oulu", "Finland", "EU", "World", and the reader's home country. Tapping one shows that place's news ranked for the reader.
 
+Status:
+- [x] Chip row under the panel title (iPhone sheet and Mac inspector): home city, Finland, home country (if not Finland), EU, World, each with a story count.
+- [x] A chip lists that place's stories ranked for the reader and leaves out stories that belong to a smaller chip inside it (`PlaceChips`): every story sits under exactly one chip.
+- [x] Tapping a chip flies the map there, shows that place's stories on the map, and moves the scale control to match; tapping it again or "Show all" goes back.
+- [x] Chip names and panel titles follow the app's language; stories follow the story language.
+- Debug launch argument: `-mapChip <place id>`.
+
 ### A7 · Feed, News tab, story detail
 - Sheet / sidebar with stories of the current scale, sorted by relevance.
 - "Most important" slot that is never personalized away (safety near you, official changes that affect you).

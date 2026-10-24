@@ -7,13 +7,14 @@ import SwiftUI
 /// overlap at the current zoom are grouped; tapping a group narrows the panel's list to it.
 struct MapScreen: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.locale) private var locale
     @State private var position: MapCameraPosition = .automatic
     @State private var scale: Scale = .area
     @State private var cameraDistance: Double = 7_000
     /// Stories pushed in the panel; the last one is the open story on the map.
     @State private var path: [String] = []
-    /// Story ids of a tapped group pin; the panel lists only these until "Show all".
-    @State private var groupFilter: [String]?
+    /// A tapped group pin or place chip; the panel (and for chips the map) shows only its stories until "Show all".
+    @State private var listFilter: ListFilter?
     /// Story id of the area circle the map itself has selected.
     @State private var areaSelection: String?
     @State private var sheetDetent: PresentationDetent = .resting
@@ -63,9 +64,12 @@ struct MapScreen: View {
         MapPanel(
             title: panelTitle,
             entries: panelEntries,
-            isGroup: groupFilter != nil,
+            chips: chipItems,
+            selectedChip: listFilter?.placeId,
+            isFiltered: listFilter != nil,
             path: $path,
-            onShowAll: { groupFilter = nil }
+            onSelectChip: select(chip:),
+            onShowAll: showAll
         )
     }
 
@@ -160,10 +164,28 @@ struct MapScreen: View {
         ReaderScale(places: model.places, homePlaceId: model.profile?.homePlaceId)
     }
 
-    /// Stories under the current scale for this reader, plus the open story so it stays visible in a close-up.
+    /// Stories under the current scale for this reader (or the selected chip's place),
+    /// plus the open story so it stays visible in a close-up.
     private var visibleEntries: [(item: FeedItem, story: Story)] {
+        if let chip = listFilter?.placeId {
+            let chips = placeChips
+            return model.rankedStories.filter { chips.contains(chip, storyPlaceId: $0.story.placeId) || $0.story.id == path.last }
+        }
         let reader = readerScale
         return model.rankedStories.filter { reader.scale(of: $0.story) == scale || $0.story.id == path.last }
+    }
+
+    private var placeChips: PlaceChips {
+        PlaceChips(places: model.places, homeCityId: readerScale.homeCityId, homeCountryCode: model.profile?.homeCountryCode)
+    }
+
+    private var chipItems: [MapPanel.Chip] {
+        let chips = placeChips
+        return chips.ids.compactMap { id in
+            guard let place = model.places[id] else { return nil }
+            let count = model.rankedStories.count { chips.contains(id, storyPlaceId: $0.story.placeId) }
+            return MapPanel.Chip(id: id, name: place.name.text(for: uiLanguage), count: count)
+        }
     }
 
     /// Point stories only. An area (`radiusMeters > 0`) stays a circle and is never grouped into a pin.
@@ -176,27 +198,46 @@ struct MapScreen: View {
     }
 
     private var highlightedIds: Set<String> {
-        Set(path.suffix(1) + (groupFilter ?? []))
+        Set(path.suffix(1) + (listFilter?.groupIds ?? []))
     }
 
     private var panelEntries: [(item: FeedItem, story: Story)] {
-        if let groupFilter {
-            return model.rankedStories.filter { groupFilter.contains($0.story.id) }
+        switch listFilter {
+        case .group(let ids):
+            return model.rankedStories.filter { ids.contains($0.story.id) }
+        case .place(let id):
+            let chips = placeChips
+            return model.rankedStories.filter { chips.contains(id, storyPlaceId: $0.story.placeId) }
+        case nil:
+            break
         }
         let reader = readerScale
         return model.rankedStories.filter { reader.scale(of: $0.story) == scale }
     }
 
     private var panelTitle: Text {
-        if let groupFilter { return Text("\(groupFilter.count) stories here") }
+        switch listFilter {
+        case .group(let ids):
+            return Text("\(ids.count) stories here")
+        case .place(let id):
+            let name = model.places[id]?.name.text(for: uiLanguage) ?? ""
+            return id == "world" ? Text("In the world") : Text("In \(name)")
+        case nil:
+            break
+        }
         switch scale {
         case .area: return Text("In your area")
         case .city:
-            let city = model.places[readerScale.homeCityId]?.name.text(for: model.contentLanguage) ?? ""
+            let city = model.places[readerScale.homeCityId]?.name.text(for: uiLanguage) ?? ""
             return Text("In \(city)")
         case .finland: return Text("In Finland")
         case .world: return Text("In the world")
         }
+    }
+
+    /// Chips and titles are navigation, so they follow the app's language; stories follow the story language.
+    private var uiLanguage: String {
+        locale.language.languageCode?.identifier ?? "en"
     }
 
     private var home: CLLocationCoordinate2D? {
@@ -208,7 +249,7 @@ struct MapScreen: View {
     private func show(_ scale: Scale, animated: Bool) {
         self.scale = scale
         path = []
-        groupFilter = nil
+        listFilter = nil
         areaSelection = nil
         moveCamera(to: scale, animated: animated)
     }
@@ -227,7 +268,7 @@ struct MapScreen: View {
         if abs(distance - cameraDistance) > cameraDistance * 0.05 { cameraDistance = distance }
         // Pinching moves the scale control without moving the camera again; a close-up on a story doesn't.
         let pinched = Scale(cameraDistance: distance)
-        if pinched != scale, path.isEmpty, groupFilter == nil { scale = pinched }
+        if pinched != scale, path.isEmpty, listFilter == nil { scale = pinched }
     }
 
     private func select(_ group: PinGroup) {
@@ -236,14 +277,53 @@ struct MapScreen: View {
             return
         }
         areaSelection = nil
-        groupFilter = group.members.map(\.storyId)
+        listFilter = .group(group.members.map(\.storyId))
         path = []
         revealPanel()
     }
 
+    /// A place chip lists that place's stories and flies the map there; tapping it again goes back.
+    private func select(chip id: String) {
+        guard listFilter?.placeId != id else {
+            showAll()
+            return
+        }
+        path = []
+        areaSelection = nil
+        listFilter = .place(id)
+        // Keep the scale control in step with where the map goes.
+        scale = switch id {
+        case readerScale.homeCityId: .city
+        case ReaderScale.homeCountryId: .finland
+        default: .world
+        }
+        let camera = chipCamera(id)
+        cameraDistance = camera.distance
+        withAnimation(.smooth(duration: 1.2)) { position = .camera(camera) }
+    }
+
+    private func showAll() {
+        let wasPlace = listFilter?.placeId != nil
+        listFilter = nil
+        if wasPlace { moveCamera(to: scale, animated: true) }
+    }
+
+    private func chipCamera(_ id: String) -> MapCamera {
+        switch id {
+        case readerScale.homeCityId: return Scale.city.camera(home: home)
+        case ReaderScale.homeCountryId: return Scale.finland.camera(home: home)
+        case "world": return Scale.world.camera(home: home)
+        default:
+            let place = model.places[id]
+            let center = place?.center?.clLocation ?? .oulu
+            let distance: Double = place?.kind == .country ? 3_500_000 : 6_000_000
+            return MapCamera(centerCoordinate: center, distance: distance, heading: 0, pitch: 0)
+        }
+    }
+
     /// Opens one story in the panel; the map highlights it (and flies in for 3D objects) through `path`.
     private func open(_ id: String) {
-        groupFilter = nil
+        if listFilter?.placeId == nil { listFilter = nil }
         path = [id]
         revealPanel()
     }
@@ -267,7 +347,8 @@ struct MapScreen: View {
 
 #if DEBUG
 extension MapScreen {
-    /// `-mapScale world`, `-mapSelect <story id>` and `-mapPanel medium|large` as launch arguments (screenshots).
+    /// `-mapScale world`, `-mapSelect <story id>`, `-mapChip <place id>` and `-mapPanel collapsed|medium|large`
+    /// as launch arguments (screenshots).
     fileprivate func applyLaunchArguments() {
         let defaults = UserDefaults.standard
         if let raw = defaults.string(forKey: "mapScale"), let debugScale = Scale(rawValue: raw) { show(debugScale, animated: false) }
@@ -278,6 +359,7 @@ extension MapScreen {
                 open(id)
             }
         }
+        if let chip = defaults.string(forKey: "mapChip") { select(chip: chip) }
         switch defaults.string(forKey: "mapPanel") {
         case "collapsed": sheetDetent = .collapsed
         case "medium": sheetDetent = .medium
@@ -287,6 +369,22 @@ extension MapScreen {
     }
 }
 #endif
+
+/// What the panel is narrowed to.
+enum ListFilter: Equatable {
+    /// The stories under one tapped group pin.
+    case group([String])
+    /// A place chip (city, country, EU, world).
+    case place(String)
+
+    var placeId: String? {
+        if case .place(let id) = self { id } else { nil }
+    }
+
+    var groupIds: [String]? {
+        if case .group(let ids) = self { ids } else { nil }
+    }
+}
 
 extension PresentationDetent {
     /// Smallest height: just the sheet's title and buttons, so the map has the screen.
