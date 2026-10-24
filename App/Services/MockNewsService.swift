@@ -42,7 +42,17 @@ struct MockNewsService: NewsService {
                 relevance: 0.75,
                 mustSee: false,
                 isExploration: nil,
-                reasons: [LocalizedText(["en": mine ? "Your report" : "Reported by a neighbour"])]
+                reasons: [LocalizedText(mine ? [
+                    "en": "Your report",
+                    "fi": "Oma ilmoituksesi",
+                    "fa": "گزارش تو",
+                    "sv": "Din rapport",
+                ] : [
+                    "en": "Reported by a neighbour",
+                    "fi": "Naapurin ilmoittama",
+                    "fa": "گزارش یک همسایه",
+                    "sv": "Rapporterad av en granne",
+                ])]
             )
         }
         let items = (page.items + community).sorted { $0.relevance > $1.relevance }
@@ -313,7 +323,12 @@ private extension Story {
                 known: nil,
                 happened: LocalizedText(["en": report.text]),
                 notKnown: nil,
-                forYou: LocalizedText(["en": "Reported by someone in your community and checked by an editor."]),
+                forYou: LocalizedText([
+                    "en": "Reported by someone in your community and checked by an editor.",
+                    "fi": "Joku yhteisössäsi ilmoitti tästä, ja toimittaja tarkisti sen.",
+                    "fa": "کسی در جامعه‌ات این را گزارش کرده و ویراستار آن را بررسی کرده است.",
+                    "sv": "Någon i din gemenskap rapporterade det här, och en redaktör har granskat det.",
+                ]),
                 context: nil,
                 actionPlace: nil,
                 timeline: nil

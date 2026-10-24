@@ -5,7 +5,8 @@
     "name": {
       "en": "Kiiminki",
       "fi": "Kiiminki",
-      "fa": "کیمینکی"
+      "fa": "کیمینکی",
+      "sv": "Kiminge"
     },
     "parentId": "oulu",
     "center": {
@@ -122,7 +123,8 @@
     "name": {
       "en": "Ukraine",
       "fi": "Ukraina",
-      "fa": "اوکراین"
+      "fa": "اوکراین",
+      "sv": "Ukraina"
     },
     "parentId": "world",
     "countryCode": "UA",
@@ -137,7 +139,8 @@
     "name": {
       "en": "European Union",
       "fi": "Euroopan unioni",
-      "fa": "اتحادیه اروپا"
+      "fa": "اتحادیه اروپا",
+      "sv": "Europeiska unionen"
     },
     "parentId": "world",
     "center": {

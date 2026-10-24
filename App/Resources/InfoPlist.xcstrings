@@ -1,0 +1,76 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Pinni"
+          }
+        }
+      }
+    },
+    "NSLocationUsageDescription" : {
+      "comment" : "Shown when the app asks to use location.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinni shows where you are on the map when you tap My location. Your location is never sent anywhere."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "وقتی «مکان من» را می‌زنی، پینی جای تو را روی نقشه نشان می‌دهد. مکان تو هیچ‌جا فرستاده نمی‌شود."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pinni näyttää sijaintisi kartalla, kun napautat Oma sijainti. Sijaintiasi ei lähetetä minnekään."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pinni visar var du är på kartan när du trycker på Min plats. Din plats skickas aldrig någonstans."
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "comment" : "Shown when the app asks to use location while it is open.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinni shows where you are on the map when you tap My location. Your location is never sent anywhere."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "وقتی «مکان من» را می‌زنی، پینی جای تو را روی نقشه نشان می‌دهد. مکان تو هیچ‌جا فرستاده نمی‌شود."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pinni näyttää sijaintisi kartalla, kun napautat Oma sijainti. Sijaintiasi ei lähetetä minnekään."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pinni visar var du är på kartan när du trycker på Min plats. Din plats skickas aldrig någonstans."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
