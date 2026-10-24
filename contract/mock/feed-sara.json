@@ -1,0 +1,18 @@
+{
+  "userId": "u-sara",
+  "generatedAt": "2026-10-24T09:00:00+03:00",
+  "personalization": 0.7,
+  "items": [
+    { "storyId": "kiiminki-shooting", "relevance": 0.9, "mustSee": true, "reasons": [{ "en": "Near your home in Kiiminki", "fa": "نزدیک خانه تو در کیمینکی" }] },
+    { "storyId": "icy-path-kiiminki", "relevance": 0.75, "mustSee": false, "reasons": [{ "en": "In your area", "fa": "در محله تو" }] },
+    { "storyId": "lidl-ideapark", "relevance": 0.55, "mustSee": false, "reasons": [{ "en": "On your way into town", "fa": "در مسیر کیمینکی به شهر" }] },
+    { "storyId": "city-site-down", "relevance": 0.5, "mustSee": false, "reasons": [{ "en": "Newcomers do a lot of city paperwork", "fa": "تازه‌واردها کار اداری زیادی با شهر دارند" }] },
+    { "storyId": "athletics-euros-2030", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "You follow sports", "fa": "به ورزش علاقه داری" }] },
+    { "storyId": "parkkipate-strike", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "City services", "fa": "خدمات شهر" }] },
+    { "storyId": "orpo-kyiv", "relevance": 0.3, "mustSee": false, "isExploration": true, "reasons": [{ "en": "General foreign-policy news", "fa": "خبر عمومی سیاست خارجی" }] },
+    { "storyId": "muhos-data-centre", "relevance": 0.2, "mustSee": false, "reasons": [{ "en": "Near Oulu, no daily effect", "fa": "نزدیک اولو، ولی بی‌اثر بر زندگی روزمره" }] },
+    { "storyId": "un-climate-report", "relevance": 0.2, "mustSee": false, "reasons": [{ "en": "Global news", "fa": "خبر جهانی" }] },
+    { "storyId": "interpellation", "relevance": 0.15, "mustSee": false, "reasons": [{ "en": "General political debate, no direct effect", "fa": "بحث سیاسی عمومی؛ اثر مستقیمی بر تو ندارد" }] },
+    { "storyId": "editorial-social-media", "relevance": 0.1, "mustSee": false, "reasons": [{ "en": "Opinion, not news", "fa": "نظر، نه خبر" }] }
+  ]
+}

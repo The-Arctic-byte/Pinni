@@ -1,0 +1,14 @@
+[
+  { "id": "ev-0001", "userId": "u-sara", "type": "onboardingAnswer", "detail": { "question": "categories", "answer": { "safety": 0.9, "education": 0.8, "housing": 0.8, "sport": 0.7 } }, "context": { "screen": "onboarding" }, "occurredAt": "2026-10-15T12:05:00+03:00" },
+  { "id": "ev-0002", "userId": "u-sara", "type": "onboardingAnswer", "detail": { "question": "housing", "answer": "psoas" }, "context": { "screen": "onboarding" }, "occurredAt": "2026-10-15T12:06:00+03:00" },
+  { "id": "ev-0003", "userId": "u-sara", "type": "open", "storyId": "kiiminki-shooting", "context": { "screen": "map", "scale": "area", "position": 0 }, "occurredAt": "2026-10-22T10:45:00+03:00" },
+  { "id": "ev-0004", "userId": "u-sara", "type": "dwell", "storyId": "kiiminki-shooting", "value": 74, "context": { "screen": "story" }, "occurredAt": "2026-10-22T10:46:14+03:00" },
+  { "id": "ev-0005", "userId": "u-sara", "type": "zoom", "value": 2, "context": { "screen": "map", "scale": "finland" }, "occurredAt": "2026-10-23T18:02:00+03:00" },
+  { "id": "ev-0006", "userId": "u-sara", "type": "skip", "storyId": "interpellation", "context": { "screen": "news", "position": 3 }, "occurredAt": "2026-10-23T18:03:00+03:00" },
+  { "id": "ev-0007", "userId": "u-sara", "type": "like", "storyId": "athletics-euros-2030", "context": { "screen": "story" }, "occurredAt": "2026-10-23T18:05:00+03:00" },
+  { "id": "ev-0008", "userId": "u-sara", "type": "placeChipTap", "placeId": "iran", "context": { "screen": "map" }, "occurredAt": "2026-10-23T18:06:00+03:00" },
+  { "id": "ev-0009", "userId": "u-sara", "type": "joinChannel", "channelId": "persian-oulu", "context": { "screen": "community" }, "occurredAt": "2026-10-23T18:10:00+03:00" },
+  { "id": "ev-0010", "userId": "u-sara", "type": "report", "detail": { "reportId": "report-icy-path" }, "context": { "screen": "map" }, "occurredAt": "2026-10-24T07:50:00+03:00" },
+  { "id": "ev-0011", "userId": "u-matti", "type": "notForMe", "storyId": "athletics-euros-2030", "context": { "screen": "news" }, "occurredAt": "2026-10-23T08:00:00+03:00" },
+  { "id": "ev-0012", "userId": "u-matti", "type": "share", "storyId": "muhos-data-centre", "context": { "screen": "story" }, "occurredAt": "2026-10-23T08:04:00+03:00" }
+]

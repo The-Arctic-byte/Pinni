@@ -1,0 +1,41 @@
+[
+  {
+    "id": "report-icy-path",
+    "kind": "newsTip",
+    "reporterId": "u-sara",
+    "category": "transport",
+    "sensitive": false,
+    "text": "The walking and bike path by the Kiiminki school is very icy.",
+    "location": { "coordinate": { "lat": 65.129, "lon": 25.741 }, "radiusMeters": 100 },
+    "status": "published",
+    "resultStoryId": "icy-path-kiiminki",
+    "reach": 340,
+    "createdAt": "2026-10-24T07:50:00+03:00",
+    "updatedAt": "2026-10-24T08:30:00+03:00"
+  },
+  {
+    "id": "report-sirens",
+    "kind": "newsTip",
+    "reporterId": "u-sara",
+    "category": "safety",
+    "sensitive": true,
+    "text": "I heard a lot of sirens in Kiiminki tonight.",
+    "location": { "coordinate": { "lat": 65.131, "lon": 25.735 }, "radiusMeters": 500 },
+    "status": "editorLead",
+    "editorNote": "Thanks. We keep this as a lead and check with police before writing anything.",
+    "createdAt": "2026-10-23T22:10:00+03:00",
+    "updatedAt": "2026-10-23T22:40:00+03:00"
+  },
+  {
+    "id": "report-wrong-date",
+    "kind": "problem",
+    "reporterId": "u-matti",
+    "storyId": "parkkipate-strike",
+    "category": "work",
+    "sensitive": false,
+    "text": "Is the start date right? I read 4 November somewhere.",
+    "status": "inReview",
+    "createdAt": "2026-10-24T08:10:00+03:00",
+    "updatedAt": "2026-10-24T08:10:00+03:00"
+  }
+]

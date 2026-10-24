@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "profile.schema.json",
+  "title": "Profile",
+  "description": "What the reader told us. Learned preferences live in the recommender, not here. Sensitive fields need explicit consent.",
+  "type": "object",
+  "required": ["userId", "language", "targetGroups", "categoryWeights", "interests", "wantedNews", "hardFilters", "updatedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "userId": { "$ref": "common.schema.json#/$defs/Id" },
+    "language": {
+      "description": "Story language.",
+      "$ref": "common.schema.json#/$defs/Language"
+    },
+    "uiLanguage": { "enum": ["en", "fi", "fa", "sv"] },
+    "targetGroups": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/TargetGroup" },
+      "uniqueItems": true
+    },
+    "homePlaceId": { "$ref": "common.schema.json#/$defs/Id" },
+    "homeCountryCode": {
+      "description": "Adds a place chip for the reader's home country.",
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "residence": {
+      "type": "object",
+      "required": ["status", "consent"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["finnish", "eu", "nonEu"] },
+        "consent": { "const": true }
+      }
+    },
+    "housing": {
+      "description": "Lets the agent watch the housing provider's news (e.g. PSOAS).",
+      "type": "object",
+      "required": ["provider", "consent"],
+      "additionalProperties": false,
+      "properties": {
+        "provider": { "enum": ["psoas", "other", "none"] },
+        "consent": { "const": true }
+      }
+    },
+    "categoryWeights": {
+      "description": "Onboarding step 2. Missing category = neutral (0.5).",
+      "type": "object",
+      "propertyNames": { "$ref": "common.schema.json#/$defs/Category" },
+      "additionalProperties": { "$ref": "common.schema.json#/$defs/Score" }
+    },
+    "interests": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "wantedNews": {
+      "description": "Onboarding step 4: what they want to hear about most, free tags.",
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "followedPlaceIds": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/Id" }, "uniqueItems": true },
+    "hardFilters": {
+      "description": "Never show these. Set by 'not for me', reject, or in the profile.",
+      "type": "object",
+      "required": ["categories", "tags", "sources"],
+      "additionalProperties": false,
+      "properties": {
+        "categories": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/Category" }, "uniqueItems": true },
+        "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "sources": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mustSee": { "type": "boolean" },
+        "forYou": { "type": "boolean" },
+        "myReports": { "type": "boolean" },
+        "channels": { "type": "boolean" }
+      }
+    },
+    "updatedAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+  }
+}

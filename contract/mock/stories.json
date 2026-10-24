@@ -1,0 +1,378 @@
+[
+  {
+    "id": "kiiminki-shooting",
+    "status": "published",
+    "origin": "agent",
+    "scale": "area",
+    "placeId": "kiiminki",
+    "location": { "coordinate": { "lat": 65.131, "lon": 25.735 }, "radiusMeters": 600 },
+    "category": "safety",
+    "tags": ["police"],
+    "needs": ["information", "usefulness"],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.8,
+    "affects": ["residents:kiiminki"],
+    "label": { "en": "Shooting", "fa": "تیراندازی" },
+    "title": {
+      "en": "Shots fired at an empty flat in Kiiminki; one person arrested",
+      "fa": "تیراندازی به آپارتمانی خالی در کیمینکی؛ یک نفر بازداشت شد"
+    },
+    "explanation": {
+      "known": [
+        { "en": "Shots were fired at an empty apartment in Kiiminki on Wednesday evening.", "fa": "چهارشنبه شب به یک آپارتمان خالی در کیمینکی تیراندازی شد." },
+        { "en": "Police say no one was injured.", "fa": "به گفته پلیس، کسی آسیب ندیده است." },
+        { "en": "On Thursday morning police said they had arrested one person.", "fa": "پنجشنبه صبح پلیس اعلام کرد یک نفر را بازداشت کرده است." }
+      ],
+      "notKnown": { "en": "Police have not said why it happened. We will update this story when they do.", "fa": "انگیزه این حادثه هنوز اعلام نشده است. با اطلاعات تازه پلیس، این خبر به‌روز می‌شود." },
+      "forYou": { "en": "This happened near where you live. If you see or hear something urgent, call 112.", "fa": "این حادثه نزدیک محل زندگی توست. اگر چیزی فوری دیدی یا شنیدی، با ۱۱۲ تماس بگیر." },
+      "context": {
+        "question": { "en": "Is it safe to call the police in Finland?", "fa": "تماس با پلیس در فنلاند امن است؟" },
+        "answer": { "en": "Yes. Finnish police are widely trusted. 112 is free and covers police, fire and ambulance. You can usually speak English.", "fa": "بله. پلیس فنلاند در میان مردم بسیار مورد اعتماد است. ۱۱۲ رایگان است و برای پلیس، آتش‌نشانی و آمبولانس کار می‌کند. معمولاً می‌توانی انگلیسی هم صحبت کنی." }
+      },
+      "timeline": [
+        { "at": "2026-10-22T10:19:00+03:00", "text": { "en": "One person arrested", "fa": "یک نفر بازداشت شد" } },
+        { "at": "2026-10-21T21:21:00+03:00", "text": { "en": "First report, no injuries", "fa": "گزارش اول؛ کسی آسیب ندید" } }
+      ]
+    },
+    "originals": [
+      { "fi": "Yksi otettu kiinni Kiimingin keskiviikkoillan ammuskelusta", "en": "One person arrested over Wednesday evening’s shooting in Kiiminki" },
+      { "fi": "Poliisin tietojen mukaan kukaan ei ole loukkaantunut tilanteessa.", "en": "According to police, no one was injured." }
+    ],
+    "sources": [
+      { "name": "Kaleva", "publishedAt": "2026-10-21T21:21:00+03:00" },
+      { "name": "Kaleva", "publishedAt": "2026-10-22T10:19:00+03:00" }
+    ],
+    "translations": [
+      { "language": "en", "tier": 1, "reviewedBy": "Aino K." },
+      { "language": "fa", "tier": 2, "reviewedBy": "Negar" }
+    ],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-22T10:40:00+03:00" },
+    "createdAt": "2026-10-21T21:30:00+03:00",
+    "updatedAt": "2026-10-22T10:40:00+03:00",
+    "publishedAt": "2026-10-22T10:40:00+03:00"
+  },
+  {
+    "id": "lidl-ideapark",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "ritaharju",
+    "location": { "coordinate": { "lat": 65.075, "lon": 25.535 }, "radiusMeters": 0 },
+    "category": "shopping",
+    "tags": ["groceries"],
+    "needs": ["usefulness"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "mapObject": "shoppingCentre",
+    "label": { "en": "Lidl at Ideapark", "fa": "لیدل در Ideapark" },
+    "title": { "en": "Lidl will open a store at Oulu’s Ideapark shopping centre", "fa": "لیدل در مرکز خرید Ideapark اولو فروشگاه باز می‌کند" },
+    "explanation": {
+      "happened": { "en": "A zoning change in the Ritaharju district makes the store possible.", "fa": "تغییر طرح شهری در محله ریتاهارجو (Ritaharju) راه ساخت این فروشگاه را باز کرده است." },
+      "forYou": { "en": "Another grocery store on the way from Kiiminki to town. The opening date was not announced.", "fa": "یک فروشگاه مواد غذایی دیگر در مسیر کیمینکی به شهر خواهی داشت. تاریخ افتتاح در خبر اعلام نشده است." }
+    },
+    "originals": [
+      { "fi": "Oulun Ideapark saa päivittäistavarakaupan: Lidl avaa myymälän kauppakeskukseen", "en": "Oulu’s Ideapark gets a grocery store: Lidl opens a shop in the centre" }
+    ],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-21T12:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 2 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-21T13:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "parkkipate-strike",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": { "coordinate": { "lat": 65.012, "lon": 25.471 }, "radiusMeters": 0 },
+    "category": "work",
+    "tags": ["strike"],
+    "needs": ["usefulness"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.45,
+    "label": { "en": "Strike from 5 Nov", "fa": "اعتصاب ۵ نوامبر" },
+    "title": { "en": "Parkkipate staff will strike for five days from 5 November", "fa": "کارکنان Parkkipate از ۵ نوامبر پنج روز اعتصاب می‌کنند" },
+    "explanation": {
+      "happened": { "en": "The five-day strike starts on 5 November and covers all work at the company.", "fa": "اعتصاب پنج‌روزه از ۵ نوامبر شروع می‌شود و همه کارهای این شرکت را شامل می‌شود." },
+      "forYou": { "en": "If you use Parkkipate services, check your plans for those days in advance.", "fa": "اگر از خدمات Parkkipate استفاده می‌کنی، برنامه این روزها را از قبل چک کن." },
+      "context": {
+        "question": { "en": "What is a strike in Finland?", "fa": "اعتصاب در فنلاند چیست؟" },
+        "answer": { "en": "Strikes are legal and usually calm. Trade unions organise them and dates are announced in advance.", "fa": "اعتصاب قانونی است و معمولاً آرام برگزار می‌شود. اتحادیه‌های کارگری آن را سازمان می‌دهند و تاریخش از قبل اعلام می‌شود، پس می‌توانی برنامه‌ریزی کنی." }
+      }
+    },
+    "originals": [
+      { "fi": "Parkkipaten työntekijät lakkoon ensi kuussa", "en": "Parkkipate staff to strike next month" },
+      { "fi": "Viisipäiväinen lakko alkaa 5. marraskuuta.", "en": "The five-day strike starts on 5 November." }
+    ],
+    "wordOfDay": { "word": "lakko", "meaning": { "en": "strike · say “LAHK-koh”", "fa": "اعتصاب · «لاک‌کو»" } },
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-21T15:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 2 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-21T16:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "city-site-down",
+    "status": "published",
+    "origin": "agent",
+    "scale": "city",
+    "placeId": "oulu",
+    "location": { "coordinate": { "lat": 65.013, "lon": 25.465 }, "radiusMeters": 0 },
+    "category": "technology",
+    "tags": ["e-services"],
+    "needs": ["usefulness"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "mapObject": "cityHall",
+    "label": { "en": "City site was down" },
+    "title": { "en": "City of Oulu website was offline after a security flaw" },
+    "explanation": {
+      "happened": { "en": "Two critical PHP flaws took many websites offline on Wednesday, including the City of Oulu’s. Kaleva reports some services may take weeks to fully return." },
+      "forYou": { "en": "If the city site will not load, follow up by phone or in person." }
+    },
+    "originals": [
+      { "fi": "Myös Oulun kaupungin verkkosivuja ollut pois käytöstä", "en": "The City of Oulu’s web pages have also been offline" }
+    ],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T08:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-22T09:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "finns-party-cuts",
+    "status": "inReview",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "finland",
+    "category": "politics",
+    "tags": ["immigration", "social security", "pensions"],
+    "needs": ["understanding"],
+    "risk": "red",
+    "isOpinion": false,
+    "importance": 0.6,
+    "affects": ["residence:nonEu"],
+    "label": { "en": "Party proposal, not law", "fa": "پیشنهاد حزبی، نه قانون" },
+    "title": { "en": "Finns Party wants cuts to social security, pensions and immigration", "fa": "حزب فنلاندی‌ها خواستار کاهش هزینه‌ها در تأمین اجتماعی، بازنشستگی و مهاجرت شد" },
+    "explanation": {
+      "happened": { "en": "The Finns Party (Perussuomalaiset) has proposed cuts to social security, pensions and immigration.", "fa": "حزب فنلاندی‌ها (Perussuomalaiset) پیشنهادهایی برای کاهش هزینه‌ها در تأمین اجتماعی، حقوق بازنشستگی و مهاجرت ارائه کرده است." },
+      "forYou": { "en": "This is a party proposal, not a law. Nothing about your residence or rights has changed. If a law passes, we will tell you here with the official source.", "fa": "این یک پیشنهاد حزبی است، نه قانون. فعلاً چیزی در اقامت یا حقوق تو تغییر نکرده است. اگر قانونی تصویب شود، همین‌جا با منبع رسمی خبر می‌دهیم." },
+      "context": {
+        "question": { "en": "How is a party proposal different from a law?", "fa": "پیشنهاد حزب با قانون چه فرقی دارد؟" },
+        "answer": { "en": "In Finland every law must be debated and passed by Parliament. A party’s proposal alone changes nothing.", "fa": "در فنلاند هر قانون باید در پارلمان بررسی و تصویب شود. پیشنهاد یک حزب به‌تنهایی چیزی را تغییر نمی‌دهد." }
+      },
+      "actionPlace": {
+        "name": { "en": "Migri · if you have questions", "fa": "Migri · اگر سؤال داری" },
+        "url": "https://migri.fi"
+      }
+    },
+    "originals": [
+      { "fi": "Perussuomalaiset leikkaisi sosiaaliturvasta, eläkkeistä ja maahanmuutosta", "en": "The Finns Party would cut social security, pensions and immigration" }
+    ],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T11:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 3 }],
+    "createdAt": "2026-10-22T12:00:00+03:00",
+    "updatedAt": "2026-10-22T12:00:00+03:00"
+  },
+  {
+    "id": "interpellation",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "finland",
+    "category": "politics",
+    "tags": ["parliament"],
+    "needs": ["understanding"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.5,
+    "label": { "en": "Interpellation" },
+    "title": { "en": "Opposition files an interpellation against the government" },
+    "explanation": {
+      "happened": { "en": "Five opposition parties (SDP, Centre, Greens, Left Alliance and Liike Nyt) filed an interpellation in Parliament." },
+      "forYou": { "en": "This is a political debate in Parliament and does not change your daily life for now." },
+      "context": {
+        "question": { "en": "What is an interpellation?" },
+        "answer": { "en": "The opposition asks the government to explain itself, and Parliament then votes on confidence in the government." }
+      }
+    },
+    "originals": [
+      { "fi": "\"Hallitus ei elä samassa todellisuudessa tavallisten suomalaisten kanssa\" – oppositio teki välikysymyksen", "en": "“The government does not live in the same reality as ordinary Finns” – opposition files an interpellation" }
+    ],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-23T09:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T11:00:00+03:00" },
+    "createdAt": "2026-10-23T09:30:00+03:00",
+    "updatedAt": "2026-10-23T11:00:00+03:00",
+    "publishedAt": "2026-10-23T11:00:00+03:00"
+  },
+  {
+    "id": "athletics-euros-2030",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "helsinki",
+    "location": { "coordinate": { "lat": 60.187, "lon": 24.927 }, "radiusMeters": 0 },
+    "category": "sport",
+    "tags": ["athletics"],
+    "needs": ["emotion", "information"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "mapObject": "stadium",
+    "label": { "en": "Athletics Euros 2030", "fa": "دوومیدانی اروپا ۲۰۳۰" },
+    "title": { "en": "Helsinki will host the 2030 European Athletics Championships", "fa": "مسابقات قهرمانی دوومیدانی اروپا ۲۰۳۰ در هلسینکی برگزار می‌شود" },
+    "explanation": {
+      "happened": { "en": "Helsinki will host the European Athletics Championships in 2030.", "fa": "هلسینکی میزبان مسابقات قهرمانی دوومیدانی اروپا در سال ۲۰۳۰ شد." },
+      "forYou": { "en": "A big sports event in Finland, still years away.", "fa": "یک رویداد ورزشی بزرگ در فنلاند، ولی هنوز چند سال تا آن مانده." }
+    },
+    "originals": [{ "fi": "Helsinki sai yleisurheilun EM-kilpailut", "en": "Helsinki gets the European Athletics Championships" }],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T14:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 2 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-22T15:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "muhos-data-centre",
+    "status": "published",
+    "origin": "agent",
+    "scale": "finland",
+    "placeId": "muhos",
+    "location": { "coordinate": { "lat": 64.808, "lon": 25.993 }, "radiusMeters": 2000 },
+    "category": "environment",
+    "tags": ["data centre", "water"],
+    "needs": ["understanding"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.4,
+    "label": { "en": "Muhos data centre" },
+    "title": { "en": "Police asked to investigate Google’s Muhos data-centre project" },
+    "explanation": {
+      "happened": { "en": "The permits and supervision agency LVV asked police to investigate Google’s Muhos data-centre project and wants a more detailed water plan." },
+      "forYou": { "en": "Muhos is near Oulu, but this does not directly affect your daily life." }
+    },
+    "originals": [{ "fi": "LVV on tehnyt poliisille tutkintapyynnön Googlen Muhoksen datakeskushankkeesta", "en": "LVV has asked police to investigate Google’s Muhos data-centre project" }],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T10:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-22T11:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "orpo-kyiv",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "ukraine",
+    "location": { "coordinate": { "lat": 50.45, "lon": 30.52 }, "radiusMeters": 0 },
+    "category": "world",
+    "tags": ["foreign policy", "ukraine"],
+    "needs": ["information"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.55,
+    "label": { "en": "Orpo in Kyiv" },
+    "title": { "en": "Air-raid alerts during Finnish PM’s visit to Kyiv" },
+    "explanation": {
+      "happened": { "en": "Petteri Orpo met Zelensky, and Finnish and Ukrainian companies signed deals worth €300 million." },
+      "forYou": { "en": "This shows Finland’s foreign policy. It does not directly change your daily life." }
+    },
+    "originals": [{ "fi": "Ilmahälytykset säestivät Orpon Kiovan-vierailun joka hetkeä", "en": "Air-raid alerts accompanied every moment of Orpo’s Kyiv visit" }],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-22T16:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-22T17:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "un-climate-report",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "world",
+    "category": "environment",
+    "tags": ["climate"],
+    "needs": ["understanding"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.45,
+    "label": { "en": "UN climate report" },
+    "title": { "en": "UN: the world is far from the Paris Agreement goals" },
+    "explanation": {
+      "happened": { "en": "According to UNEP, warming could reach 2.6 degrees above pre-industrial levels this century." },
+      "forYou": { "en": "Global news with no direct effect on your daily life in Oulu." }
+    },
+    "originals": [{ "fi": "Pariisin ilmastosopimuksen tavoitteista jäädään kauas, varoittaa YK", "en": "The Paris Agreement goals will be missed by far, the UN warns" }],
+    "sources": [{ "name": "Kaleva", "publishedAt": "2026-10-21T10:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-21T11:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "editorial-social-media",
+    "status": "published",
+    "origin": "agent",
+    "scale": "world",
+    "placeId": "world",
+    "category": "technology",
+    "tags": ["social media"],
+    "needs": ["understanding"],
+    "risk": "none",
+    "isOpinion": true,
+    "importance": 0.2,
+    "label": { "en": "Editorial: social media" },
+    "title": { "en": "Editorial: social media giants must answer for their content" },
+    "explanation": {
+      "happened": { "en": "Kaleva editorial: a US court has found that Meta endangers children’s health." },
+      "forYou": { "en": "This is the newspaper’s opinion, not a news report." }
+    },
+    "originals": [{ "fi": "Somejätit täytyy saada vastuuseen sisällöistään", "en": "Social media giants must be held accountable for their content" }],
+    "sources": [{ "name": "Kaleva (editorial)", "publishedAt": "2026-10-23T06:00:00+03:00" }],
+    "translations": [{ "language": "en", "tier": 1 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-23T09:12:00+03:00" },
+    "createdAt": "2026-10-23T07:00:00+03:00",
+    "updatedAt": "2026-10-23T09:12:00+03:00",
+    "publishedAt": "2026-10-23T09:12:00+03:00"
+  },
+  {
+    "id": "icy-path-kiiminki",
+    "status": "published",
+    "origin": "community",
+    "scale": "area",
+    "placeId": "kiiminki",
+    "location": { "coordinate": { "lat": 65.129, "lon": 25.741 }, "radiusMeters": 100 },
+    "category": "transport",
+    "tags": ["winter", "walking"],
+    "needs": ["usefulness", "community"],
+    "risk": "none",
+    "isOpinion": false,
+    "importance": 0.35,
+    "label": { "en": "Icy path", "fa": "مسیر یخ‌زده" },
+    "title": { "en": "Icy or slippery path by the Kiiminki school", "fa": "مسیر یخ‌زده یا لغزنده کنار مدرسه کیمینکی" },
+    "explanation": {
+      "happened": { "en": "The walking and bike path by the Kiiminki school is very icy.", "fa": "مسیر پیاده و دوچرخه کنار مدرسه کیمینکی خیلی یخ زده است." },
+      "forYou": { "en": "Take another route or walk carefully if you pass the school.", "fa": "اگر از کنار مدرسه رد می‌شوی، مسیر دیگری برو یا با احتیاط راه برو." }
+    },
+    "sources": [{ "name": "Community report (sample data)" }],
+    "translations": [{ "language": "en", "tier": 1 }, { "language": "fa", "tier": 1 }],
+    "verification": { "verifiedBy": "Aino K.", "verifiedAt": "2026-10-24T08:30:00+03:00" },
+    "community": { "reportId": "report-icy-path", "confirmations": 3 },
+    "createdAt": "2026-10-24T07:50:00+03:00",
+    "updatedAt": "2026-10-24T08:30:00+03:00",
+    "publishedAt": "2026-10-24T08:30:00+03:00"
+  }
+]

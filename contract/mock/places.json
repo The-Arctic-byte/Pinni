@@ -1,0 +1,13 @@
+[
+  { "id": "kiiminki", "kind": "area", "name": { "en": "Kiiminki", "fi": "Kiiminki", "fa": "کیمینکی" }, "parentId": "oulu", "center": { "lat": 65.131, "lon": 25.735 } },
+  { "id": "linnanmaa", "kind": "area", "name": { "en": "Linnanmaa", "fi": "Linnanmaa", "fa": "لینامآ" }, "parentId": "oulu", "center": { "lat": 65.059, "lon": 25.466 } },
+  { "id": "ritaharju", "kind": "area", "name": { "en": "Ritaharju", "fi": "Ritaharju", "fa": "ریتاهارجو" }, "parentId": "oulu", "center": { "lat": 65.075, "lon": 25.535 } },
+  { "id": "oulu", "kind": "city", "name": { "en": "Oulu", "fi": "Oulu", "fa": "اولو", "sv": "Uleåborg" }, "parentId": "finland", "center": { "lat": 65.012, "lon": 25.471 } },
+  { "id": "muhos", "kind": "city", "name": { "en": "Muhos", "fi": "Muhos", "fa": "موهوس" }, "parentId": "finland", "center": { "lat": 64.808, "lon": 25.993 } },
+  { "id": "helsinki", "kind": "city", "name": { "en": "Helsinki", "fi": "Helsinki", "fa": "هلسینکی", "sv": "Helsingfors" }, "parentId": "finland", "center": { "lat": 60.170, "lon": 24.938 } },
+  { "id": "finland", "kind": "country", "name": { "en": "Finland", "fi": "Suomi", "fa": "فنلاند", "sv": "Finland" }, "parentId": "eu", "countryCode": "FI", "center": { "lat": 64.5, "lon": 26.0 } },
+  { "id": "iran", "kind": "country", "name": { "en": "Iran", "fi": "Iran", "fa": "ایران" }, "parentId": "world", "countryCode": "IR", "center": { "lat": 32.4, "lon": 53.7 } },
+  { "id": "ukraine", "kind": "country", "name": { "en": "Ukraine", "fi": "Ukraina", "fa": "اوکراین" }, "parentId": "world", "countryCode": "UA", "center": { "lat": 49.0, "lon": 31.4 } },
+  { "id": "eu", "kind": "region", "name": { "en": "European Union", "fi": "Euroopan unioni", "fa": "اتحادیه اروپا" }, "parentId": "world" },
+  { "id": "world", "kind": "world", "name": { "en": "World", "fi": "Maailma", "fa": "جهان", "sv": "Världen" } }
+]

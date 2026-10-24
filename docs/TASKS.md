@@ -63,8 +63,10 @@ Write `contract/` so all three tracks can work without waiting for each other.
 - `contract/mock/`: mock data for every type, valid against the schemas. Track A loads it; Track C seeds from it.
 
 Done when:
+- [x] Draft: `contract/` schemas, `openapi.yaml`, mock data, `tools/validate.py`, CI workflow.
 - [ ] JSON Schemas + OpenAPI file reviewed by all three.
-- [ ] Mock data validates against the schemas in CI.
+- [x] Mock data validates against the schemas locally (`uv run contract/tools/validate.py`).
+- [ ] CI workflow (`.github/workflows/contract.yml`) seen green on GitHub.
 
 ---
 
@@ -211,7 +213,7 @@ APNs push: story published (reporter), high-relevance story approved (target rea
 - Backend: FastAPI (Python), SQLite + Neo4j + Chroma. Supabase dropped.
 - UI languages: English (development), Finnish, Persian, Swedish.
 - Accounts: reading needs no account; members sign in to report, post, join channels.
-- Privacy: housing and residence are optional and need consent; story locations are areas; report locations rounded to street.
+- Privacy: the profile is stored on the backend under an anonymous id so the recommender can use it; housing and residence are optional and need consent; story locations are areas; report locations rounded to street.
 
 ## Open questions
 - Member names for Tracks A, B, C.

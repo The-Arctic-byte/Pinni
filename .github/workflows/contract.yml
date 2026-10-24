@@ -1,0 +1,15 @@
+name: contract
+
+on:
+  push:
+    paths: ["contract/**", ".github/workflows/contract.yml"]
+  pull_request:
+    paths: ["contract/**", ".github/workflows/contract.yml"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv run contract/tools/validate.py

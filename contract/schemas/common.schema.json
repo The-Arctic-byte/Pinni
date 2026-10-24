@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Shared types",
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "Timestamp": {
+      "description": "ISO 8601 with time zone, e.g. 2026-10-22T10:19:00+03:00",
+      "type": "string",
+      "format": "date-time"
+    },
+    "Language": {
+      "description": "ISO 639-1 code. UI ships en, fi, fa, sv; story content may use more.",
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "LocalizedText": {
+      "description": "Text per language. English is always present and is the fallback.",
+      "type": "object",
+      "required": ["en"],
+      "propertyNames": { "$ref": "#/$defs/Language" },
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "Coordinate": {
+      "type": "object",
+      "required": ["lat", "lon"],
+      "additionalProperties": false,
+      "properties": {
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+      }
+    },
+    "Location": {
+      "description": "Where a story is shown on the map. radiusMeters > 0 means it is drawn as an area, never as a point.",
+      "type": "object",
+      "required": ["coordinate", "radiusMeters"],
+      "additionalProperties": false,
+      "properties": {
+        "coordinate": { "$ref": "#/$defs/Coordinate" },
+        "radiusMeters": { "type": "number", "minimum": 0 }
+      }
+    },
+    "Scale": {
+      "description": "Geographic scale of a story. Set by where it happens, not by how important it is.",
+      "enum": ["area", "city", "finland", "world"]
+    },
+    "Category": {
+      "description": "News category. Also the colour key on the map.",
+      "enum": [
+        "economy", "society", "politics", "shopping", "sport", "safety",
+        "culture", "transport", "education", "housing", "health", "work",
+        "environment", "technology", "world", "cityLife"
+      ]
+    },
+    "Need": {
+      "description": "What the reader gets from a story.",
+      "enum": ["safety", "information", "understanding", "usefulness", "community", "emotion"]
+    },
+    "Risk": {
+      "description": "red = residence, health, money, work or safety: a human editor must sign before publishing.",
+      "enum": ["none", "amber", "red"]
+    },
+    "TargetGroup": {
+      "enum": ["student", "worker", "family", "jobSeeker", "local", "retiree", "other"]
+    },
+    "Role": {
+      "enum": ["reader", "member", "editor", "admin"]
+    },
+    "Score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "persian-oulu",
+    "kind": "language",
+    "name": { "en": "Persian speakers in Oulu", "fa": "فارسی‌زبان‌های اولو" },
+    "description": { "en": "News, tips and questions in Persian.", "fa": "خبر، پیشنهاد و پرسش به فارسی." },
+    "categories": ["society", "shopping", "cityLife"],
+    "placeId": "oulu",
+    "language": "fa",
+    "memberCount": 214,
+    "createdAt": "2026-09-01T10:00:00+03:00"
+  },
+  {
+    "id": "kiiminki-neighbours",
+    "kind": "place",
+    "name": { "en": "Kiiminki neighbours", "fi": "Kiimingin naapurit", "fa": "همسایه‌های کیمینکی" },
+    "description": { "en": "What is happening in Kiiminki: roads, shops, events.", "fa": "اتفاق‌های کیمینکی: راه‌ها، فروشگاه‌ها، رویدادها." },
+    "categories": ["cityLife", "transport", "safety"],
+    "placeId": "kiiminki",
+    "memberCount": 512,
+    "createdAt": "2026-08-25T10:00:00+03:00"
+  },
+  {
+    "id": "student-sports",
+    "kind": "topic",
+    "name": { "en": "Student sports in Oulu", "fa": "ورزش دانشجویی در اولو" },
+    "description": { "en": "Clubs, gyms, newcomer hours and matches.", "fa": "باشگاه‌ها، سالن‌ها، ساعت‌های تازه‌واردها و مسابقه‌ها." },
+    "categories": ["sport", "education"],
+    "placeId": "oulu",
+    "memberCount": 388,
+    "createdAt": "2026-09-05T10:00:00+03:00"
+  },
+  {
+    "id": "psoas-residents",
+    "kind": "community",
+    "name": { "en": "PSOAS residents", "fa": "ساکنان PSOAS" },
+    "description": { "en": "Rent, maintenance and building news for PSOAS tenants.", "fa": "اجاره، تعمیرات و خبرهای ساختمان برای مستأجران PSOAS." },
+    "categories": ["housing"],
+    "placeId": "oulu",
+    "memberCount": 640,
+    "createdAt": "2026-08-30T10:00:00+03:00"
+  }
+]

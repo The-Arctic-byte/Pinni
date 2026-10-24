@@ -1,0 +1,17 @@
+{
+  "userId": "u-matti",
+  "generatedAt": "2026-10-24T09:00:00+03:00",
+  "personalization": 0.8,
+  "items": [
+    { "storyId": "kiiminki-shooting", "relevance": 0.9, "mustSee": true, "reasons": [{ "en": "Near your home in Kiiminki" }] },
+    { "storyId": "icy-path-kiiminki", "relevance": 0.75, "mustSee": false, "reasons": [{ "en": "Reported by a neighbour" }] },
+    { "storyId": "muhos-data-centre", "relevance": 0.65, "mustSee": false, "reasons": [{ "en": "Your region’s environment" }] },
+    { "storyId": "interpellation", "relevance": 0.6, "mustSee": false, "reasons": [{ "en": "National politics you vote on" }] },
+    { "storyId": "orpo-kyiv", "relevance": 0.55, "mustSee": false, "reasons": [{ "en": "Finnish foreign policy" }] },
+    { "storyId": "lidl-ideapark", "relevance": 0.5, "mustSee": false, "reasons": [{ "en": "Shopping on your way into town" }] },
+    { "storyId": "parkkipate-strike", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "City services" }] },
+    { "storyId": "city-site-down", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "City e-services" }] },
+    { "storyId": "un-climate-report", "relevance": 0.3, "mustSee": false, "reasons": [{ "en": "Global news" }] },
+    { "storyId": "editorial-social-media", "relevance": 0.3, "mustSee": false, "reasons": [{ "en": "Opinion, not news" }] }
+  ]
+}

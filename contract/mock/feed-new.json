@@ -1,0 +1,18 @@
+{
+  "userId": "u-new",
+  "generatedAt": "2026-10-24T09:00:00+03:00",
+  "personalization": 0,
+  "items": [
+    { "storyId": "kiiminki-shooting", "relevance": 0.8, "mustSee": true, "reasons": [{ "en": "Safety in Oulu" }] },
+    { "storyId": "orpo-kyiv", "relevance": 0.55, "mustSee": false, "reasons": [{ "en": "Top story in Finland" }] },
+    { "storyId": "interpellation", "relevance": 0.5, "mustSee": false, "reasons": [{ "en": "Top story in Finland" }] },
+    { "storyId": "parkkipate-strike", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "Popular in Oulu" }] },
+    { "storyId": "un-climate-report", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "Top story in the world" }] },
+    { "storyId": "lidl-ideapark", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "Popular in Oulu" }] },
+    { "storyId": "city-site-down", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "Popular in Oulu" }] },
+    { "storyId": "muhos-data-centre", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "Near Oulu" }] },
+    { "storyId": "athletics-euros-2030", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "Sport in Finland" }] },
+    { "storyId": "icy-path-kiiminki", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "Reported by people in Oulu" }] },
+    { "storyId": "editorial-social-media", "relevance": 0.2, "mustSee": false, "reasons": [{ "en": "Opinion, not news" }] }
+  ]
+}

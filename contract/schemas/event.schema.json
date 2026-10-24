@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "event.schema.json",
+  "title": "Event",
+  "description": "One user interaction. Append-only; the input for preference updates.",
+  "type": "object",
+  "required": ["id", "userId", "type", "occurredAt"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/Id" },
+    "userId": { "$ref": "common.schema.json#/$defs/Id" },
+    "type": {
+      "enum": [
+        "onboardingAnswer", "profileEdit",
+        "open", "dwell", "skip", "like", "dislike", "notForMe", "reject", "share", "save",
+        "followPlace", "unfollowPlace", "joinChannel", "leaveChannel", "postToChannel",
+        "report", "flagWrong", "confirm",
+        "zoom", "mapTap", "placeChipTap", "notificationOpen"
+      ]
+    },
+    "storyId": { "$ref": "common.schema.json#/$defs/Id" },
+    "channelId": { "$ref": "common.schema.json#/$defs/Id" },
+    "placeId": { "$ref": "common.schema.json#/$defs/Id" },
+    "value": {
+      "description": "Type-specific number: dwell = seconds, zoom = scale index 0-3.",
+      "type": "number"
+    },
+    "detail": {
+      "description": "Type-specific small payload, e.g. the onboarding question and answer.",
+      "type": "object"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "screen": { "enum": ["onboarding", "map", "news", "story", "community", "profile", "notification"] },
+        "scale": { "$ref": "common.schema.json#/$defs/Scale" },
+        "position": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "occurredAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "enum": ["open", "dwell", "skip", "like", "dislike", "notForMe", "reject", "share", "save", "flagWrong", "confirm"] } } },
+      "then": { "required": ["storyId"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "dwell" } } },
+      "then": { "required": ["value"] }
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "report.schema.json",
+  "title": "Report",
+  "description": "A reader submits news (newsTip) or reports a problem with a story (problem). Sensitive reports are never auto-published.",
+  "type": "object",
+  "required": ["id", "kind", "reporterId", "category", "sensitive", "text", "status", "createdAt", "updatedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/Id" },
+    "kind": { "enum": ["newsTip", "problem"] },
+    "reporterId": { "$ref": "common.schema.json#/$defs/Id" },
+    "storyId": {
+      "description": "Required for kind = problem.",
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "category": { "$ref": "common.schema.json#/$defs/Category" },
+    "sensitive": { "type": "boolean" },
+    "text": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "location": {
+      "description": "Rounded to street level by the app before sending.",
+      "$ref": "common.schema.json#/$defs/Location"
+    },
+    "status": {
+      "description": "sent → inReview → published | edited (published after editor changes) | rejected | editorLead (kept private, e.g. safety).",
+      "enum": ["sent", "inReview", "published", "edited", "rejected", "editorLead"]
+    },
+    "editorNote": {
+      "description": "Shown to the reporter, e.g. why it was rejected.",
+      "type": "string"
+    },
+    "resultStoryId": { "$ref": "common.schema.json#/$defs/Id" },
+    "reach": {
+      "description": "People the published story reached.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "createdAt": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "updatedAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "problem" } } },
+      "then": { "required": ["storyId"] }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["published", "edited"] } } },
+      "then": { "required": ["resultStoryId"] }
+    }
+  ]
+}

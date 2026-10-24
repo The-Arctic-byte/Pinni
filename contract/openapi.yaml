@@ -1,0 +1,493 @@
+openapi: 3.1.0
+info:
+  title: Pinni API
+  version: 0.1.0
+  description: |
+    Contract between the app (Track A), the agents (Track B) and the backend (Track C).
+    Schemas live in ./schemas; mock responses in ./mock.
+    Readers get an anonymous token from POST /v1/auth/anonymous; members sign in.
+    Every request sends `Accept-Language` (en, fi, fa, sv); responses still contain all languages
+    available in LocalizedText so the app can switch without refetching.
+servers:
+  - url: http://localhost:8000
+    description: Local development
+security:
+  - bearer: []
+
+tags:
+  - name: auth
+  - name: reader
+  - name: community
+  - name: admin
+
+paths:
+  /v1/auth/anonymous:
+    post:
+      tags: [auth]
+      summary: Create an anonymous reader and return its token
+      security: []
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+
+  /v1/auth/login:
+    post:
+      tags: [auth]
+      summary: Sign in as member, editor or admin. Keeps the anonymous user's history.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, format: password }
+                anonymousToken: { type: string }
+      responses:
+        "200":
+          description: Signed in
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "401": { $ref: "#/components/responses/Error" }
+
+  /v1/me:
+    get:
+      tags: [auth]
+      summary: Current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "./schemas/user.schema.json" }
+
+  /v1/profile:
+    get:
+      tags: [reader]
+      summary: The reader's stated profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "./schemas/profile.schema.json" }
+    put:
+      tags: [reader]
+      summary: Replace the profile (onboarding result or profile edit). Also logged as profileEdit events.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "./schemas/profile.schema.json" }
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "./schemas/profile.schema.json" }
+        "422": { $ref: "#/components/responses/Error" }
+
+  /v1/profile/learned:
+    get:
+      tags: [reader]
+      summary: What the recommender has learned, in plain terms, for the profile page
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LearnedPreferences" }
+    delete:
+      tags: [reader]
+      summary: Reset learned preferences (keeps the stated profile)
+      responses:
+        "204": { description: Reset }
+
+  /v1/feed:
+    get:
+      tags: [reader]
+      summary: Stories ranked for this reader
+      parameters:
+        - { name: scale, in: query, schema: { $ref: "./schemas/common.schema.json#/$defs/Scale" } }
+        - { name: placeId, in: query, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 30 } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "./schemas/feed.schema.json" }
+
+  /v1/stories:
+    get:
+      tags: [reader]
+      summary: Stories by id (the feed returns ids)
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema: { type: array, items: { type: string }, maxItems: 100 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "./schemas/story.schema.json" } }
+
+  /v1/stories/{storyId}:
+    get:
+      tags: [reader]
+      summary: One story
+      parameters: [{ $ref: "#/components/parameters/storyId" }]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "./schemas/story.schema.json" }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /v1/places:
+    get:
+      tags: [reader]
+      summary: Places for map areas and place chips
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "./schemas/place.schema.json" } }
+
+  /v1/events:
+    post:
+      tags: [reader]
+      summary: Upload a batch of interaction events. Idempotent by event id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              maxItems: 500
+              items: { $ref: "./schemas/event.schema.json" }
+      responses:
+        "202": { description: Accepted }
+        "422": { $ref: "#/components/responses/Error" }
+
+  /v1/channels/suggested:
+    get:
+      tags: [community]
+      summary: Channels that similar people follow
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "./schemas/channel.schema.json#/$defs/Suggestion" } }
+
+  /v1/channels:
+    get:
+      tags: [community]
+      summary: Channels by id, or the reader's joined channels when no ids are given
+      parameters:
+        - name: ids
+          in: query
+          style: form
+          explode: false
+          schema: { type: array, items: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "./schemas/channel.schema.json" } }
+
+  /v1/channels/{channelId}/membership:
+    put:
+      tags: [community]
+      summary: Join (members only)
+      parameters: [{ $ref: "#/components/parameters/channelId" }]
+      responses:
+        "204": { description: Joined }
+        "403": { $ref: "#/components/responses/Error" }
+    delete:
+      tags: [community]
+      summary: Leave
+      parameters: [{ $ref: "#/components/parameters/channelId" }]
+      responses:
+        "204": { description: Left }
+
+  /v1/channels/{channelId}/posts:
+    get:
+      tags: [community]
+      parameters: [{ $ref: "#/components/parameters/channelId" }]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "./schemas/channel.schema.json#/$defs/Post" } }
+    post:
+      tags: [community]
+      summary: Share a story or post text to a channel (members only)
+      parameters: [{ $ref: "#/components/parameters/channelId" }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              anyOf: [{ required: [storyId] }, { required: [text] }]
+              properties:
+                storyId: { type: string }
+                text: { type: string, maxLength: 2000 }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "./schemas/channel.schema.json#/$defs/Post" }
+        "403": { $ref: "#/components/responses/Error" }
+
+  /v1/reports:
+    post:
+      tags: [community]
+      summary: Submit news or report a problem with a story (members only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kind, category, sensitive, text]
+              properties:
+                kind: { enum: [newsTip, problem] }
+                storyId: { type: string }
+                category: { $ref: "./schemas/common.schema.json#/$defs/Category" }
+                sensitive: { type: boolean }
+                text: { type: string, minLength: 1, maxLength: 4000 }
+                location: { $ref: "./schemas/common.schema.json#/$defs/Location" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "./schemas/report.schema.json" }
+        "403": { $ref: "#/components/responses/Error" }
+
+  /v1/reports/mine:
+    get:
+      tags: [community]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "./schemas/report.schema.json" } }
+
+  /v1/notifications:
+    get:
+      tags: [reader]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "./schemas/notification.schema.json" } }
+
+  /v1/notifications/{notificationId}/read:
+    post:
+      tags: [reader]
+      parameters:
+        - { name: notificationId, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Marked read }
+
+  /v1/devices:
+    put:
+      tags: [reader]
+      summary: Register the APNs device token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [apnsToken, platform]
+              properties:
+                apnsToken: { type: string }
+                platform: { enum: [ios, macos] }
+      responses:
+        "204": { description: Registered }
+
+  # ---- Admin (editor + admin roles). Used by the admin web page. ----
+
+  /v1/admin/queue:
+    get:
+      tags: [admin]
+      summary: Everything waiting for a human — agent drafts, community reports, reader flags
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/QueueItem" } }
+        "403": { $ref: "#/components/responses/Error" }
+
+  /v1/admin/stories/{storyId}:
+    patch:
+      tags: [admin]
+      summary: Edit a story before or after publishing
+      parameters: [{ $ref: "#/components/parameters/storyId" }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "./schemas/story.schema.json" }
+      responses:
+        "200":
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: "./schemas/story.schema.json" }
+        "403": { $ref: "#/components/responses/Error" }
+
+  /v1/admin/stories/{storyId}/decision:
+    post:
+      tags: [admin]
+      parameters: [{ $ref: "#/components/parameters/storyId" }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Decision" }
+      responses:
+        "200":
+          description: Applied
+          content:
+            application/json:
+              schema: { $ref: "./schemas/story.schema.json" }
+        "403": { $ref: "#/components/responses/Error" }
+
+  /v1/admin/reports/{reportId}/decision:
+    post:
+      tags: [admin]
+      summary: Publish (creates a story and notifies the reporter), keep as editor lead, or reject
+      parameters:
+        - { name: reportId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Decision" }
+      responses:
+        "200":
+          description: Applied
+          content:
+            application/json:
+              schema: { $ref: "./schemas/report.schema.json" }
+        "403": { $ref: "#/components/responses/Error" }
+
+  /v1/admin/audit:
+    get:
+      tags: [admin]
+      summary: Agent and editor actions, newest first
+      parameters:
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 500, default: 100 } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/AuditEntry" } }
+
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+
+  parameters:
+    storyId: { name: storyId, in: path, required: true, schema: { type: string } }
+    channelId: { name: channelId, in: path, required: true, schema: { type: string } }
+
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+
+    Session:
+      type: object
+      required: [token, user]
+      properties:
+        token: { type: string }
+        user: { $ref: "./schemas/user.schema.json" }
+
+    LearnedPreferences:
+      type: object
+      required: [personalization, topCategories, topPlaces]
+      properties:
+        personalization: { $ref: "./schemas/common.schema.json#/$defs/Score" }
+        topCategories:
+          type: array
+          items:
+            type: object
+            required: [category, weight]
+            properties:
+              category: { $ref: "./schemas/common.schema.json#/$defs/Category" }
+              weight: { $ref: "./schemas/common.schema.json#/$defs/Score" }
+        topPlaces: { type: array, items: { type: string } }
+        topTags: { type: array, items: { type: string } }
+
+    Decision:
+      type: object
+      required: [action]
+      properties:
+        action: { enum: [approve, reject, sendBack, keepAsLead] }
+        note:
+          type: string
+          description: Shown to the reporter (reports) or the agent (sendBack).
+
+    QueueItem:
+      type: object
+      required: [kind, id, risk, createdAt, trail]
+      properties:
+        kind: { enum: [agentDraft, communityReport, readerFlag] }
+        id: { type: string, description: Story id or report id }
+        risk: { $ref: "./schemas/common.schema.json#/$defs/Risk" }
+        createdAt: { $ref: "./schemas/common.schema.json#/$defs/Timestamp" }
+        trail:
+          description: What the agents did, step by step
+          type: array
+          items: { $ref: "#/components/schemas/AuditEntry" }
+
+    AuditEntry:
+      type: object
+      required: [at, actor, step, message]
+      properties:
+        at: { $ref: "./schemas/common.schema.json#/$defs/Timestamp" }
+        actor: { type: string, description: "agent:<name> or user:<id>" }
+        step: { enum: [find, gather, select, locate, rank, explain, translate, check, route, review, publish, distribute, moderate, skip] }
+        message: { type: string }
+        storyId: { type: string }
+        reportId: { type: string }

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "place.schema.json",
+  "title": "Place",
+  "description": "A named place. Areas and cities appear on the map; countries, regions and world appear as place chips.",
+  "type": "object",
+  "required": ["id", "kind", "name"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/Id" },
+    "kind": { "enum": ["area", "city", "country", "region", "world"] },
+    "name": { "$ref": "common.schema.json#/$defs/LocalizedText" },
+    "parentId": { "$ref": "common.schema.json#/$defs/Id" },
+    "center": { "$ref": "common.schema.json#/$defs/Coordinate" },
+    "countryCode": { "type": "string", "pattern": "^[A-Z]{2}$" }
+  }
+}

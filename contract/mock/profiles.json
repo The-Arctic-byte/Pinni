@@ -1,0 +1,45 @@
+[
+  {
+    "userId": "u-sara",
+    "language": "fa",
+    "uiLanguage": "fa",
+    "targetGroups": ["student"],
+    "homePlaceId": "kiiminki",
+    "homeCountryCode": "IR",
+    "residence": { "status": "nonEu", "consent": true },
+    "housing": { "provider": "psoas", "consent": true },
+    "categoryWeights": { "safety": 0.9, "education": 0.8, "housing": 0.8, "sport": 0.7, "shopping": 0.6, "politics": 0.4 },
+    "interests": ["sports clubs", "persian community", "part-time jobs"],
+    "wantedNews": ["residence permits", "student housing", "events"],
+    "followedPlaceIds": ["kiiminki", "linnanmaa", "iran"],
+    "hardFilters": { "categories": [], "tags": [], "sources": [] },
+    "notifications": { "mustSee": true, "forYou": true, "myReports": true, "channels": false },
+    "updatedAt": "2026-10-15T12:10:00+03:00"
+  },
+  {
+    "userId": "u-matti",
+    "language": "en",
+    "uiLanguage": "en",
+    "targetGroups": ["local", "worker"],
+    "homePlaceId": "kiiminki",
+    "homeCountryCode": "FI",
+    "categoryWeights": { "environment": 0.8, "politics": 0.7, "economy": 0.7, "cityLife": 0.6 },
+    "interests": ["local news", "environment"],
+    "wantedNews": ["city decisions", "traffic"],
+    "followedPlaceIds": ["kiiminki", "oulu"],
+    "hardFilters": { "categories": [], "tags": ["athletics"], "sources": [] },
+    "notifications": { "mustSee": true, "forYou": false, "myReports": true, "channels": false },
+    "updatedAt": "2026-09-01T08:05:00+03:00"
+  },
+  {
+    "userId": "u-new",
+    "language": "en",
+    "uiLanguage": "en",
+    "targetGroups": [],
+    "categoryWeights": {},
+    "interests": [],
+    "wantedNews": [],
+    "hardFilters": { "categories": [], "tags": [], "sources": [] },
+    "updatedAt": "2026-10-24T09:00:00+03:00"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "notif-0001",
+    "userId": "u-sara",
+    "kind": "reportPublished",
+    "title": { "en": "Your report was published", "fa": "گزارشت منتشر شد" },
+    "body": { "en": "Your report was verified and reached 340 people in Kiiminki. Thanks for helping!", "fa": "گزارش تو تأیید شد و به ۳۴۰ نفر در کیمینکی رسید. ممنون که به جامعه کمک کردی!" },
+    "storyId": "icy-path-kiiminki",
+    "reportId": "report-icy-path",
+    "createdAt": "2026-10-24T08:30:00+03:00"
+  },
+  {
+    "id": "notif-0002",
+    "userId": "u-sara",
+    "kind": "reportEditorLead",
+    "title": { "en": "Your report went to the editor", "fa": "گزارشت پیش ویراستار رفت" },
+    "body": { "en": "Your report is now an editor lead and will be checked with police first.", "fa": "گزارشت به‌عنوان سرنخ پیش ویراستار ماند و قبل از هر خبری با پلیس چک می‌شود." },
+    "reportId": "report-sirens",
+    "createdAt": "2026-10-23T22:40:00+03:00",
+    "readAt": "2026-10-23T22:45:00+03:00"
+  },
+  {
+    "id": "notif-0003",
+    "userId": "u-sara",
+    "kind": "mustSee",
+    "title": { "en": "Near your home", "fa": "نزدیک خانه تو" },
+    "body": { "en": "Shots fired at an empty flat in Kiiminki; one person arrested.", "fa": "تیراندازی به آپارتمانی خالی در کیمینکی؛ یک نفر بازداشت شد." },
+    "storyId": "kiiminki-shooting",
+    "createdAt": "2026-10-22T10:41:00+03:00",
+    "readAt": "2026-10-22T10:45:00+03:00"
+  }
+]

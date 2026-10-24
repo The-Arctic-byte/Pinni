@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "user.schema.json",
+  "title": "User",
+  "description": "Readers start anonymous (device token). Members sign in to report, post and join channels. Editors and admins use the admin web page.",
+  "type": "object",
+  "required": ["id", "role", "createdAt"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/Id" },
+    "role": { "$ref": "common.schema.json#/$defs/Role" },
+    "displayName": { "type": "string" },
+    "verifiedVia": {
+      "description": "How a member was verified, e.g. 'email:student.oulu.fi'. Never the address itself.",
+      "type": "string"
+    },
+    "createdAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+  }
+}

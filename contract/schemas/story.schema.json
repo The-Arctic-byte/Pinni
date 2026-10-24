@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "story.schema.json",
+  "title": "Story",
+  "description": "One explained news story. Content is per language; ranking for a reader is in FeedItem, not here.",
+  "type": "object",
+  "required": [
+    "id", "status", "origin", "scale", "placeId", "category", "needs", "risk",
+    "isOpinion", "importance", "label", "title", "explanation", "sources", "translations",
+    "createdAt", "updatedAt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/Id" },
+    "status": { "enum": ["draft", "inReview", "published", "rejected"] },
+    "origin": { "enum": ["agent", "community"] },
+    "scale": { "$ref": "common.schema.json#/$defs/Scale" },
+    "placeId": {
+      "description": "Where the story belongs. Stories with no point on the map still have a place (e.g. finland).",
+      "$ref": "common.schema.json#/$defs/Id"
+    },
+    "location": { "$ref": "common.schema.json#/$defs/Location" },
+    "category": { "$ref": "common.schema.json#/$defs/Category" },
+    "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "needs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "common.schema.json#/$defs/Need" },
+      "uniqueItems": true
+    },
+    "risk": { "$ref": "common.schema.json#/$defs/Risk" },
+    "isOpinion": { "type": "boolean" },
+    "importance": {
+      "description": "General importance for everyone, before personalization. Used for cold start and must-see items.",
+      "$ref": "common.schema.json#/$defs/Score"
+    },
+    "affects": {
+      "description": "Groups this story directly affects, e.g. non-EU residents. Used for must-see and notifications.",
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "mapObject": {
+      "description": "Optional 3D object drawn on the map at the story's location.",
+      "enum": ["stadium", "arena", "concertHall", "campus", "shoppingCentre", "hospital", "station", "cityHall"]
+    },
+    "label": {
+      "description": "Short pin text, a few words.",
+      "$ref": "common.schema.json#/$defs/LocalizedText"
+    },
+    "title": { "$ref": "common.schema.json#/$defs/LocalizedText" },
+    "explanation": { "$ref": "#/$defs/Explanation" },
+    "originals": {
+      "description": "Finnish source sentences next to their English translation, for the bilingual view.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["fi", "en"],
+        "additionalProperties": false,
+        "properties": {
+          "fi": { "type": "string" },
+          "en": { "type": "string" }
+        }
+      }
+    },
+    "wordOfDay": {
+      "type": "object",
+      "required": ["word", "meaning"],
+      "additionalProperties": false,
+      "properties": {
+        "word": { "type": "string" },
+        "meaning": { "$ref": "common.schema.json#/$defs/LocalizedText" }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "publishedAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+        }
+      }
+    },
+    "translations": {
+      "description": "How each language version was checked. Tier 1 editor, 2 community reviewer, 3 machine (labelled).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["language", "tier"],
+        "additionalProperties": false,
+        "properties": {
+          "language": { "$ref": "common.schema.json#/$defs/Language" },
+          "tier": { "enum": [1, 2, 3] },
+          "reviewedBy": { "type": "string" }
+        }
+      }
+    },
+    "verification": {
+      "description": "Required when status is published.",
+      "type": "object",
+      "required": ["verifiedBy", "verifiedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "verifiedBy": { "type": "string" },
+        "verifiedAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+      }
+    },
+    "community": {
+      "description": "Only for origin = community.",
+      "type": "object",
+      "required": ["reportId", "confirmations"],
+      "additionalProperties": false,
+      "properties": {
+        "reportId": { "$ref": "common.schema.json#/$defs/Id" },
+        "confirmations": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "createdAt": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "updatedAt": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "publishedAt": { "$ref": "common.schema.json#/$defs/Timestamp" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "published" } } },
+      "then": { "required": ["verification", "publishedAt"] }
+    },
+    {
+      "if": { "properties": { "origin": { "const": "community" } } },
+      "then": { "required": ["community"] }
+    }
+  ],
+  "$defs": {
+    "Explanation": {
+      "type": "object",
+      "required": ["forYou"],
+      "additionalProperties": false,
+      "properties": {
+        "known": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/LocalizedText" } },
+        "happened": { "$ref": "common.schema.json#/$defs/LocalizedText" },
+        "notKnown": { "$ref": "common.schema.json#/$defs/LocalizedText" },
+        "forYou": { "$ref": "common.schema.json#/$defs/LocalizedText" },
+        "context": {
+          "type": "object",
+          "required": ["question", "answer"],
+          "additionalProperties": false,
+          "properties": {
+            "question": { "$ref": "common.schema.json#/$defs/LocalizedText" },
+            "answer": { "$ref": "common.schema.json#/$defs/LocalizedText" }
+          }
+        },
+        "actionPlace": {
+          "type": "object",
+          "required": ["name"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "$ref": "common.schema.json#/$defs/LocalizedText" },
+            "coordinate": { "$ref": "common.schema.json#/$defs/Coordinate" },
+            "url": { "type": "string", "format": "uri" }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["at", "text"],
+            "additionalProperties": false,
+            "properties": {
+              "at": { "$ref": "common.schema.json#/$defs/Timestamp" },
+              "text": { "$ref": "common.schema.json#/$defs/LocalizedText" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

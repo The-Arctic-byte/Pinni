@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "feed.schema.json",
+  "title": "FeedPage",
+  "description": "Stories ranked for one reader. The backend ranks; the app only displays.",
+  "type": "object",
+  "required": ["userId", "generatedAt", "personalization", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "userId": { "$ref": "common.schema.json#/$defs/Id" },
+    "generatedAt": { "$ref": "common.schema.json#/$defs/Timestamp" },
+    "scale": { "$ref": "common.schema.json#/$defs/Scale" },
+    "placeId": { "$ref": "common.schema.json#/$defs/Id" },
+    "personalization": {
+      "description": "0 = general ranking (new user), 1 = fully personal. Grows with the number of events.",
+      "$ref": "common.schema.json#/$defs/Score"
+    },
+    "items": { "type": "array", "items": { "$ref": "#/$defs/FeedItem" } },
+    "nextCursor": { "type": "string" }
+  },
+  "$defs": {
+    "FeedItem": {
+      "type": "object",
+      "required": ["storyId", "relevance", "mustSee", "reasons"],
+      "additionalProperties": false,
+      "properties": {
+        "storyId": { "$ref": "common.schema.json#/$defs/Id" },
+        "relevance": { "$ref": "common.schema.json#/$defs/Score" },
+        "mustSee": {
+          "description": "Never hidden by personalization (safety near you, official changes for your group).",
+          "type": "boolean"
+        },
+        "isExploration": {
+          "description": "Shown outside the profile so the model can learn.",
+          "type": "boolean"
+        },
+        "reasons": {
+          "description": "\"Why you see this\", shown to the reader.",
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/LocalizedText" }
+        }
+      }
+    }
+  }
+}

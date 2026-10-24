@@ -1,0 +1,7 @@
+[
+  { "id": "u-sara", "role": "member", "displayName": "Sara", "verifiedVia": "email:student.oulu.fi", "createdAt": "2026-10-15T12:00:00+03:00" },
+  { "id": "u-matti", "role": "member", "displayName": "Matti", "verifiedVia": "email:outlook.com", "createdAt": "2026-09-01T08:00:00+03:00" },
+  { "id": "u-new", "role": "reader", "createdAt": "2026-10-24T09:00:00+03:00" },
+  { "id": "u-aino", "role": "editor", "displayName": "Aino K.", "createdAt": "2026-08-20T10:00:00+03:00" },
+  { "id": "u-admin", "role": "admin", "displayName": "Admin", "createdAt": "2026-08-20T10:00:00+03:00" }
+]
