@@ -1,120 +1,219 @@
 # Pinni — Tasks
 
-News for international students in Oulu, on a 3D map. Design source:
-[Moi Oulu App Screens](https://claude.ai/artifact/CFNut7bAeGd9GLyFneSCjk) (11 screens).
+All news for everyone in Oulu (economy, society, politics, shopping, sport, safety, …), internationals first.
+A map you zoom from your street out to the world, ranked per person, explained in their language, checked by a human.
+
+Design sources:
+- [Moi Oulu live demo](https://claude.ai/artifact/TJhffdxh8SGDXPh9KFJKMz) — scales, tabs, community, editor flow.
+- [Moi Oulu App Screens](https://claude.ai/artifact/CFNut7bAeGd9GLyFneSCjk) — story layout, context cards, bilingual view, language tiers.
+- Visual style: Flighty — colour-coded map, 3D map, glanceable cards.
 
 Rules:
-- Work top to bottom. Only the current milestone is detailed; refine the next one just before starting it.
-- Each task is done when its "Done when" list is true on a device or simulator.
-- Mock data until M4. Do not change the `Story` model after M1 without updating this file first.
+- Phase 0 (the contract) is done by all three members together before any track starts.
+- After that the three tracks run in parallel. Nobody changes the contract alone: update `contract/` first, then code.
+- The app ships its first version on mock data that follows the contract exactly, so switching to the real API is a config change.
+- Only the current phase is detailed; refine the next one just before starting it.
 
 ---
 
-## M1 — Foundation
+## Team
 
-### T01 · Theme and icons
-Use what the system gives us; no custom colour palette or font.
-- Colours: system semantic colours (`.primary`, `.secondary`, `.background`, materials). Automatic light/dark mode.
-- One custom colour: `AccentColor` in the asset catalog (mint `#5FD3B5` from the design, tuned for light mode).
-- Type: system font and Dynamic Type text styles.
-- Icons: SF Symbols for UI controls (tabs, buttons, chevrons). [Thiings](https://www.thiings.co/things) images (licensed) for topic icons and illustrations, added to the asset catalog.
+| Track | Owner | Builds |
+|---|---|---|
+| A · App | [Member A] | iPhone + Mac app (SwiftUI), map, onboarding, community, profile, mock data |
+| B · Agents | [Member B] | LangChain supervisor, MCP tools, source gathering, recommendation model |
+| C · Backend | [Member C] | FastAPI, the three databases, auth + roles, admin web page, notifications, Ollama hosting |
 
-Done when:
-- [ ] `AccentColor` set for light and dark.
-- [ ] Topic icons from Thiings in `Assets.xcassets`, one per `Topic`.
-- [ ] Every screen looks right in both light and dark mode.
-- [ ] `Localizable.xcstrings` with en, fi, fa, sv; previews run in Persian (RTL) without layout breaks.
+## Architecture
 
-### T02 · Tab shell
-Four tabs: Map, Start, Ask, Me (screen 1 tab bar), SF Symbols for tab icons.
+```text
+ iPhone / Mac app ──HTTPS──▶ FastAPI backend ─────────────▶ Admin web page (editor / admin)
+   (mock first)                 │      ▲
+                                │      │ approve / edit / reject
+                                ▼      │
+                     Supervisor agent (LangChain + MCP) ──▶ Ollama (Qwen, small, quantized)
+                       │        │         │
+                       ▼        ▼         ▼
+                 SQLite      Knowledge   Vector DB
+                 (events)    graph       (news + embeddings)
+                             (interactions, similar people)
+```
 
-Done when:
-- [ ] iPhone: `TabView` with the four tabs, accent colour on the selected one.
-- [ ] Mac: `NavigationSplitView` — sidebar (Map, Start, Ask, Me + feed), map as detail, inspector slot for a story.
-- [ ] Each section shows a placeholder view.
+Repo layout (monorepo):
 
-### T03 · Story data model
-One model behind the map, feed, story and safety screens.
-- `Story`: id, title, summary, topic, need, area, coordinate (area-level, never exact address), whatHappened, whyItMatters, whatItMeans, sources, verifiedBy, verifiedAt, isOpinion, language, updates.
-- `Topic` (screen 7): safety, world, opinion, politics, strike, shopping, outage, traffic, economy, environment, sport, cityLife — each with a Thiings image.
-- `Need`: safety, information, understanding, usefulness, community — shown as a label, not a colour.
-- `MockData` with the stories shown on screens 1, 2, 5, 6.
-
-Done when:
-- [ ] Models compile, are `Codable` and `Identifiable`.
-- [ ] Mock data covers every topic used in the designs.
-
----
-
-## M2 — Map (screens 1, 5, 7)
-
-### T04 · 3D map
-MapKit, pitched camera over Oulu, realistic elevation, map follows system light/dark.
-
-Done when:
-- [ ] Map opens over the user's home area, pitched, buildings in 3D.
-- [ ] Asks for "when in use" location with a localized reason string; works without it.
-- [ ] "Back to my location" button recentres.
-
-### T05 · Story pins
-Pin = Thiings icon (topic) + ring (why shown: accent ring = matches you, dashed = opinion, safety pulses once). Need is shown in the story, not on the pin.
-
-Done when:
-- [ ] Mock stories appear as pins; tapping one opens the story (T07).
-- [ ] Pins are readable in light and dark mode.
-
-### T06 · Feed bottom sheet + sky layer
-Sheet with filter chips (For you, News, Events, Services) and "N things for you today". City-wide stories float at the top ("Above the city").
-
-Done when:
-- [ ] Sheet has small / medium / large detents.
-- [ ] Chips filter the list and the pins.
-- [ ] Greeting header shows day, weather placeholder, sunset.
+```text
+App/        SwiftUI app (iPhone + Mac)
+backend/    Python: FastAPI, agents, recommender, databases
+admin/      Admin web page (served by the backend)
+contract/   Shared JSON schemas, API spec, mock data — the single source of truth
+docs/       This file and design notes
+```
 
 ---
 
-## M3 — Story, Start, Ask (screens 2, 3, 4, 6)
+## Phase 0 — Contract (all three, first)
 
-### T07 · Story detail (screens 2, 6)
-What happened / Why it matters / What this means for you; safety variant with What we know / Not known yet / What you can do + updates timeline. Verified-by row, sources, Save / Share / Source / Wrong?
+### T00 · Freeze the contract
+Write `contract/` so all three tracks can work without waiting for each other.
+- `Story`: id, scale (area / city / finland / world / place), place (city, country, …) for stories with no point, location (optional, area-level), topic, category colour key, need, isOpinion, risk (none / amber / red), label, title, explanation sections (known, happened, notKnown, forYou, context, actionPlace, timeline), originals, sources, status (draft / in review / published / rejected), verifiedBy, translations with tier, isCommunityReport, mapObject (e.g. stadium, for 3D).
+- `Event` (interaction): userId, storyId?, type (open, dwell, like, dislike, reject, share, follow, join channel, report, zoom, map tap, skip), value, timestamp.
+- `Profile`: target group, language, area, housing (e.g. PSOAS, with consent), category weights, interests, wanted news, hard filters.
+- `Channel`, `Report`, `Notification`, `User` + role (reader, member, editor, admin).
+- API list: feed, story, places, events (batch upload), profile, channels, reports, notifications, auth.
+- `contract/mock/`: mock data for every type, valid against the schemas. Track A loads it; Track C seeds from it.
 
-### T08 · First 30 days checklist (screen 3)
-Progress bar, urgent item with due date and source, task list with done state persisted locally. Checklist depends on profile type (student / worker / family; EU or non-EU).
-
-### T09 · Ask (screen 4)
-Question field + voice button, verified-answer card, "Your questions" with Sent → In review → Answered status.
-
----
-
-## M4 — Real data
-
-### T10 · Personal profile
-Profile type (student / worker / family; EU or non-EU), home area, followed topics, interests (persona on screen 5). Drives "For you" and the T08 checklist.
-
-### T11 · Kaleva RSS ingest
-Fetch and parse the feed; map items to `Story` (topic, area). Decide where classification runs before starting.
-
-### T12 · Backend
-Supabase (already in `.gitignore`): stories, verification, questions. Decide scope before starting.
+Done when:
+- [ ] JSON Schemas + OpenAPI file reviewed by all three.
+- [ ] Mock data validates against the schemas in CI.
 
 ---
 
-## M5 — Languages & culture (screens 8–11)
+## Track A · App (first version on mock data)
 
-### T13 · Language tiers and translated stories (screens 8, 11)
-### T14 · Context cards (screen 9)
-### T15 · Bilingual view + word of the day (screen 10)
+### A1 · Theme, icons, localization
+- System colours and font, automatic light/dark, `AccentColor` for selection and relevance.
+- Category colours **only on the map** (pins, areas, 3D objects), Flighty-style.
+- SF Symbols for UI; Thiings (licensed) for topic icons.
+- `Localizable.xcstrings`: en, fi, fa, sv. RTL safe (Persian).
+
+### A2 · App shell
+Tabs: Map · News · Community · Profile. Report button on the map and on every story.
+Mac: `NavigationSplitView` sidebar, map as detail, story in `.inspector`.
+
+### A3 · Mock data layer
+`NewsService` protocol with a mock implementation that reads `contract/mock/`. The real API implementation comes in Integration.
+
+### A4 · Onboarding
+Steps, in order:
+1. Who you are (target group: student, worker, family, local, …).
+2. Which categories matter most to you (rank or weight: economy, society, politics, shopping, sport, safety, culture, …).
+3. Interests.
+4. What news you want to hear about most.
+5. Language (with tier label).
+6. Area and housing (optional, with consent: e.g. PSOAS → the agent also gathers PSOAS news).
+Every step can be skipped. Answers become the initial profile and the first events.
+
+### A5 · Map
+- Four scales: Area, City (3D, pitched) · Finland · World. Pinch and a segmented control.
+- Colour-coded pins by category; size + accent ring = relevance.
+- 3D map objects for some stories: e.g. a stadium for a sport event, more later (concert hall, campus, …).
+- Safety stories as an area circle, never a point.
+
+### A6 · Place chips (news without a point)
+A strip like the demo with places: "Oulu", "Finland", "EU", "World", and the reader's home country. Tapping one shows that place's news ranked for the reader.
+
+### A7 · Feed, News tab, story detail
+- Sheet / sidebar with stories of the current scale, sorted by relevance.
+- "Most important" slot that is never personalized away (safety near you, official changes that affect you).
+- Story detail with the explanation sections, sources, verified-by, language switch (mine · EN · FI ⇄).
+- Like, dislike, "not for me" (hard filter), share, report.
+
+### A8 · Interaction tracking
+Log every event from T00 (open, dwell time, likes, skips, zoom, map taps, …) locally; batch-upload once the API exists.
+
+### A9 · Community
+- Suggested channels ("people like you follow…"), join / leave.
+- Post or share a story to a channel; send to others.
+- Evaluate news: like / dislike, "is this accurate?", reject.
+
+### A10 · Profile
+Edit everything from onboarding, see and reset what the app has learned, language, notification settings, my reports with status.
+
+### A11 · Report
+Report a story or submit news, by topic. Shows status: Sent → Editor review → Published / Edited / Rejected. Local notification on publish (push in Integration).
+
+---
+
+## Track B · Agents and recommendation
+
+### B1 · Ollama + LangChain baseline
+Qwen small model (≈4B, 4-bit) via `ChatOllama`. Multilingual embedding model via Ollama. All model names in config so they can be swapped.
+
+### B2 · MCP tool servers
+- Sources: Kaleva RSS, City of Oulu, PSOAS website, university news, … (one tool per source, added when a profile needs it).
+- Geo: place name → area / scale / place.
+- Stores: vector search, knowledge graph queries, event history (read-only for the agent).
+- Publishing: create draft, send to human review.
+
+### B3 · Supervisor (orchestrator)
+One supervisor that routes work to sub-agents / tools:
+- **Find**: news by preferences, by location, by recommendation, by place (city, country).
+- **Gather by profile**: add sources from a person's profile (lives in PSOAS → watch PSOAS site; studies at the university → campus news).
+- **Select**: deduplicate, merge, classify topic / need / scale / risk, drop irrelevant items with a logged reason.
+- **Explain**: write the explanation sections and context cards per language.
+- **Translate + check**: translate, back-translate, compare with sources, set tier.
+- **Route to human**: anything red-risk (residence, health, money, work, safety) and all community reports go to the editor queue.
+- **Distribute**: pick target readers, trigger notifications.
+- **Moderate community**: triage reports, apply hard filters from rejects.
+- **Suggest channels**: from similar people in the knowledge graph.
+- **Audit**: every step writes to a log the admin page can show.
+
+### B4 · Recommendation model
+Hybrid, updated continuously:
+- Content: profile vector vs story embeddings (vector DB).
+- Collaborative: what similar people read and follow (knowledge graph).
+- Rules: hard filters (rejected topics, "not for me"), must-see items (safety near you, official changes for your group).
+- Signals: explicit (onboarding, likes, dislikes, rejects, follows, joined channels) and implicit (opens, dwell time, skips, shares, zoom level, map taps), with time decay.
+- Cold start: new users see mostly general importance + onboarding answers. Personal weight grows with the number of events.
+- Exploration: a small share of stories outside the profile, so the model can learn.
+
+Done when (B4):
+- [ ] Offline test on mock events: rankings change as events are added; hard filters always hold; must-see items always appear.
+
+---
+
+## Track C · Backend, data, admin
+
+### C1 · FastAPI skeleton
+Endpoints from T00, serving the contract mock data first. Docker Compose with backend, Ollama, knowledge graph.
+
+### C2 · Databases
+- **SQLite**: events and profile changes (append-only), the input for preference updates.
+- **Knowledge graph** (Neo4j): user ↔ story ↔ topic ↔ place ↔ channel ↔ source interactions; "similar people" queries.
+- **Vector DB** (Chroma): stories + embeddings for retrieval and content-based ranking.
+
+### C3 · Auth and roles
+Reader (no account needed to read), member (to report, post, join channels), editor, admin.
+
+### C4 · Admin web page
+- Editor: review queue (agent drafts, community reports, reader flags), edit, approve, reject, send back to agent.
+- Admin: users and roles, sources, hard-filter rules, audit log.
+- Only editors and admins can sign in.
+
+### C5 · Notifications
+APNs push: story published (reporter), high-relevance story approved (target readers).
+
+---
+
+## Integration (all three)
+- App switches from mock to the real API.
+- Events flow app → SQLite → recommender → knowledge graph → feed.
+- End-to-end: report from the app → admin approves → reporter gets a notification.
+
+---
+
+## Backlog
+- First 30 days checklist (canvas screen 3).
+- Ask with verified answers (canvas screen 4).
 
 ---
 
 ## Decisions
-- Platforms: iPhone (iOS 18.0+) and native Mac (macOS 15.0+). No iPad or Vision Pro for now.
-- Theme: system colours and font, automatic light/dark, `AccentColor` only.
+- Platforms: iPhone (iOS 18.0+) and native Mac (macOS 15.0+).
+- Theme: system colours and font, automatic light/dark, `AccentColor`. Category colours only on the map.
 - Icons: SF Symbols for UI, Thiings (licensed) for topics.
-- Name: "Pinni" in the UI; "Moi" stays as the greeting.
-- Audience: all internationals in Oulu (students, workers, families), not only students. Student content (PSOAS, OYY, ESN) is one profile type, not the default.
-- Mac layout: map fills the window; feed in a sidebar (`NavigationSplitView`), story detail in an inspector (`.inspector`). iPhone keeps tabs + bottom sheet.
-- Content (M4): Kaleva RSS → AI draft → human editor verifies before publishing.
-- UI languages at launch: English (development), Finnish, Persian, Swedish, via one String Catalog. Persian is right-to-left: use leading/trailing, never left/right.
-- Location: "when in use" permission to centre the map; home area still chosen in the profile.
-- Accounts: none until M4. Profile, checklist and saved stories live on device.
+- Name: "Pinni"; "Moi" stays as the greeting.
+- Audience: everyone in Oulu, internationals first. All news categories.
+- Zoom = geographic scale. Size and ring = relevance. Scale is not importance.
+- First impression is not personalized: most-important news first, personalization grows with use.
+- Content: sources → supervisor agent → human editor signs before publishing.
+- LLM: small Qwen model on Ollama on our server; the app only talks to our API.
+- Backend: FastAPI (Python), SQLite + Neo4j + Chroma. Supabase dropped.
+- UI languages: English (development), Finnish, Persian, Swedish.
+- Accounts: reading needs no account; members sign in to report, post, join channels.
+- Privacy: housing and residence are optional and need consent; story locations are areas; report locations rounded to street.
+
+## Open questions
+- Member names for Tracks A, B, C.
+- Where the backend server runs (university VM, own machine, cloud) — decides Ollama hardware.
+- Is a 4B model good enough for Persian and Finnish explanations? Test in B1 before committing; keep the model swappable.
