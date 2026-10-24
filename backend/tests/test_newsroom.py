@@ -44,7 +44,7 @@ def test_site_news_is_published_on_the_map(client, login):
 
     # The next round changes nothing that is already out.
     again = client.post("/v1/admin/agent/run", headers=editor).json()
-    assert again["unchanged"] == counts["published"]
+    assert again["unchanged"] == counts["written"]
 
 
 def test_agent_gathers_for_reader_profiles(app, client):
@@ -58,3 +58,25 @@ def test_agent_gathers_for_reader_profiles(app, client):
         db.put_doc(conn, "profiles", {**matti, "housing": {"provider": "psoas", "consent": True}})
     assert any(i["source"] == "PSOAS" for i in newsroom.gather(conn))
     conn.close()
+
+
+def test_editor_signs_off_a_red_risk_agent_story(client, login):
+    """The editor page path: check the machine translations (PATCH), then approve."""
+    editor = login("admin")
+    client.post("/v1/admin/agent/run", headers=editor)
+    ids = [i["id"] for i in client.get("/v1/admin/queue", headers=editor).json()
+           if i["kind"] == "agentDraft" and i["id"] not in MOCK_IDS]
+    story = client.get(f"/v1/stories/{ids[0]}", headers=editor).json()
+    assert story["risk"] == "red"
+    approve = lambda: client.post(f"/v1/admin/stories/{story['id']}/decision", json={"action": "approve"}, headers=editor)
+    assert approve().status_code == 409
+    checked = [{"language": t["language"], "tier": 1, "reviewedBy": "Admin"} if t["tier"] == 3 else t
+               for t in story["translations"]]
+    assert client.patch(f"/v1/admin/stories/{story['id']}", json={**story, "translations": checked},
+                        headers=editor).status_code == 200
+    # The next agent round leaves the editor's work alone.
+    client.post("/v1/admin/agent/run", headers=editor)
+    assert client.get(f"/v1/stories/{story['id']}", headers=editor).json()["translations"] == checked
+    assert approve().status_code == 200
+    feed = client.get("/v1/feed?limit=100", headers=login("sara")).json()
+    assert story["id"] in [i["storyId"] for i in feed["items"]]

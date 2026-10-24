@@ -7,6 +7,7 @@ const KIND_LABEL = { agentDraft: "Agent draft", communityReport: "Community repo
 
 let token = null;
 let selected = null;
+let signedIn = null;
 
 function store(key, value) {
   try {
@@ -86,6 +87,7 @@ function signOut() {
 }
 
 function start(user) {
+  signedIn = user;
   $("#who").textContent = `${user.displayName || user.id} · ${user.role}`;
   $("#login").hidden = true;
   $("#app").hidden = false;
@@ -110,9 +112,16 @@ async function loadQueue() {
     return;
   }
   $("#queue-count").textContent = items.length ? `${items.length} waiting` : "Nothing waiting";
+  // Agent drafts show their English title; the queue item itself only carries the id.
+  const draftIds = items.filter((i) => i.kind === "agentDraft").map((i) => i.id);
+  const titles = {};
+  if (draftIds.length) {
+    const stories = await api("GET", `/v1/stories?ids=${draftIds.map(encodeURIComponent).join(",")}`).catch(() => []);
+    for (const s of stories) titles[s.id] = s.title.en;
+  }
   for (const item of items) {
     const li = el("li", { onclick: () => open(item, li) },
-      el("span", { class: "title" }, item.id),
+      el("span", { class: "title" }, titles[item.id] || item.id),
       el("span", { class: "badges" }, badge(KIND_LABEL[item.kind]), item.risk !== "none" ? badge(`${item.risk} risk`, item.risk) : null),
       el("span", { class: "muted" }, when(item.createdAt)));
     if (selected && selected.id === item.id) li.classList.add("selected");
@@ -184,7 +193,8 @@ function showStory(story, item) {
       story.isOpinion ? badge("opinion") : null),
     el("div", { class: "meta" }, tiers),
     story.risk === "red" && story.translations.some((t) => t.tier === 3)
-      ? el("p", { class: "error" }, "Red-risk: every tier-3 translation must be checked before this can be published.") : null,
+      ? el("p", { class: "error" }, "Red-risk: every tier-3 translation must be checked before this can be published. ",
+        el("button", { onclick: () => checkTranslations(story, item) }, "I checked the translations")) : null,
     localized("For you", e.forYou),
     localized("What happened", e.happened),
     (e.known || []).length ? el("div", {}, el("h3", {}, "What is known"), e.known.map((k) => localized(null, k))) : null,
@@ -210,6 +220,17 @@ function showStory(story, item) {
       }, "Save changes"),
       editError),
   );
+}
+
+// An editor who read the machine translations signs them off: tier 3 becomes tier 1 (contract tiers).
+async function checkTranslations(story, item) {
+  const by = signedIn?.displayName || signedIn?.id || "editor";
+  const translations = story.translations.map((t) => (t.tier === 3 ? { language: t.language, tier: 1, reviewedBy: by } : t));
+  try {
+    showStory(await api("PATCH", `/v1/admin/stories/${story.id}`, { ...story, translations }), item);
+  } catch (err) {
+    $("#detail").prepend(el("p", { class: "error" }, err.message));
+  }
 }
 
 function showReport(report, story, item) {
@@ -271,7 +292,8 @@ $("#run-agent").addEventListener("click", async (event) => {
   try {
     const r = await api("POST", "/v1/admin/agent/run");
     await loadQueue();
-    $("#queue-count").textContent += ` · agent: ${r.published} published, ${r.queued} to review`;
+    $("#queue-count").textContent += r.published || r.queued
+      ? ` · agent: ${r.published} published, ${r.queued} to review` : " · agent: no new news";
   } catch (err) {
     $("#queue-count").textContent = err.message;
   } finally {

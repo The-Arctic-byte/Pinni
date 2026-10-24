@@ -77,8 +77,9 @@ def save_agent_story(conn: sqlite3.Connection, contract: Contract, story: dict, 
     story["updatedAt"] = now
     contract.check("story.schema.json", story)
     existing = db.get_doc(conn, "stories", story["id"])
-    if existing and existing["status"] in ("published", "rejected"):
-        # Already out, or an editor decided; the agent does not overwrite that.
+    if existing and existing["status"] != "draft":
+        # Out, decided, or with an editor (who may be editing it): the agent leaves it alone. It
+        # rewrites only what an editor sent back to it (draft).
         return existing
     with conn:
         db.put_story(conn, story)

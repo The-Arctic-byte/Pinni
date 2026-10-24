@@ -82,7 +82,7 @@ def run(conn: sqlite3.Connection, contract: Contract, settings: Settings,
     for story in stories:
         before = db.get_doc(conn, "stories", story["id"])
         saved = save_agent_story(conn, contract, story, publish=True)
-        if before and before["status"] in ("published", "rejected"):
+        if before and before["status"] != "draft":
             counts["unchanged"] += 1
             continue
         counts["published" if saved["status"] == "published" else "queued"] += 1
