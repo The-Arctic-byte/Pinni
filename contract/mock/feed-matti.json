@@ -3,21 +3,565 @@
   "generatedAt": "2026-10-24T09:00:00+03:00",
   "personalization": 0.8,
   "items": [
-    { "storyId": "kiiminki-shooting", "relevance": 0.9, "mustSee": true, "reasons": [{ "en": "Near your home in Kiiminki" }] },
-    { "storyId": "icy-path-kiiminki", "relevance": 0.75, "mustSee": false, "reasons": [{ "en": "Reported by a neighbour" }] },
-    { "storyId": "muhos-data-centre", "relevance": 0.65, "mustSee": false, "reasons": [{ "en": "Your region’s environment" }] },
-    { "storyId": "interpellation", "relevance": 0.6, "mustSee": false, "reasons": [{ "en": "National politics you vote on" }] },
-    { "storyId": "rotuaari-ice", "relevance": 0.58, "mustSee": false, "reasons": [{ "en": "Icy street in Oulu centre" }] },
-    { "storyId": "orpo-kyiv", "relevance": 0.55, "mustSee": false, "reasons": [{ "en": "Finnish foreign policy" }] },
-    { "storyId": "oulu-station-trains", "relevance": 0.52, "mustSee": false, "reasons": [{ "en": "Oulu railway station" }] },
-    { "storyId": "lidl-ideapark", "relevance": 0.5, "mustSee": false, "reasons": [{ "en": "Shopping on your way into town" }] },
-    { "storyId": "oulu-library-sunday", "relevance": 0.46, "mustSee": false, "reasons": [{ "en": "Library in the centre" }] },
-    { "storyId": "parkkipate-strike", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "City services" }] },
-    { "storyId": "oulu-theatre-season", "relevance": 0.38, "mustSee": false, "reasons": [{ "en": "Theatre in the centre" }] },
-    { "storyId": "linnanmaa-campus-bus", "relevance": 0.37, "mustSee": false, "reasons": [{ "en": "Campus buses in Linnanmaa" }] },
-    { "storyId": "ritaharju-crossing", "relevance": 0.36, "mustSee": false, "reasons": [{ "en": "School crossing in Ritaharju" }] },
-    { "storyId": "city-site-down", "relevance": 0.35, "mustSee": false, "reasons": [{ "en": "City e-services" }] },
-    { "storyId": "un-climate-report", "relevance": 0.3, "mustSee": false, "reasons": [{ "en": "Global news" }] },
-    { "storyId": "editorial-social-media", "relevance": 0.3, "mustSee": false, "reasons": [{ "en": "Opinion, not news" }] }
+    {
+      "storyId": "kiiminki-shooting",
+      "relevance": 0.9,
+      "mustSee": true,
+      "reasons": [
+        {
+          "en": "Near your home in Kiiminki"
+        }
+      ]
+    },
+    {
+      "storyId": "icy-path-kiiminki",
+      "relevance": 0.75,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Reported by a neighbour"
+        }
+      ]
+    },
+    {
+      "storyId": "muhos-data-centre",
+      "relevance": 0.65,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Your region’s environment"
+        }
+      ]
+    },
+    {
+      "storyId": "interpellation",
+      "relevance": 0.6,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "National politics you vote on"
+        }
+      ]
+    },
+    {
+      "storyId": "rotuaari-ice",
+      "relevance": 0.58,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Icy street in Oulu centre"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-bus-21",
+      "relevance": 0.57,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In your area"
+        }
+      ]
+    },
+    {
+      "storyId": "orpo-kyiv",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Finnish foreign policy"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-station-trains",
+      "relevance": 0.52,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Oulu railway station"
+        }
+      ]
+    },
+    {
+      "storyId": "lidl-ideapark",
+      "relevance": 0.5,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Shopping on your way into town"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-ice-rink",
+      "relevance": 0.47,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In your area"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-library-sunday",
+      "relevance": 0.46,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Library in the centre"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-library-evenings",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In your area"
+        }
+      ]
+    },
+    {
+      "storyId": "oys-emergency-waits",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "psoas-rent-january",
+      "relevance": 0.43,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "city-budget-2027",
+      "relevance": 0.43,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow politics"
+        }
+      ]
+    },
+    {
+      "storyId": "parkkipate-strike",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "City services"
+        }
+      ]
+    },
+    {
+      "storyId": "toppila-bike-path",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow environment"
+        }
+      ]
+    },
+    {
+      "storyId": "ritaharju-flu-vaccines",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "free-finnish-courses",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "first-sea-ice",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow environment"
+        }
+      ]
+    },
+    {
+      "storyId": "snow-plough-parking",
+      "relevance": 0.39,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-theatre-season",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Theatre in the centre"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-psoas-hot-water",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "karpat-home-game",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "international-job-fair",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu2026-light-festival",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-grocery-prices",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow economy"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-campus-bus",
+      "relevance": 0.37,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Campus buses in Linnanmaa"
+        }
+      ]
+    },
+    {
+      "storyId": "ritaharju-crossing",
+      "relevance": 0.36,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "School crossing in Ritaharju"
+        }
+      ]
+    },
+    {
+      "storyId": "city-site-down",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "City e-services"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-hackathon",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "tuira-bridge-nights",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "hietasaari-sea-sauna",
+      "relevance": 0.34,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-market-indoors",
+      "relevance": 0.32,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-airport-stockholm",
+      "relevance": 0.32,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "un-climate-report",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Global news"
+        }
+      ]
+    },
+    {
+      "storyId": "editorial-social-media",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Opinion, not news"
+        }
+      ]
+    },
+    {
+      "storyId": "music-centre-student-concert",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "migri-processing-times",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "northern-lights-week",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow environment"
+        }
+      ]
+    },
+    {
+      "storyId": "raatti-football-hall",
+      "relevance": 0.28,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu"
+        }
+      ]
+    },
+    {
+      "storyId": "kela-housing-allowance",
+      "relevance": 0.28,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "euribor-falls",
+      "relevance": 0.26,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow economy"
+        }
+      ]
+    },
+    {
+      "storyId": "rovaniemi-winter-tourism",
+      "relevance": 0.23,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow economy"
+        }
+      ]
+    },
+    {
+      "storyId": "flu-season-early",
+      "relevance": 0.23,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "iran-money-transfers",
+      "relevance": 0.23,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow economy"
+        }
+      ]
+    },
+    {
+      "storyId": "helsinki-airport-security-strike",
+      "relevance": 0.17,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "ukraine-winter-energy",
+      "relevance": 0.17,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world"
+        }
+      ]
+    },
+    {
+      "storyId": "opinion-student-housing",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Opinion, not news"
+        }
+      ]
+    },
+    {
+      "storyId": "eu-roaming-prices",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world"
+        }
+      ]
+    },
+    {
+      "storyId": "erasmus-grants-2027",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world"
+        }
+      ]
+    },
+    {
+      "storyId": "ai-rules-world",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world"
+        }
+      ]
+    },
+    {
+      "storyId": "tallinn-ferry-december",
+      "relevance": 0.12,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world"
+        }
+      ]
+    },
+    {
+      "storyId": "tehran-flights-istanbul",
+      "relevance": 0.12,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world"
+        }
+      ]
+    },
+    {
+      "storyId": "tampere-tram-extension",
+      "relevance": 0.1,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland"
+        }
+      ]
+    },
+    {
+      "storyId": "sweden-haparanda-shopping",
+      "relevance": 0.1,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world"
+        }
+      ]
+    }
   ]
 }

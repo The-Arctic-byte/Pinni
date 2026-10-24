@@ -17,7 +17,7 @@ extension Scale {
         case .area:
             MapCamera(centerCoordinate: home ?? .oulu, distance: 7_000, heading: 0, pitch: 60)
         case .city:
-            MapCamera(centerCoordinate: .oulu, distance: 45_000, heading: 0, pitch: 45)
+            MapCamera(centerCoordinate: .oulu, distance: 25_000, heading: 0, pitch: 45)
         case .finland:
             MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 64.6, longitude: 26.0), distance: 2_200_000, heading: 0, pitch: 0)
         case .world:

@@ -125,7 +125,7 @@ Status:
 - [x] Segmented control Area · City · Finland · World moves the camera; pinching updates the control (`Scale(cameraDistance:)`).
 - [x] Scales are relative to the reader (`ReaderScale`): your area → Area, rest of your city → City, rest of Finland → Finland, abroad → World; never smaller than the story's own scale. Readers without an area start on City.
 - [x] Pins: category colour, size by relevance, accent ring for must-see / relevance ≥ 0.7, dashed ring for opinion; labels only for relevant stories.
-- [x] Pins that would overlap at the current zoom are grouped (`PinGrouping`) with a count badge; area stories stay circles and are never grouped.
+- [x] Pins that would overlap at the current zoom are grouped (`PinGrouping`, 5 % of camera distance) with a count badge; tapping a group zooms in to fit it, like a map cluster, and lists its stories. Area stories stay circles and are never grouped.
 - [x] Area stories draw a dashed circle (`radiusMeters`), never a point; the circle opens its story.
 - [x] Stories with `mapObject` show a raised 3D tile; opening one flies the camera in (pitch 70°, 900 m) so MapKit's real 3D buildings show — checked with the Helsinki Olympic Stadium.
 - [x] News panel (`MapPanel`): iPhone = native sheet, never dismissed, detents collapsed (110 pt) / resting (default, 34 %) / medium / large, map usable up to medium, Community and Profile in its header; Mac = inspector, open by default, toolbar toggle. Lists the scale's stories ranked for the reader; a group pin narrows it ("Show all" to go back); a story pushes inside the panel with the system back button.
@@ -152,7 +152,13 @@ Status:
 - Story detail with the explanation sections, sources, verified-by, language switch (mine · EN · FI ⇄).
 - Like, dislike, "not for me" (hard filter), share, report.
 
-Status (feedback part): [x] `StoryFeedbackBar` on every story — like, dislike, not for me (this story / whole category; must-see never hidden), share, something wrong?. Full story layout still open.
+Status:
+- [x] `StoryDetailView`: category and place, opinion label, why you see this, verified-by and how the translation was checked, what we know / what happened / not known yet / what this means for you, where you can ask (Apple Maps / website), "To understand" context card, updates timeline, sources (and "area only" note).
+- [x] Language switch: reader's language · English · Finnish original ⇄ (each Kaleva sentence above its translation, word of the day spoken in Finnish).
+- [x] Red-risk stories are never shown in an unchecked (tier 3) translation: English with a note instead (`StoryLanguage`).
+- [x] "Important for you" section in the panel: must-see stories from other scales pinned above the list.
+- [x] `StoryFeedbackBar` on every story — like, dislike, not for me (this story / whole category; must-see never hidden), share, something wrong?.
+- Debug launch arguments: `-openStory <story id>`, `-storyLanguage en|fi`.
 
 ### A8 · Interaction tracking
 Log every event from T00 (open, dwell time, likes, skips, zoom, map taps, …) locally; batch-upload once the API exists.

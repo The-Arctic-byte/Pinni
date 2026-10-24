@@ -71,6 +71,7 @@ struct MapScreen: View {
         MapPanel(
             title: panelTitle,
             entries: panelEntries,
+            mustSee: mustSeeEntries,
             chips: chipItems,
             selectedChip: listFilter?.placeId,
             isFiltered: listFilter != nil,
@@ -222,6 +223,13 @@ struct MapScreen: View {
         return model.rankedStories.filter { reader.scale(of: $0.story) == scale }
     }
 
+    /// Must-see stories that are not already in the list. Only on the unfiltered list: a chip or group is a deliberate choice.
+    private var mustSeeEntries: [(item: FeedItem, story: Story)] {
+        guard listFilter == nil else { return [] }
+        let listed = Set(panelEntries.map(\.story.id))
+        return model.rankedStories.filter { $0.item.mustSee && !listed.contains($0.story.id) }
+    }
+
     private var panelTitle: Text {
         switch listFilter {
         case .group(let ids):
@@ -287,6 +295,21 @@ struct MapScreen: View {
         listFilter = .group(group.members.map(\.storyId))
         path = []
         revealPanel()
+        zoom(toFit: group)
+    }
+
+    /// Like a map cluster: zoom in until the group's stories stand apart. The scale stays (a filter is active).
+    private func zoom(toFit group: PinGroup) {
+        let points = group.members.compactMap { model.stories[$0.storyId]?.location?.coordinate }
+        guard let first = points.first else { return }
+        let spread = points.map { PinGrouping.meters(from: first, to: $0) }.max() ?? 0
+        let lat = points.map(\.lat).reduce(0, +) / Double(points.count)
+        let lon = points.map(\.lon).reduce(0, +) / Double(points.count)
+        // About three times the spread on screen, never closer than a street view.
+        let camera = MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon),
+                               distance: max(spread * 3, 1_500), heading: 0, pitch: 45)
+        cameraDistance = camera.distance
+        withAnimation(.smooth(duration: 1.0)) { position = .camera(camera) }
     }
 
     /// A place chip lists that place's stories and flies the map there; tapping it again goes back.
@@ -310,9 +333,9 @@ struct MapScreen: View {
     }
 
     private func showAll() {
-        let wasPlace = listFilter?.placeId != nil
+        let wasFiltered = listFilter != nil
         listFilter = nil
-        if wasPlace { moveCamera(to: scale, animated: true) }
+        if wasFiltered { moveCamera(to: scale, animated: true) }
     }
 
     private func chipCamera(_ id: String) -> MapCamera {
@@ -354,8 +377,8 @@ struct MapScreen: View {
 
 #if DEBUG
 extension MapScreen {
-    /// `-mapScale world`, `-mapSelect <story id>`, `-mapChip <place id>` and `-mapPanel collapsed|medium|large`
-    /// as launch arguments (screenshots).
+    /// `-mapScale world`, `-mapSelect <story id>`, `-mapChip <place id>`, `-openStory <story id>`
+    /// and `-mapPanel collapsed|medium|large` as launch arguments (screenshots).
     fileprivate func applyLaunchArguments() {
         let defaults = UserDefaults.standard
         if let raw = defaults.string(forKey: "mapScale"), let debugScale = Scale(rawValue: raw) { show(debugScale, animated: false) }
@@ -367,6 +390,7 @@ extension MapScreen {
             }
         }
         if let chip = defaults.string(forKey: "mapChip") { select(chip: chip) }
+        if let id = defaults.string(forKey: "openStory"), model.stories[id] != nil { open(id) }
         switch defaults.string(forKey: "mapPanel") {
         case "collapsed": sheetDetent = .collapsed
         case "medium": sheetDetent = .medium

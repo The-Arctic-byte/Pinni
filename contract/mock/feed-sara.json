@@ -3,22 +3,633 @@
   "generatedAt": "2026-10-24T09:00:00+03:00",
   "personalization": 0.7,
   "items": [
-    { "storyId": "kiiminki-shooting", "relevance": 0.9, "mustSee": true, "reasons": [{ "en": "Near your home in Kiiminki", "fa": "نزدیک خانه تو در کیمینکی" }] },
-    { "storyId": "icy-path-kiiminki", "relevance": 0.75, "mustSee": false, "reasons": [{ "en": "In your area", "fa": "در محله تو" }] },
-    { "storyId": "lidl-ideapark", "relevance": 0.55, "mustSee": false, "reasons": [{ "en": "On your way into town", "fa": "در مسیر کیمینکی به شهر" }] },
-    { "storyId": "city-site-down", "relevance": 0.5, "mustSee": false, "reasons": [{ "en": "Newcomers do a lot of city paperwork", "fa": "تازه‌واردها کار اداری زیادی با شهر دارند" }] },
-    { "storyId": "oulu-station-trains", "relevance": 0.48, "mustSee": false, "reasons": [{ "en": "You travel through Oulu station", "fa": "از ایستگاه اولو رد می‌شوی" }] },
-    { "storyId": "athletics-euros-2030", "relevance": 0.45, "mustSee": false, "reasons": [{ "en": "You follow sports", "fa": "به ورزش علاقه داری" }] },
-    { "storyId": "rotuaari-ice", "relevance": 0.42, "mustSee": false, "reasons": [{ "en": "Icy street in Oulu centre", "fa": "خیابان یخ‌زده در مرکز اولو" }] },
-    { "storyId": "parkkipate-strike", "relevance": 0.4, "mustSee": false, "reasons": [{ "en": "City services", "fa": "خدمات شهر" }] },
-    { "storyId": "oulu-library-sunday", "relevance": 0.38, "mustSee": false, "reasons": [{ "en": "Library in the centre", "fa": "کتابخانه در مرکز شهر" }] },
-    { "storyId": "oulu-theatre-season", "relevance": 0.36, "mustSee": false, "reasons": [{ "en": "Theatre in the centre", "fa": "تئاتر در مرکز شهر" }] },
-    { "storyId": "linnanmaa-campus-bus", "relevance": 0.34, "mustSee": false, "reasons": [{ "en": "Your campus in Linnanmaa", "fa": "پردیس تو در لینانما" }] },
-    { "storyId": "ritaharju-crossing", "relevance": 0.32, "mustSee": false, "reasons": [{ "en": "On the way to Ideapark", "fa": "در مسیر آیدیاپارک" }] },
-    { "storyId": "orpo-kyiv", "relevance": 0.3, "mustSee": false, "isExploration": true, "reasons": [{ "en": "General foreign-policy news", "fa": "خبر عمومی سیاست خارجی" }] },
-    { "storyId": "muhos-data-centre", "relevance": 0.2, "mustSee": false, "reasons": [{ "en": "Near Oulu, no daily effect", "fa": "نزدیک اولو، ولی بی‌اثر بر زندگی روزمره" }] },
-    { "storyId": "un-climate-report", "relevance": 0.2, "mustSee": false, "reasons": [{ "en": "Global news", "fa": "خبر جهانی" }] },
-    { "storyId": "interpellation", "relevance": 0.15, "mustSee": false, "reasons": [{ "en": "General political debate, no direct effect", "fa": "بحث سیاسی عمومی؛ اثر مستقیمی بر تو ندارد" }] },
-    { "storyId": "editorial-social-media", "relevance": 0.1, "mustSee": false, "reasons": [{ "en": "Opinion, not news", "fa": "نظر، نه خبر" }] }
+    {
+      "storyId": "kiiminki-shooting",
+      "relevance": 0.9,
+      "mustSee": true,
+      "reasons": [
+        {
+          "en": "Near your home in Kiiminki",
+          "fa": "نزدیک خانه تو در کیمینکی"
+        }
+      ]
+    },
+    {
+      "storyId": "psoas-rent-january",
+      "relevance": 0.8,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You live in PSOAS housing",
+          "fa": "تو در خوابگاه PSOAS زندگی می‌کنی"
+        }
+      ]
+    },
+    {
+      "storyId": "icy-path-kiiminki",
+      "relevance": 0.75,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In your area",
+          "fa": "در محله تو"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-psoas-hot-water",
+      "relevance": 0.74,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You live in PSOAS housing",
+          "fa": "تو در خوابگاه PSOAS زندگی می‌کنی"
+        }
+      ]
+    },
+    {
+      "storyId": "migri-processing-times",
+      "relevance": 0.65,
+      "mustSee": true,
+      "reasons": [
+        {
+          "en": "You hold a non-EU residence permit",
+          "fa": "تو اجازه اقامت غیر اتحادیه اروپا داری"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-bus-21",
+      "relevance": 0.57,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In your area",
+          "fa": "در محله تو"
+        }
+      ]
+    },
+    {
+      "storyId": "lidl-ideapark",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "On your way into town",
+          "fa": "در مسیر کیمینکی به شهر"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-ice-rink",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow sport",
+          "fa": "به ورزش علاقه داری"
+        }
+      ]
+    },
+    {
+      "storyId": "kela-housing-allowance",
+      "relevance": 0.55,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "For students",
+          "fa": "برای دانشجوها"
+        }
+      ]
+    },
+    {
+      "storyId": "free-finnish-courses",
+      "relevance": 0.52,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow education",
+          "fa": "به آموزش علاقه داری"
+        }
+      ]
+    },
+    {
+      "storyId": "city-site-down",
+      "relevance": 0.5,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Newcomers do a lot of city paperwork",
+          "fa": "تازه‌واردها کار اداری زیادی با شهر دارند"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-hackathon",
+      "relevance": 0.5,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "For students",
+          "fa": "برای دانشجوها"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-station-trains",
+      "relevance": 0.48,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You travel through Oulu station",
+          "fa": "از ایستگاه اولو رد می‌شوی"
+        }
+      ]
+    },
+    {
+      "storyId": "athletics-euros-2030",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow sports",
+          "fa": "به ورزش علاقه داری"
+        }
+      ]
+    },
+    {
+      "storyId": "kiiminki-library-evenings",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In your area",
+          "fa": "در محله تو"
+        }
+      ]
+    },
+    {
+      "storyId": "karpat-home-game",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow sport",
+          "fa": "به ورزش علاقه داری"
+        }
+      ]
+    },
+    {
+      "storyId": "oys-emergency-waits",
+      "relevance": 0.45,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "rotuaari-ice",
+      "relevance": 0.42,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Icy street in Oulu centre",
+          "fa": "خیابان یخ‌زده در مرکز اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "erasmus-grants-2027",
+      "relevance": 0.42,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "For students",
+          "fa": "برای دانشجوها"
+        }
+      ]
+    },
+    {
+      "storyId": "parkkipate-strike",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "City services",
+          "fa": "خدمات شهر"
+        }
+      ]
+    },
+    {
+      "storyId": "ritaharju-flu-vaccines",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "iran-money-transfers",
+      "relevance": 0.4,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "From your home country",
+          "fa": "از کشور خودت"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-library-sunday",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Library in the centre",
+          "fa": "کتابخانه در مرکز شهر"
+        }
+      ]
+    },
+    {
+      "storyId": "international-job-fair",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu2026-light-festival",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "tehran-flights-istanbul",
+      "relevance": 0.38,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "From your home country",
+          "fa": "از کشور خودت"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-theatre-season",
+      "relevance": 0.36,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Theatre in the centre",
+          "fa": "تئاتر در مرکز شهر"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-market-indoors",
+      "relevance": 0.36,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "tuira-bridge-nights",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "raatti-football-hall",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "You follow sport",
+          "fa": "به ورزش علاقه داری"
+        }
+      ]
+    },
+    {
+      "storyId": "snow-plough-parking",
+      "relevance": 0.35,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "linnanmaa-campus-bus",
+      "relevance": 0.34,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Your campus in Linnanmaa",
+          "fa": "پردیس تو در لینانما"
+        }
+      ]
+    },
+    {
+      "storyId": "ritaharju-crossing",
+      "relevance": 0.32,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "On the way to Ideapark",
+          "fa": "در مسیر آیدیاپارک"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-airport-stockholm",
+      "relevance": 0.32,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "city-budget-2027",
+      "relevance": 0.31,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "orpo-kyiv",
+      "relevance": 0.3,
+      "mustSee": false,
+      "isExploration": true,
+      "reasons": [
+        {
+          "en": "General foreign-policy news",
+          "fa": "خبر عمومی سیاست خارجی"
+        }
+      ]
+    },
+    {
+      "storyId": "hietasaari-sea-sauna",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "music-centre-student-concert",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "oulu-grocery-prices",
+      "relevance": 0.3,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "toppila-bike-path",
+      "relevance": 0.28,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "first-sea-ice",
+      "relevance": 0.28,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Oulu",
+          "fa": "در اولو"
+        }
+      ]
+    },
+    {
+      "storyId": "opinion-student-housing",
+      "relevance": 0.27,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Opinion, not news",
+          "fa": "نظر، نه خبر"
+        }
+      ]
+    },
+    {
+      "storyId": "flu-season-early",
+      "relevance": 0.23,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland",
+          "fa": "در فنلاند"
+        }
+      ]
+    },
+    {
+      "storyId": "muhos-data-centre",
+      "relevance": 0.2,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Near Oulu, no daily effect",
+          "fa": "نزدیک اولو، ولی بی‌اثر بر زندگی روزمره"
+        }
+      ]
+    },
+    {
+      "storyId": "un-climate-report",
+      "relevance": 0.2,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Global news",
+          "fa": "خبر جهانی"
+        }
+      ]
+    },
+    {
+      "storyId": "euribor-falls",
+      "relevance": 0.17,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland",
+          "fa": "در فنلاند"
+        }
+      ]
+    },
+    {
+      "storyId": "helsinki-airport-security-strike",
+      "relevance": 0.17,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland",
+          "fa": "در فنلاند"
+        }
+      ]
+    },
+    {
+      "storyId": "northern-lights-week",
+      "relevance": 0.17,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland",
+          "fa": "در فنلاند"
+        }
+      ]
+    },
+    {
+      "storyId": "ukraine-winter-energy",
+      "relevance": 0.17,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world",
+          "fa": "در جهان"
+        }
+      ]
+    },
+    {
+      "storyId": "interpellation",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "General political debate, no direct effect",
+          "fa": "بحث سیاسی عمومی؛ اثر مستقیمی بر تو ندارد"
+        }
+      ]
+    },
+    {
+      "storyId": "rovaniemi-winter-tourism",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland",
+          "fa": "در فنلاند"
+        }
+      ]
+    },
+    {
+      "storyId": "eu-roaming-prices",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world",
+          "fa": "در جهان"
+        }
+      ]
+    },
+    {
+      "storyId": "ai-rules-world",
+      "relevance": 0.15,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world",
+          "fa": "در جهان"
+        }
+      ]
+    },
+    {
+      "storyId": "sweden-haparanda-shopping",
+      "relevance": 0.14,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world",
+          "fa": "در جهان"
+        }
+      ]
+    },
+    {
+      "storyId": "tallinn-ferry-december",
+      "relevance": 0.12,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In the world",
+          "fa": "در جهان"
+        }
+      ]
+    },
+    {
+      "storyId": "editorial-social-media",
+      "relevance": 0.1,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "Opinion, not news",
+          "fa": "نظر، نه خبر"
+        }
+      ]
+    },
+    {
+      "storyId": "tampere-tram-extension",
+      "relevance": 0.1,
+      "mustSee": false,
+      "reasons": [
+        {
+          "en": "In Finland",
+          "fa": "در فنلاند"
+        }
+      ]
+    }
   ]
 }

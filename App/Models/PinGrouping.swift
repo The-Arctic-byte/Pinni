@@ -13,7 +13,7 @@ struct PinGroup: Identifiable, Sendable {
 
 enum PinGrouping {
     /// Pins closer than this share of the camera distance overlap on screen.
-    static let overlapFactor = 0.08
+    static let overlapFactor = 0.05
 
     /// Greedy grouping: each pin, in relevance order, joins the first group whose lead is close enough.
     static func groups(_ pins: [(item: FeedItem, coordinate: Coordinate)], cameraDistance: Double) -> [PinGroup] {
