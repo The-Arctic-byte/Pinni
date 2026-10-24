@@ -7,6 +7,7 @@ protocol NewsService: Sendable {
     func feed(for userId: String) async throws -> FeedPage
     func stories(ids: [String]) async throws -> [Story]
     func profile(for userId: String) async throws -> Profile
+    func save(_ profile: Profile) async throws -> Profile
     func suggestedChannels(for userId: String) async throws -> [ChannelSuggestion]
     func channels() async throws -> [Channel]
     func reports(for userId: String) async throws -> [Report]

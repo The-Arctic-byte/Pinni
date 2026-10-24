@@ -8,9 +8,11 @@ struct MockNewsService: NewsService {
     }
 
     let bundle: Bundle
+    private let saved: SavedProfiles
 
-    init(bundle: Bundle = .main) {
+    init(bundle: Bundle = .main, defaults: UserDefaults = .standard) {
         self.bundle = bundle
+        self.saved = SavedProfiles(defaults: defaults)
     }
 
     func places() async throws -> [Place] {
@@ -29,8 +31,14 @@ struct MockNewsService: NewsService {
     }
 
     func profile(for userId: String) async throws -> Profile {
+        if let profile = saved[userId] { return profile }
         let all: [Profile] = try load("profiles")
         guard let profile = all.first(where: { $0.userId == userId }) else { throw MockError.unknown(userId) }
+        return profile
+    }
+
+    func save(_ profile: Profile) async throws -> Profile {
+        saved[profile.userId] = profile
         return profile
     }
 
@@ -62,6 +70,30 @@ struct MockNewsService: NewsService {
             ?? bundle.url(forResource: name, withExtension: "json", subdirectory: "mock")
         else { throw MockError.missingFile(name) }
         return try JSONDecoder.contract.decode(T.self, from: Data(contentsOf: url))
+    }
+}
+
+/// Profiles saved through the mock (onboarding, profile edits). Kept in UserDefaults so they survive relaunch.
+final class SavedProfiles {
+    private let defaults: UserDefaults
+    private let key = "mock.savedProfiles"
+
+    init(defaults: UserDefaults) {
+        self.defaults = defaults
+    }
+
+    subscript(userId: String) -> Profile? {
+        get { all[userId] }
+        set {
+            var profiles = all
+            profiles[userId] = newValue
+            defaults.set(try? JSONEncoder.contract.encode(profiles), forKey: key)
+        }
+    }
+
+    private var all: [String: Profile] {
+        guard let data = defaults.data(forKey: key) else { return [:] }
+        return (try? JSONDecoder.contract.decode([String: Profile].self, from: data)) ?? [:]
     }
 }
 

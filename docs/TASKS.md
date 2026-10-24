@@ -97,13 +97,23 @@ Status: [x] Swift models for every contract type (`App/Models`), all 13 mock fil
 
 ### A4 · Onboarding
 Steps, in order:
-1. Who you are (target group: student, worker, family, local, …).
-2. Which categories matter most to you (rank or weight: economy, society, politics, shopping, sport, safety, culture, …).
-3. Interests.
-4. What news you want to hear about most.
-5. Language (with tier label).
-6. Area and housing (optional, with consent: e.g. PSOAS → the agent also gathers PSOAS news).
+1. Language (with tier label).
+2. Who you are (target group: student, worker, family, local, …).
+3. Most important categories: pick the ones that matter most; everything else keeps normal priority.
+4. Area, home country, residence and housing (optional, with consent: e.g. PSOAS → the agent also gathers PSOAS news).
 Every step can be skipped. Answers become the initial profile and the first events.
+"What do you want to hear about most" and "What are you into" were dropped as redundant with categories; the recommender learns the rest from use.
+The contract's `wantedNews` and `interests` stay and are sent empty (candidates to drop at contract review).
+
+Status:
+- [x] Four steps on a `NavigationStack`: iOS uses the system back button; macOS sheets get a Back button in the bottom bar. Shown on first launch (full screen on iPhone, sheet on Mac).
+- [x] iOS / macOS 26+: soft scroll edge effect on all edges; Skip / Continue sit in a `safeAreaBar` (bar background on older OS).
+- [x] `OnboardingAnswers` → `Profile` + one `onboardingAnswer` event per step (skipped steps logged as skipped); output validates against the contract.
+- [x] Picked categories get weight 0.9; the rest are left out (= neutral). Residence and housing are only stored with consent.
+- [x] Profile saved through `NewsService.save` (mock keeps it across relaunch); feed reloads in the chosen language.
+- [x] Strings in fi / fa / sv (needs native review); Persian layout checked in the simulator.
+- [ ] Events are dropped by the mock until A8 adds the local queue.
+- Debug: Profile → "Restart onboarding"; launch argument `-onboardingStep <step>` opens a step directly.
 
 ### A5 · Map
 - Four scales: Area, City (3D, pitched) · Finland · World. Pinch and a segmented control.

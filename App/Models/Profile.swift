@@ -51,6 +51,40 @@ struct Profile: Codable, Hashable, Sendable {
     var notifications: Notifications?
     var updatedAt: Date
 
+    init(
+        userId: String,
+        language: String,
+        uiLanguage: String? = nil,
+        targetGroups: [TargetGroup] = [],
+        homePlaceId: String? = nil,
+        homeCountryCode: String? = nil,
+        residence: Residence? = nil,
+        housing: Housing? = nil,
+        categoryWeights: [Category: Double] = [:],
+        interests: [String] = [],
+        wantedNews: [String] = [],
+        followedPlaceIds: [String]? = nil,
+        hardFilters: HardFilters = .empty,
+        notifications: Notifications? = nil,
+        updatedAt: Date
+    ) {
+        self.userId = userId
+        self.language = language
+        self.uiLanguage = uiLanguage
+        self.targetGroups = targetGroups
+        self.homePlaceId = homePlaceId
+        self.homeCountryCode = homeCountryCode
+        self.residence = residence
+        self.housing = housing
+        self.categoryWeights = categoryWeights
+        self.interests = interests
+        self.wantedNews = wantedNews
+        self.followedPlaceIds = followedPlaceIds
+        self.hardFilters = hardFilters
+        self.notifications = notifications
+        self.updatedAt = updatedAt
+    }
+
     private enum CodingKeys: String, CodingKey {
         case userId, language, uiLanguage, targetGroups, homePlaceId, homeCountryCode, residence, housing
         case categoryWeights, interests, wantedNews, followedPlaceIds, hardFilters, notifications, updatedAt

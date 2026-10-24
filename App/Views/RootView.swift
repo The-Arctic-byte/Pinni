@@ -8,6 +8,25 @@ struct RootView: View {
     var body: some View {
         content
             .task { if model.state == .idle { await model.load() } }
+            #if os(macOS)
+            .sheet(isPresented: showsOnboarding) { onboarding }
+            #else
+            .fullScreenCover(isPresented: showsOnboarding) { onboarding }
+            #endif
+    }
+
+    private var showsOnboarding: Binding<Bool> {
+        Binding(get: { !model.hasCompletedOnboarding }, set: { _ in })
+    }
+
+    private var onboarding: some View {
+        OnboardingView(places: Array(model.places.values)) { answers in
+            Task {
+                await model.completeOnboarding(with: answers)
+                selection = .map
+            }
+        }
+        .interactiveDismissDisabled()
     }
 
     @ViewBuilder

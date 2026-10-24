@@ -27,11 +27,8 @@ struct Event: Codable, Hashable, Identifiable, Sendable {
     var channelId: String?
     var placeId: String?
     var value: Double?
+    /// Type-specific payload, e.g. an onboarding question and its answer.
+    var detail: [String: JSONValue]?
     var context: Context?
     let occurredAt: Date
-
-    // `detail` is a free-form object in the contract; the app sends none yet and ignores it when reading.
-    private enum CodingKeys: String, CodingKey {
-        case id, userId, type, storyId, channelId, placeId, value, context, occurredAt
-    }
 }

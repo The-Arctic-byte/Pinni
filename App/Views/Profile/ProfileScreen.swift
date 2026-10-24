@@ -14,6 +14,11 @@ struct ProfileScreen: View {
                             Text(verbatim: persona.displayName).tag(persona)
                         }
                     }
+                    Button {
+                        model.restartOnboarding()
+                    } label: {
+                        Text(verbatim: "Restart onboarding")
+                    }
                 } header: {
                     Text(verbatim: "Mock data")
                 }
