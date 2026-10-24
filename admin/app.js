@@ -145,7 +145,7 @@ function decision(actions, onDecide) {
   const box = $("#decision-template").content.firstElementChild.cloneNode(true);
   const note = box.querySelector("textarea");
   const error = box.querySelector(".error");
-  for (const [action, label, cls] of actions) {
+  for (const [action, label, cls] of actions.filter(Boolean)) {
     box.querySelector(".actions").append(el("button", {
       class: cls || "",
       onclick: async () => {
@@ -224,7 +224,8 @@ function showReport(report, story, item) {
     report.sensitive ? el("p", { class: "error" }, "Sensitive: check with an official source before publishing.") : null,
     trail(item),
     decision([
-      ["approve", report.kind === "problem" ? "Mark story as fixed" : "Publish", "primary"],
+      // Sensitive reports are never published: approving one only keeps it as a lead.
+      report.sensitive ? null : ["approve", report.kind === "problem" ? "Mark story as fixed" : "Publish", "primary"],
       ["keepAsLead", "Keep as editor lead"],
       ["sendBack", "Send to agent"],
       ["reject", "Reject", "danger"],

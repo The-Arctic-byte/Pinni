@@ -29,33 +29,66 @@ def test_red_story_with_unchecked_translation_cannot_be_published(client, login)
     assert item["mustSee"]
 
 
+def _send(client, headers, **report):
+    return client.post("/v1/reports", json=report, headers=headers).json()["id"]
+
+
 def test_publish_report_notifies_reporter(client, login, valid):
     matti = login("matti")
-    tip = {"kind": "newsTip", "category": "transport", "sensitive": False, "text": "Road works on Kiimingintie.",
-           "location": {"coordinate": {"lat": 65.13, "lon": 25.74}, "radiusMeters": 200}}
-    report_id = client.post("/v1/reports", json=tip, headers=matti).json()["id"]
+    report_id = _send(client, matti, kind="newsTip", category="transport", text="Road works on Kiimingintie.",
+                      location={"coordinate": {"lat": 65.13, "lon": 25.74}, "radiusMeters": 300})
 
     editor = login("aino")
+    early = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "approve"}, headers=editor)
+    assert early.status_code == 409  # still sent: an editor has to open it first
+    opened = client.get(f"/v1/admin/reports/{report_id}", headers=editor).json()
+    assert opened["status"] == "inReview"
     r = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "approve"}, headers=editor)
     assert r.status_code == 200
     report = r.json()
     valid("report.schema.json", report)
     assert report["status"] == "published"
+    assert [h["status"] for h in report["history"]] == ["sent", "inReview", "published"]
     story = client.get(f"/v1/stories/{report['resultStoryId']}", headers=matti).json()
     valid("story.schema.json", story)
     assert story["placeId"] == "kiiminki" and story["origin"] == "community"
 
     notes = client.get("/v1/notifications", headers=matti).json()
     assert notes[0]["kind"] == "reportPublished" and notes[0]["reportId"] == report_id
+    assert client.get(f"/v1/reports/{report_id}", headers=matti).json()["status"] == "published"
     again = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "reject"}, headers=editor)
     assert again.status_code == 409
+
+
+def test_sensitive_report_is_never_published(client, login, valid):
+    matti = login("matti")
+    report_id = _send(client, matti, kind="newsTip", category="safety", text="Police cars near the school.")
+    editor = login("aino")
+    client.get(f"/v1/admin/reports/{report_id}", headers=editor)
+    report = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "approve"}, headers=editor).json()
+    valid("report.schema.json", report)
+    assert report["status"] == "editorLead" and "resultStoryId" not in report
+    assert client.get("/v1/notifications", headers=matti).json()[0]["kind"] == "reportEditorLead"
+
+
+def test_problem_report_marks_story_corrected(client, login, valid):
+    matti = login("matti")
+    report_id = _send(client, matti, kind="problem", storyId="orpo-kyiv", category="politics", text="Wrong date.")
+    editor = login("aino")
+    client.get(f"/v1/admin/reports/{report_id}", headers=editor)
+    report = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "approve"}, headers=editor).json()
+    valid("report.schema.json", report)
+    assert report["status"] == "edited" and report["resultStoryId"] == "orpo-kyiv"
+    assert client.get("/v1/notifications", headers=matti).json()[0]["kind"] == "reportCorrected"
 
 
 def test_keep_as_lead_and_audit(client, login):
     editor = login("aino")
     r = client.post("/v1/admin/reports/report-wrong-date/decision",
                     json={"action": "keepAsLead", "note": "Checking with the city."}, headers=editor)
-    assert r.json()["status"] == "editorLead" and r.json()["editorNote"] == "Checking with the city."
+    report = r.json()
+    assert report["status"] == "editorLead" and report["editorNote"] == "Checking with the city."
+    assert report["history"][-1] == {"status": "editorLead", "at": report["updatedAt"], "note": "Checking with the city."}
     audit = client.get("/v1/admin/audit", params={"limit": 5}, headers=editor).json()
     assert audit[0]["reportId"] == "report-wrong-date" and audit[0]["actor"] == "user:u-aino"
     bad = client.post("/v1/admin/stories/orpo-kyiv/decision", json={"action": "keepAsLead"}, headers=editor)

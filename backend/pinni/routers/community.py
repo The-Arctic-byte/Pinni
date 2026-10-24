@@ -95,19 +95,28 @@ def create_post(request: Request, channel_id: str, conn: Conn, user: Member, bod
     return post
 
 
-REPORT_EXAMPLE = {"kind": "newsTip", "category": "transport", "sensitive": False, "text": "Road works on Kiimingintie",
-                  "location": {"coordinate": {"lat": 65.13, "lon": 25.74}, "radiusMeters": 200}}
+REPORT_EXAMPLE = {"kind": "newsTip", "category": "transport", "text": "Road works on Kiimingintie",
+                  "location": {"coordinate": {"lat": 65.13, "lon": 25.74}, "radiusMeters": 300}}
+# contract/processes/report-review.md: a news tip's area is never smaller than this.
+MIN_REPORT_RADIUS_METERS = 300
 
 
 @router.post("/reports", status_code=201)
 def create_report(request: Request, conn: Conn, user: Member, body: dict = Body(..., examples=[REPORT_EXAMPLE])):
-    allowed = {"kind", "storyId", "category", "sensitive", "text", "location"}
+    allowed = {"kind", "storyId", "category", "text", "location"}
     extra = set(body) - allowed
     if extra:
         raise ApiError(422, "invalid", f"Unknown fields: {', '.join(sorted(extra))}")
+    if "location" in body:
+        if body.get("kind") == "problem":
+            raise ApiError(422, "invalid", "Problem reports carry no location")
+        radius = body["location"].get("radiusMeters") if isinstance(body["location"], dict) else None
+        if not isinstance(radius, (int, float)) or radius < MIN_REPORT_RADIUS_METERS:
+            raise ApiError(422, "invalid", f"A report area needs a radius of at least {MIN_REPORT_RADIUS_METERS} m")
     now = db.now()
-    report = {**body, "id": db.new_id("report"), "reporterId": user["id"], "status": "sent",
-              "createdAt": now, "updatedAt": now}
+    # The backend decides sensitivity, not the app: safety reports always are.
+    report = {**body, "id": db.new_id("report"), "reporterId": user["id"], "sensitive": body.get("category") == "safety",
+              "status": "sent", "history": [{"status": "sent", "at": now}], "createdAt": now, "updatedAt": now}
     request.app.state.contract.check("report.schema.json", report)
     if "storyId" in report and db.get_doc(conn, "stories", report["storyId"]) is None:
         raise not_found("Story")
@@ -124,3 +133,11 @@ def create_report(request: Request, conn: Conn, user: Member, body: dict = Body(
 @router.get("/reports/mine")
 def my_reports(conn: Conn, user: CurrentUser):
     return db.docs(conn, "SELECT doc FROM reports WHERE reporter_id = ? ORDER BY created_at DESC", (user["id"],))
+
+
+@router.get("/reports/{report_id}")
+def my_report(report_id: str, conn: Conn, user: CurrentUser):
+    report = db.get_doc(conn, "reports", report_id)
+    if report is None or report["reporterId"] != user["id"]:
+        raise not_found("Report")
+    return report

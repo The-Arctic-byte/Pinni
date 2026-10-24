@@ -22,6 +22,14 @@ NOTICES = {
          "fa": "ویراستار گزارشت را بررسی و منتشر کرد. ممنون که کمک کردی!",
          "sv": "En redaktör granskade och publicerade din rapport. Tack för hjälpen!"},
     ),
+    "reportCorrected": (
+        {"en": "The story you flagged was corrected", "fi": "Ilmoittamasi uutinen korjattiin",
+         "fa": "خبری که گزارش دادی اصلاح شد", "sv": "Nyheten du anmälde har rättats"},
+        {"en": "An editor checked your report and corrected the story. Thanks for helping!",
+         "fi": "Toimittaja tarkisti ilmoituksesi ja korjasi uutisen. Kiitos avusta!",
+         "fa": "ویراستار گزارشت را بررسی کرد و خبر را اصلاح کرد. ممنون که کمک کردی!",
+         "sv": "En redaktör granskade din rapport och rättade nyheten. Tack för hjälpen!"},
+    ),
     "reportRejected": (
         {"en": "Your report was not published", "fi": "Ilmoitustasi ei julkaistu", "fa": "گزارشت منتشر نشد", "sv": "Din rapport publicerades inte"},
         {"en": "An editor reviewed your report and decided not to publish it.",
@@ -76,6 +84,16 @@ def _notify(conn, user_id: str, kind: str, report: dict, story_id: str | None = 
     if story_id:
         n["storyId"] = story_id
     db.put_notification(conn, n)
+
+
+def _set_report_status(report: dict, status: str, now: str, note: str | None = None) -> None:
+    """Move a report on and record the step in its history (contract/processes/report-review.md)."""
+    step = {"status": status, "at": now}
+    if note:
+        step["note"] = note
+    report["status"] = status
+    report["history"].append(step)
+    report["updatedAt"] = now
 
 
 def _get_story(conn, story_id: str) -> dict:
@@ -155,8 +173,12 @@ def decide_story(request: Request, story_id: str, conn: Conn, user: Editor, body
         db.audit(conn, _actor(user), step, f"{action}" + (f": {note}" if note else ""), story_id=story_id)
         report_id = story.get("community", {}).get("reportId")
         report = db.get_doc(conn, "reports", report_id) if report_id else None
-        if action == "approve" and report and report["status"] not in ("published", "edited"):
-            report.update(status="published", resultStoryId=story_id, updatedAt=now)
+        if (action == "approve" and report and not report["sensitive"]
+                and report["status"] in ("sent", "inReview")):
+            if report["status"] == "sent":
+                _set_report_status(report, "inReview", now)
+            report["resultStoryId"] = story_id
+            _set_report_status(report, "published", now)
             db.put_report(conn, report)
             _notify(conn, report["reporterId"], "reportPublished", report, story_id)
     stores.story_changed(request, story)
@@ -213,50 +235,60 @@ def story_from_report(conn, report: dict, editor: dict) -> dict:
     }
 
 
-@router.get("/reports/{report_id}")
-def get_report(report_id: str, conn: Conn, user: Editor):
+def _get_report(conn, report_id: str) -> dict:
     report = db.get_doc(conn, "reports", report_id)
     if report is None:
         raise not_found("Report")
     return report
 
 
+@router.get("/reports/{report_id}")
+def get_report(request: Request, report_id: str, conn: Conn, user: Editor):
+    """The first editor to open a sent report moves it to inReview."""
+    report = _get_report(conn, report_id)
+    if report["status"] == "sent":
+        _set_report_status(report, "inReview", db.now())
+        request.app.state.contract.check("report.schema.json", report)
+        with conn:
+            db.put_report(conn, report)
+            db.audit(conn, _actor(user), "review", "Opened for review", report_id=report_id)
+    return report
+
+
 @router.post("/reports/{report_id}/decision")
 def decide_report(request: Request, report_id: str, conn: Conn, user: Editor, body: dict = Body(...)):
     action, note = _decision(body)
-    report = db.get_doc(conn, "reports", report_id)
-    if report is None:
-        raise not_found("Report")
-    if report["status"] in ("published", "edited", "rejected"):
-        raise ApiError(409, "alreadyDecided", f"Report is already {report['status']}")
+    report = _get_report(conn, report_id)
+    if report["status"] != "inReview":
+        raise ApiError(409, "notInReview", f"Only reports in review can be decided; this one is {report['status']}")
     c = request.app.state.contract
     now = db.now()
     story = None
     with conn:
-        if action == "approve":
-            if report["kind"] == "problem":
-                # The editor fixed the story the reader flagged.
-                report.update(status="edited", resultStoryId=report["storyId"])
-            else:
-                story = story_from_report(conn, report, user)
-                c.check("story.schema.json", story)
-                db.put_story(conn, story)
-                db.audit(conn, _actor(user), "publish", "Published from community report",
-                         story_id=story["id"], report_id=report_id)
-                report.update(status="published", resultStoryId=story["id"])
-            notice = "reportPublished"
+        if action == "sendBack":
+            # To the agent for more work; the report stays in review.
+            status, notice = None, None
         elif action == "reject":
-            report["status"] = "rejected"
-            notice = "reportRejected"
-        elif action == "keepAsLead":
-            report["status"] = "editorLead"
-            notice = "reportEditorLead"
-        else:  # sendBack: to the agent for more work
-            report["status"] = "inReview"
-            notice = None
+            status, notice = "rejected", "reportRejected"
+        elif action == "keepAsLead" or report["sensitive"]:
+            # A sensitive report is never published, even when approved.
+            status, notice = "editorLead", "reportEditorLead"
+        elif report["kind"] == "problem":
+            # The editor fixed the story the reader flagged.
+            report["resultStoryId"] = report["storyId"]
+            status, notice = "edited", "reportCorrected"
+        else:
+            story = story_from_report(conn, report, user)
+            c.check("story.schema.json", story)
+            db.put_story(conn, story)
+            db.audit(conn, _actor(user), "publish", "Published from community report",
+                     story_id=story["id"], report_id=report_id)
+            report["resultStoryId"] = story["id"]
+            status, notice = "published", "reportPublished"
         if note:
             report["editorNote"] = note
-        report["updatedAt"] = now
+        if status:
+            _set_report_status(report, status, now, note)
         c.check("report.schema.json", report)
         db.put_report(conn, report)
         db.audit(conn, _actor(user), "review", f"{action}" + (f": {note}" if note else ""), report_id=report_id)
