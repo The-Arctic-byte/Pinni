@@ -1,0 +1,34 @@
+[
+  {
+    "channelId": "kiiminki-neighbours",
+    "score": 0.84,
+    "reason": {
+      "en": "140 people in Kiiminki follow this"
+    },
+    "similarMembers": 140
+  },
+  {
+    "channelId": "karpat-fans",
+    "score": 0.7,
+    "reason": {
+      "en": "88 people with your interests follow this"
+    },
+    "similarMembers": 88
+  },
+  {
+    "channelId": "winter-cycling-oulu",
+    "score": 0.55,
+    "reason": {
+      "en": "31 locals who care about the environment follow this"
+    },
+    "similarMembers": 31
+  },
+  {
+    "channelId": "kiiminki-families",
+    "score": 0.42,
+    "reason": {
+      "en": "23 neighbours follow this"
+    },
+    "similarMembers": 23
+  }
+]

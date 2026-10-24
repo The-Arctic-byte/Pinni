@@ -1,0 +1,23 @@
+[
+  {
+    "channelId": "international-jobs-oulu",
+    "score": 0.5,
+    "reason": {
+      "en": "Popular in Oulu"
+    }
+  },
+  {
+    "channelId": "karpat-fans",
+    "score": 0.48,
+    "reason": {
+      "en": "Popular in Oulu"
+    }
+  },
+  {
+    "channelId": "finnish-language-cafe",
+    "score": 0.45,
+    "reason": {
+      "en": "Popular with newcomers"
+    }
+  }
+]

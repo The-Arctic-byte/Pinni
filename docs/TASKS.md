@@ -172,6 +172,16 @@ Status:
 - Post or share a story to a channel; send to others.
 - Evaluate news: like / dislike, "is this accurate?", reject.
 
+Status:
+- [x] Community: "Suggested for you" (from similar people, with the reason; counts only when ≥ 20), "Your channels", "More channels"; every channel in exactly one section.
+- [x] Channel page: description, members, Join / Leave, posts (shared stories open the story view), composer once joined; authors shown as "You" or "A member".
+- [x] "Post to a channel" on every story, with an optional comment.
+- [x] Join, leave and post are events for the recommender / knowledge graph; memberships and posts persist in the mock (`MockCommunity`).
+- [x] Mock data: 12 channels, 13 posts, suggestions for Sara, Matti and the new user. A reader starts in the channels they posted in (the contract has no membership file).
+- [x] Evaluate news: like / dislike / not for me / something wrong? (A7 feedback bar).
+- [ ] Members-only posting comes with sign-in (C3); likes on posts are read-only.
+- Debug launch argument: `-openChannel <channel id>`.
+
 ### A10 · Profile
 Edit everything from onboarding, see and reset what the app has learned, language, notification settings, my reports with status.
 

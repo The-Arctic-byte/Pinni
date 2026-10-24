@@ -36,6 +36,8 @@ MOCK_SCHEMAS = {
     "events.json": ("event.schema.json", "", True),
     "channels.json": ("channel.schema.json", "", True),
     "channel-suggestions-sara.json": ("channel.schema.json", "/$defs/Suggestion", True),
+    "channel-suggestions-matti.json": ("channel.schema.json", "/$defs/Suggestion", True),
+    "channel-suggestions-new.json": ("channel.schema.json", "/$defs/Suggestion", True),
     "channel-posts.json": ("channel.schema.json", "/$defs/Post", True),
     "reports.json": ("report.schema.json", "", True),
     "notifications.json": ("notification.schema.json", "", True),
@@ -176,8 +178,9 @@ def check_references(d: dict) -> None:
 
     for c in d.get("channels.json", []):
         need("place", c.get("placeId"), places, f"channel {c['id']}.placeId")
-    for s in d.get("channel-suggestions-sara.json", []):
-        need("channel", s["channelId"], channels, "channel suggestion")
+    for name in ("channel-suggestions-sara.json", "channel-suggestions-matti.json", "channel-suggestions-new.json"):
+        for s in d.get(name, []):
+            need("channel", s["channelId"], channels, f"{name} suggestion")
     for p in d.get("channel-posts.json", []):
         need("channel", p["channelId"], channels, f"post {p['id']}.channelId")
         need("user", p["authorId"], users, f"post {p['id']}.authorId")

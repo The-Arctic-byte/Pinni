@@ -33,6 +33,11 @@ final class AppModel {
     private(set) var feed: FeedPage?
     private(set) var stories: [String: Story] = [:]
     private(set) var reports: [Report] = []
+    private(set) var channels: [String: Channel] = [:]
+    private(set) var channelSuggestions: [ChannelSuggestion] = []
+    private(set) var joinedChannelIds: Set<String> = []
+    /// Posts per channel, loaded when a channel is opened.
+    private(set) var posts: [String: [ChannelPost]] = [:]
     private var feedback = LocalFeedback()
     /// Events not yet accepted by the backend; sent again on the next change (A8).
     @ObservationIgnored private var pendingEvents: [Event] = []
@@ -85,7 +90,14 @@ final class AppModel {
             let loadedProfile = try await profile
             let loadedPlaces = try await places
             let loadedReports = try await service.reports(for: userId)
+            let loadedChannels = try await service.channels()
+            let loadedSuggestions = try await service.suggestedChannels(for: userId)
+            let joined = try await service.joinedChannels(for: userId)
             guard generation == loadGeneration else { return }
+            self.channels = Dictionary(uniqueKeysWithValues: loadedChannels.map { ($0.id, $0) })
+            self.channelSuggestions = loadedSuggestions
+            self.joinedChannelIds = Set(joined.map(\.id))
+            self.posts = [:]
             self.feedback = Self.storedFeedback(for: userId, in: defaults)
             self.pendingEvents = Self.storedEvents(in: defaults)
             self.reports = loadedReports
@@ -158,6 +170,57 @@ final class AppModel {
         record(.dwell, storyId: story.id, value: seconds.rounded(), screen: .story)
     }
 
+    // MARK: Community
+
+    /// Channels similar people follow that the reader has not joined yet, best match first.
+    var suggestedChannels: [(suggestion: ChannelSuggestion, channel: Channel)] {
+        channelSuggestions.compactMap { suggestion in
+            guard !joinedChannelIds.contains(suggestion.channelId), let channel = channels[suggestion.channelId] else { return nil }
+            return (suggestion, channel)
+        }
+    }
+
+    var joinedChannels: [Channel] {
+        channels.values.filter { joinedChannelIds.contains($0.id) }.sorted { $0.memberCount > $1.memberCount }
+    }
+
+    /// Channels neither joined nor suggested, biggest first.
+    var otherChannels: [Channel] {
+        let suggested = Set(channelSuggestions.map(\.channelId))
+        return channels.values
+            .filter { !joinedChannelIds.contains($0.id) && !suggested.contains($0.id) }
+            .sorted { $0.memberCount > $1.memberCount }
+    }
+
+    func loadPosts(in channelId: String) async {
+        if let loaded = try? await service.posts(in: channelId) { posts[channelId] = loaded }
+    }
+
+    func setJoined(_ joined: Bool, channelId: String) async {
+        guard joined != joinedChannelIds.contains(channelId) else { return }
+        do {
+            try await service.setMembership(joined, channelId: channelId, userId: persona.userId)
+        } catch {
+            return
+        }
+        if joined { joinedChannelIds.insert(channelId) } else { joinedChannelIds.remove(channelId) }
+        record(joined ? .joinChannel : .leaveChannel, channelId: channelId, screen: .community)
+    }
+
+    /// Shares a story and/or text in a channel the reader joined.
+    func post(text: String?, story: Story?, in channelId: String) async throws {
+        let trimmed = text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let body = trimmed?.isEmpty == false ? trimmed : nil
+        guard body != nil || story != nil else { return }
+        let post = try await service.post(storyId: story?.id, text: body, in: channelId, authorId: persona.userId)
+        posts[channelId, default: []].insert(post, at: 0)
+        record(.postToChannel, storyId: story?.id, channelId: channelId, screen: .community)
+    }
+
+    func isMine(_ post: ChannelPost) -> Bool {
+        post.authorId == persona.userId
+    }
+
     // MARK: Reports
 
     /// Sends a report for a human editor (contract/processes/report-review.md). The reader follows it on My reports.
@@ -171,13 +234,14 @@ final class AppModel {
 
     // MARK: Events
 
-    private func record(_ kind: Event.Kind, storyId: String? = nil, value: Double? = nil,
+    private func record(_ kind: Event.Kind, storyId: String? = nil, channelId: String? = nil, value: Double? = nil,
                         detail: [String: JSONValue]? = nil, screen: Event.Context.Screen? = nil) {
         let event = Event(
             id: "ev-" + UUID().uuidString.lowercased(),
             userId: persona.userId,
             type: kind,
             storyId: storyId,
+            channelId: channelId,
             value: value,
             detail: detail,
             context: screen.map { .init(screen: $0) },
