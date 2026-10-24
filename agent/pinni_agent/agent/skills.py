@@ -20,6 +20,7 @@ from ..mcp.tools.sources import (
     gather_psoas_news,
     gather_university_news,
     gather_web_by_preferences_and_location,
+    retrieve_web_information,
     store_gathered_in_vector_db,
 )
 from ..store import Store
@@ -381,4 +382,61 @@ class SupervisorSkills:
         return SkillResult(
             summary=f"Generated {len(suggestions)} channel suggestions for {user_id} via Knowledge Graph",
             data={"userId": user_id, "suggestions": suggestions},
+        )
+
+    # 10. RETRIEVE WEB NEWS & STORE IN VECTOR DB
+    def retrieve_web_news(
+        self,
+        tags: Optional[List[str]] = None,
+        words: Optional[Union[str, List[str]]] = None,
+        urls: Optional[List[str]] = None,
+        location: Optional[str] = None,
+        categories: Optional[List[str]] = None,
+        store_in_vector: bool = True,
+    ) -> SkillResult:
+        items = retrieve_web_information(
+            tags=tags,
+            words=words,
+            urls=urls,
+            location=location,
+            categories=categories,
+            vector_store=self.vector_store if store_in_vector else None,
+        )
+        return SkillResult(
+            summary=f"Retrieved {len(items)} items from websites matching tags={tags}, words={words}",
+            data={"count": len(items), "items": items, "storedInVector": store_in_vector},
+        )
+
+    # 11. RECOMMEND FOR USER
+    def recommend_for_user(
+        self,
+        user_id: str,
+        scale: Optional[str] = None,
+        place_id: Optional[str] = None,
+        limit: int = 10,
+        include_stories: bool = True,
+    ) -> SkillResult:
+        from ..recommender.engine import RecommendationEngine
+
+        recommender = RecommendationEngine(
+            settings=self.s,
+            store=self.store,
+            vector_store=self.vector_store,
+            graph=self.graph,
+        )
+        feed_page = recommender.get_feed(
+            user_id=user_id,
+            scale=scale,
+            place_id=place_id,
+            limit=limit,
+        )
+        if include_stories:
+            for item in feed_page.get("items", []):
+                story = self.store.get_story(item["storyId"])
+                if story:
+                    item["story"] = story
+
+        return SkillResult(
+            summary=f"Recommended {len(feed_page.get('items', []))} personalized stories for {user_id}",
+            data=feed_page,
         )
