@@ -33,6 +33,9 @@ class Settings:
     # Embeddings. Empty URL = hashing embedder (no model needed).
     ollama_url: str
     embed_model: str
+    # Seed the mock stories, reports, posts, notifications and events too (tests); otherwise only
+    # places, channels and users, and the news is what the agent publishes.
+    seed_content: bool = True
     # The Track B agent (pinni/newsroom.py): a round at startup and every N minutes (0 = only from
     # the admin page; tests use 0), and whether it may use Ollama (otherwise its offline heuristics).
     agent_every_minutes: float = 0
@@ -52,6 +55,7 @@ class Settings:
             chroma=os.environ.get("PINNI_CHROMA", str(BACKEND / "data" / "chroma")),
             ollama_url=os.environ.get("PINNI_OLLAMA_URL", ""),
             embed_model=os.environ.get("PINNI_EMBED_MODEL", "bge-m3"),
+            seed_content=_flag("PINNI_SEED_CONTENT", False),
             agent_every_minutes=float(os.environ.get("PINNI_AGENT_EVERY_MINUTES", "30")),
             agent_llm=_flag("PINNI_AGENT_LLM", False),
         )

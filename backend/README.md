@@ -57,6 +57,7 @@ Turn the dev accounts off with `PINNI_DEV_ACCOUNTS=false` anywhere outside devel
 | `PINNI_CONTRACT_DIR` | `contract/` | Schemas and mock data |
 | `PINNI_ADMIN_DIR` | `admin/` | Editor page, served at `/admin` |
 | `PINNI_SEED_MOCK` | `true` | Seed an empty database from `contract/mock/` |
+| `PINNI_SEED_CONTENT` | `false` | Also seed the mock stories, reports, posts, notifications and events. Off: only places, channels and users; the news is what the agent publishes (tests seed it all) |
 | `PINNI_DEV_ACCOUNTS` | `true` | Give the mock personas the dev password |
 | `PINNI_NEO4J_URI` | empty | e.g. `bolt://localhost:7687`. Empty = in-memory graph |
 | `PINNI_NEO4J_USER` / `PINNI_NEO4J_PASSWORD` | `neo4j` / empty | |

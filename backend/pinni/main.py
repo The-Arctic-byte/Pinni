@@ -36,7 +36,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             db.init(conn)
             if settings.seed_mock and db.is_empty(conn):
-                seed(conn, app.state.contract, settings.dev_accounts)
+                seed(conn, app.state.contract, settings.dev_accounts, settings.seed_content)
             if settings.dev_accounts:
                 ensure_dev_editors(conn)
             upgrade_reports(conn)

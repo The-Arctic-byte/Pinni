@@ -1,6 +1,10 @@
-"""Fill an empty database from contract/mock so the API answers with the same data the app uses.
+"""Fill an empty database from contract/mock.
 
-Feeds and channel suggestions are not seeded: the backend computes them."""
+Always: places, channels, users and their profiles (the personas sign in, and the agent gathers news
+for their profiles). With content=True also the mock stories, reports, posts, notifications and
+events, so the API answers with the same data as the app's mock; tests use that. Without it the map
+holds only what the agent publishes and readers send. Feeds and channel suggestions are never
+seeded: the backend computes them."""
 
 import sqlite3
 
@@ -23,7 +27,7 @@ def dev_email(user_id: str) -> str:
     return f"{user_id.removeprefix('u-')}@pinni.test"
 
 
-def seed(conn: sqlite3.Connection, contract: Contract, dev_accounts: bool) -> None:
+def seed(conn: sqlite3.Connection, contract: Contract, dev_accounts: bool, content: bool = True) -> None:
     m = contract.mock
     with conn:
         for p in m("places.json"):
@@ -39,10 +43,14 @@ def seed(conn: sqlite3.Connection, contract: Contract, dev_accounts: bool) -> No
             )
         for p in m("profiles.json"):
             db.put_doc(conn, "profiles", p)
+        for c in m("channels.json"):
+            # Without the mock members, a channel starts empty.
+            db.put_doc(conn, "channels", c if content else {**c, "memberCount": 0})
+        if not content:
+            db.audit(conn, "agent:seed", "gather", "Database seeded from contract/mock (places, channels, users)")
+            return
         for s in m("stories.json"):
             db.put_story(conn, s)
-        for c in m("channels.json"):
-            db.put_doc(conn, "channels", c)
         for r in m("reports.json"):
             db.put_report(conn, r)
         for p in m("channel-posts.json"):

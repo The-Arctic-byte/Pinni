@@ -3,9 +3,14 @@ in the reader's feed (pinni/newsroom.py)."""
 
 import json
 import re
+import time
+from dataclasses import replace
+
+from fastapi.testclient import TestClient
 
 from pinni import db, newsroom
 from pinni.config import BACKEND
+from pinni.main import create_app
 
 MOCK_IDS = {s["id"] for s in json.loads((BACKEND.parent / "contract" / "mock" / "stories.json").read_text(encoding="utf-8"))}
 SWIFT_DATE = re.compile(r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(Z|[+-]\d\d:\d\d)$")
@@ -90,3 +95,23 @@ def test_editor_signs_off_a_red_risk_agent_story(client, login):
     assert approve().status_code == 200
     feed = client.get("/v1/feed?limit=100", headers=login("sara")).json()
     assert story["id"] in [i["storyId"] for i in feed["items"]]
+
+
+def test_without_mock_content_the_news_is_the_agents(settings):
+    """The delivery setup (PINNI_SEED_CONTENT off): places, channels and personas, no mock news;
+    the agent's round at startup fills the map."""
+    # In-memory graph: this test starts its own app, without the client fixture's Neo4j cleanup.
+    settings = replace(settings, seed_content=False, agent_every_minutes=60, neo4j_uri="")
+    with TestClient(create_app(settings)) as client:
+        sara = client.post("/v1/auth/login", json={"email": "sara@pinni.test", "password": "pinni-dev"}).json()
+        headers = {"Authorization": f"Bearer {sara['token']}"}
+        assert client.get("/v1/places", headers=headers).json()
+        channels = client.get("/v1/channels", params={"all": "true"}, headers=headers).json()
+        assert channels and all(c["memberCount"] == 0 for c in channels)
+        assert client.get("/v1/reports/mine", headers=headers).json() == []
+        for _ in range(100):  # the round runs next to the server, right after startup
+            items = client.get("/v1/feed?limit=100", headers=headers).json()["items"]
+            if items:
+                break
+            time.sleep(0.05)
+        assert items and not {i["storyId"] for i in items} & MOCK_IDS
