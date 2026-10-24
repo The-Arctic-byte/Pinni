@@ -1,6 +1,9 @@
 # docker compose -f backend/compose.yaml up --build
-# Ollama (embeddings and the Qwen model) joins this file with Track B (B1); until then the backend
-# uses its built-in hashing embedder. Chroma runs embedded in the backend, stored in the data volume.
+# The backend with the Track B agent inside it (pinni/newsroom.py), Neo4j for the knowledge graph,
+# and Chroma embedded in the data volume. Without Ollama the backend uses its hashing embedder and
+# the agent its offline heuristics; to use a local Ollama, add for example
+#   PINNI_OLLAMA_URL: http://host.docker.internal:11434
+#   PINNI_AGENT_LLM: "true"
 services:
   backend:
     build:
