@@ -4,7 +4,8 @@ FastAPI service that implements [`contract/openapi.yaml`](../contract/openapi.ya
 The contract's JSON Schemas are used directly to validate request bodies, and the tests check every
 response against them, so the backend cannot drift from what the app expects.
 
-Status: **C1 + C2** — every contract endpoint works, with the three databases from the plan:
+Status: **C1 + C2 + C4** — every contract endpoint works, with the three databases from the plan,
+and the editor page is served at **http://localhost:8000/admin** (source in [`admin/`](../admin)).
 
 - **SQLite**: source of truth. All contract objects, and events (append-only).
 - **Knowledge graph** (Neo4j): users, stories, topics, tags, places, channels, sources and who
@@ -16,7 +17,7 @@ can be wiped and rebuilt with a restart. Without Neo4j configured the same graph
 without Ollama a hashing embedder stands in for the embedding model. Development and tests need
 nothing but Python.
 
-Next: the admin web page (C4), APNs (C5), Ollama embeddings once Track B picks the model (B1),
+Next: member sign-up (C3), user and source management on the admin page (needs new contract endpoints), APNs (C5), Ollama embeddings once Track B picks the model (B1),
 and the real recommender (B4) behind the same `/v1/feed`.
 
 ## Run
@@ -53,6 +54,7 @@ Turn the dev accounts off with `PINNI_DEV_ACCOUNTS=false` anywhere outside devel
 |---|---|---|
 | `PINNI_DB_PATH` | `backend/data/pinni.db` | SQLite file |
 | `PINNI_CONTRACT_DIR` | `contract/` | Schemas and mock data |
+| `PINNI_ADMIN_DIR` | `admin/` | Editor page, served at `/admin` |
 | `PINNI_SEED_MOCK` | `true` | Seed an empty database from `contract/mock/` |
 | `PINNI_DEV_ACCOUNTS` | `true` | Give the mock personas the dev password |
 | `PINNI_NEO4J_URI` | empty | e.g. `bolt://localhost:7687`. Empty = in-memory graph |
@@ -85,6 +87,14 @@ pinni/
   routers/       auth, reader, community, admin
 tests/           one file per router, plus contract coverage
 ```
+
+## Editor page (C4)
+
+Sign in at `/admin` as an editor or admin (`aino@pinni.test` / `pinni-dev` in development); readers and
+members are turned away. The page shows the review queue (agent drafts, community reports, reader flags,
+red risk first), each item with its agent trail, and lets the editor approve, reject, send back, keep a
+report as a lead (with a note to the reporter) or edit a story as JSON. The audit log has its own tab.
+It is plain HTML/JS with no build step and only calls the `/v1/admin/*` and `/v1/stories` endpoints.
 
 ## Rules the backend enforces
 

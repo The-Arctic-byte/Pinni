@@ -60,3 +60,18 @@ def test_keep_as_lead_and_audit(client, login):
     assert audit[0]["reportId"] == "report-wrong-date" and audit[0]["actor"] == "user:u-aino"
     bad = client.post("/v1/admin/stories/orpo-kyiv/decision", json={"action": "keepAsLead"}, headers=editor)
     assert bad.status_code == 422
+
+
+def test_get_report(client, login, valid):
+    editor = login("aino")
+    report = client.get("/v1/admin/reports/report-sirens", headers=editor).json()
+    valid("report.schema.json", report)
+    assert report["sensitive"]
+    assert client.get("/v1/admin/reports/missing", headers=editor).status_code == 404
+    assert client.get("/v1/admin/reports/report-sirens", headers=login("sara")).status_code == 403
+
+
+def test_admin_page_is_served(client):
+    r = client.get("/admin/")
+    assert r.status_code == 200 and "Pinni editor" in r.text
+    assert client.get("/admin/app.js").status_code == 200

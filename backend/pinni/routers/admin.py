@@ -213,6 +213,14 @@ def story_from_report(conn, report: dict, editor: dict) -> dict:
     }
 
 
+@router.get("/reports/{report_id}")
+def get_report(report_id: str, conn: Conn, user: Editor):
+    report = db.get_doc(conn, "reports", report_id)
+    if report is None:
+        raise not_found("Report")
+    return report
+
+
 @router.post("/reports/{report_id}/decision")
 def decide_report(request: Request, report_id: str, conn: Conn, user: Editor, body: dict = Body(...)):
     action, note = _decision(body)
