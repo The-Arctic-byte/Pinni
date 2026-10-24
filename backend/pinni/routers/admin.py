@@ -392,3 +392,24 @@ def run_agent(request: Request, conn: Conn, user: Editor):
         db.audit(conn, user["id"], "route", f"Ran the agent: {counts['queued']} drafts queued, "
                                              f"{counts['published']} published")
     return counts
+
+
+@router.get("/agent/stories")
+def agent_stories(conn: Conn, user: Editor):
+    """Everything the agent wrote, whatever its status, newest first and within the editor's desk:
+    the agent publishes most news on its own, and editors oversee it here (approve, edit, remove)."""
+    from ..drafts import AGENT  # here, not at the top: drafts -> this module
+
+    scope = domains.Scope(conn, user)
+    ids = [r[0] for r in conn.execute(
+        "SELECT story_id FROM audit WHERE actor = ? AND story_id IS NOT NULL GROUP BY story_id ORDER BY MAX(seq) DESC",
+        (AGENT,))]
+    out = []
+    for story_id in ids:
+        s = db.get_doc(conn, "stories", story_id)
+        if s is None or not scope.covers(s):
+            continue
+        out.append({"kind": "agentDraft", "id": s["id"], "status": s["status"], "risk": s["risk"],
+                    "category": s["category"], "title": s["title"]["en"], "createdAt": s["createdAt"],
+                    "trail": _trail(conn, story_id=s["id"])})
+    return out

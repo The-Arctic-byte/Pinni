@@ -155,5 +155,8 @@ always wait for the editor desk of their category (`contract/processes/report-re
 cut to whole seconds, which is what the app's date decoder reads.
 
 A round runs at startup and every `PINNI_AGENT_EVERY_MINUTES`, and from the editor page (**Run agent**,
-`POST /v1/admin/agent/run`). The agent keeps its working files in `data/agent.db`.
+`POST /v1/admin/agent/run`). Editors oversee everything the agent wrote, published or not, on the
+page's **Agent news** tab (`GET /v1/admin/agent/stories`, within their desk; admins see all): approve,
+edit (title, map label, "for you", or the whole JSON) or remove from the app (a reject, which the agent
+does not undo). The agent keeps its working files in `data/agent.db`.
 `tests/test_newsroom.py` and `tests/test_drafts.py` run the real supervisor offline.

@@ -7,6 +7,9 @@ const KIND_LABEL = { agentDraft: "Agent draft", communityReport: "Community repo
 
 let token = null;
 let selected = null;
+// Which list the left column shows: the review queue, or everything the agent wrote.
+let mode = "queue";
+const reload = () => (mode === "agent" ? loadAgentNews() : loadQueue());
 let signedIn = null;
 
 function store(key, value) {
@@ -168,7 +171,7 @@ function decision(actions, onDecide) {
           await onDecide(action, note.value.trim() || undefined);
           selected = null;
           fill($("#detail"), el("p", { class: "muted" }, `Done: ${label.toLowerCase()}.`));
-          loadQueue();
+          reload();
         } catch (err) {
           error.textContent = err.message;
         }
@@ -176,6 +179,46 @@ function decision(actions, onDecide) {
     }, label));
   }
   return box;
+}
+
+// What an editor can do with a story, by its status. Removing is a reject: the story leaves the app
+// and the agent does not bring it back, but its history stays.
+const STORY_ACTIONS = {
+  inReview: [["approve", "Approve and publish", "primary"], ["sendBack", "Send back to agent"], ["reject", "Reject", "danger"]],
+  draft: [["approve", "Approve and publish", "primary"], ["reject", "Reject", "danger"]],
+  published: [["approve", "Approve (keep, verified by me)", "primary"], ["reject", "Remove from the app", "danger"]],
+  rejected: [["approve", "Publish again", "primary"]],
+};
+
+// The fields editors change most, without touching the JSON.
+function quickEdit(story, item) {
+  const title = el("input", { value: story.title.en, dir: "auto" });
+  const label = el("input", { value: story.label?.en || "", dir: "auto", maxlength: "40" });
+  const forYou = el("textarea", { rows: "2", dir: "auto" });
+  forYou.value = story.explanation.forYou?.en || "";
+  const error = el("p", { class: "error" });
+  return el("div", { class: "decision card" },
+    el("h3", {}, "Edit"),
+    el("label", {}, "Title (en)", title),
+    el("label", {}, "Map label (en)", label),
+    el("label", {}, "For you (en)", forYou),
+    el("div", { class: "actions" }, el("button", {
+      onclick: async () => {
+        error.textContent = "";
+        const edited = {
+          ...story,
+          title: { ...story.title, en: title.value.trim() },
+          label: { ...story.label, en: label.value.trim() },
+          explanation: { ...story.explanation, forYou: { ...story.explanation.forYou, en: forYou.value.trim() } },
+        };
+        try {
+          showStory(await api("PATCH", `/v1/admin/stories/${story.id}`, edited), item);
+        } catch (err) {
+          error.textContent = err.message;
+        }
+      },
+    }, "Save")),
+    error);
 }
 
 function showStory(story, item) {
@@ -202,8 +245,9 @@ function showStory(story, item) {
     el("h3", {}, "Sources"),
     el("ul", {}, story.sources.map((s) => el("li", {}, s.url ? el("a", { href: s.url, target: "_blank", rel: "noopener" }, s.name) : s.name))),
     trail(item),
-    decision([["approve", "Approve and publish", "primary"], ["sendBack", "Send back to agent"], ["reject", "Reject", "danger"]],
+    decision(STORY_ACTIONS[story.status] || STORY_ACTIONS.inReview,
       (action, note) => api("POST", `/v1/admin/stories/${story.id}/decision`, { action, note })),
+    quickEdit(story, item),
     el("details", { class: "json" },
       el("summary", {}, "Edit story (JSON)"),
       el("label", {}, "Full story, as in contract/schemas/story.schema.json", editor),
@@ -259,6 +303,33 @@ function showReport(report, story, item) {
   );
 }
 
+// ---- Agent news ----
+
+const STATUS_LABEL = { published: "In the app", inReview: "Waiting for review", rejected: "Removed", draft: "With the agent" };
+
+async function loadAgentNews() {
+  const list = $("#queue");
+  list.replaceChildren();
+  let items;
+  try {
+    items = await api("GET", "/v1/admin/agent/stories");
+  } catch (err) {
+    list.append(el("li", { class: "error" }, err.message));
+    return;
+  }
+  const live = items.filter((i) => i.status === "published").length;
+  $("#queue-count").textContent = items.length ? `${items.length} agent stories · ${live} in the app` : "The agent has written nothing yet";
+  for (const item of items) {
+    const li = el("li", { onclick: () => open(item, li) },
+      el("span", { class: "title" }, item.title),
+      el("span", { class: "badges" }, badge(STATUS_LABEL[item.status] || item.status), badge(item.category),
+        item.risk !== "none" ? badge(`${item.risk} risk`, item.risk) : null),
+      el("span", { class: "muted" }, when(item.createdAt)));
+    if (selected && selected.id === item.id) li.classList.add("selected");
+    list.append(li);
+  }
+}
+
 // ---- Audit ----
 
 async function loadAudit() {
@@ -276,22 +347,26 @@ async function loadAudit() {
 
 function show(view) {
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === view));
-  $("#queue-view").hidden = view !== "queue";
+  $("#queue-view").hidden = view === "audit";
   $("#audit-view").hidden = view !== "audit";
-  if (view === "audit") loadAudit(); else loadQueue();
+  if (view === "audit") return loadAudit();
+  mode = view;
+  selected = null;
+  fill($("#detail"), el("p", { class: "muted" }, view === "agent" ? "Pick a story the agent wrote." : "Pick an item from the queue."));
+  reload();
 }
 
 // ---- Start ----
 
 $("#login-form").addEventListener("submit", signIn);
 $("#sign-out").addEventListener("click", signOut);
-$("#refresh").addEventListener("click", loadQueue);
+$("#refresh").addEventListener("click", () => reload());
 $("#run-agent").addEventListener("click", async (event) => {
   const button = event.currentTarget;
   button.disabled = true;
   try {
     const r = await api("POST", "/v1/admin/agent/run");
-    await loadQueue();
+    await reload();
     $("#queue-count").textContent += r.published || r.queued
       ? ` · agent: ${r.published} published, ${r.queued} to review` : " · agent: no new news";
   } catch (err) {

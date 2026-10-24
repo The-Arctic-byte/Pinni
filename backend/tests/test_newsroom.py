@@ -115,3 +115,27 @@ def test_without_mock_content_the_news_is_the_agents(settings):
                 break
             time.sleep(0.05)
         assert items and not {i["storyId"] for i in items} & MOCK_IDS
+
+
+def test_editors_oversee_all_agent_news(client, login):
+    """Agent news is published without an editor, but the admin sees all of it and can remove it."""
+    admin = login("admin")
+    client.post("/v1/admin/agent/run", headers=admin)
+    listed = client.get("/v1/admin/agent/stories", headers=admin).json()
+    assert {"published", "inReview"} <= {s["status"] for s in listed}
+    assert not {s["id"] for s in listed} & MOCK_IDS
+    assert client.get("/v1/admin/agent/stories", headers=login("sara")).status_code == 403
+    # Desks apply here too.
+    leo = {s["category"] for s in client.get("/v1/admin/agent/stories", headers=login("leo")).json()}
+    assert leo <= {"politics", "economy", "society", "world"}
+
+    out = next(s for s in listed if s["status"] == "published")
+    feed = lambda: [i["storyId"] for i in client.get("/v1/feed?limit=100", headers=login("sara")).json()["items"]]
+    assert out["id"] in feed()
+    # Remove from the map (reject), and the next round does not bring it back.
+    assert client.post(f"/v1/admin/stories/{out['id']}/decision", json={"action": "reject"}, headers=admin).status_code == 200
+    client.post("/v1/admin/agent/run", headers=admin)
+    assert out["id"] not in feed()
+    # Publish it again.
+    assert client.post(f"/v1/admin/stories/{out['id']}/decision", json={"action": "approve"}, headers=admin).status_code == 200
+    assert out["id"] in feed()
