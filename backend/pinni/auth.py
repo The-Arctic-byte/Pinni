@@ -97,3 +97,4 @@ def require(role: str):
 
 Member = Annotated[dict, require("member")]
 Editor = Annotated[dict, require("editor")]
+Admin = Annotated[dict, require("admin")]

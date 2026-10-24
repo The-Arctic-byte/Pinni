@@ -108,3 +108,36 @@ def test_admin_page_is_served(client):
     r = client.get("/admin/")
     assert r.status_code == 200 and "Pinni editor" in r.text
     assert client.get("/admin/app.js").status_code == 200
+
+
+def test_editor_domains(client, login):
+    admin, aino = login("admin"), login("aino")
+
+    def queue_ids():
+        return {i["id"] for i in client.get("/v1/admin/queue", headers=aino).json()}
+
+    assert {"finns-party-cuts", "report-wrong-date"} <= queue_ids()  # no domain: everything
+    assert client.put("/v1/admin/editors/u-aino/domains", json={"categories": ["work"]}, headers=aino).status_code == 403
+    assert client.put("/v1/admin/editors/u-aino/domains", json={"categories": ["gossip"]}, headers=admin).status_code == 422
+    r = client.put("/v1/admin/editors/u-aino/domains", json={"categories": ["work", "safety"]}, headers=admin)
+    assert r.json()["categories"] == ["work", "safety"]
+    assert client.get("/v1/admin/editors/me", headers=aino).json()["categories"] == ["work", "safety"]
+
+    assert "finns-party-cuts" not in queue_ids() and "report-wrong-date" in queue_ids()
+    assert client.post("/v1/admin/stories/finns-party-cuts/decision", json={"action": "reject"},
+                       headers=aino).status_code == 403
+    assert client.get("/v1/admin/reports/report-icy-path", headers=aino).status_code == 403  # transport
+    assert all(e.get("storyId") != "finns-party-cuts" for e in client.get("/v1/admin/audit", headers=aino).json())
+    # Admins always see everything.
+    assert "finns-party-cuts" in {i["id"] for i in client.get("/v1/admin/queue", headers=admin).json()}
+
+    client.put("/v1/admin/editors/u-aino/domains", json=None, headers=admin)
+    assert client.get("/v1/admin/editors/me", headers=aino).json()["categories"] is None
+    assert "finns-party-cuts" in queue_ids()
+
+
+def test_dev_editors_have_domains(client, login):
+    leo = {i["id"] for i in client.get("/v1/admin/queue", headers=login("leo")).json()}
+    mira = {i["id"] for i in client.get("/v1/admin/queue", headers=login("mira")).json()}
+    assert "finns-party-cuts" in leo and "finns-party-cuts" not in mira
+    assert "report-wrong-date" in mira and "report-wrong-date" not in leo

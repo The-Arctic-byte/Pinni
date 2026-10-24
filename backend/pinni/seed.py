@@ -4,12 +4,19 @@ Feeds and channel suggestions are not seeded: the backend computes them."""
 
 import sqlite3
 
-from . import db
+from . import db, domains
 from .auth import hash_password
 from .contract import Contract
 
 # Development sign-in for the mock personas: <id without "u-">@pinni.test / DEV_PASSWORD.
 DEV_PASSWORD = "pinni-dev"
+
+
+# Development editors with a domain (backend only; contract/mock has one editor who sees everything).
+DEV_EDITORS = [
+    {"id": "u-leo", "displayName": "Leo (politics desk)", "categories": ["politics", "economy", "society", "world"]},
+    {"id": "u-mira", "displayName": "Mira (city desk)", "categories": ["safety", "transport", "cityLife", "housing", "work"]},
+]
 
 
 def dev_email(user_id: str) -> str:
@@ -30,6 +37,13 @@ def seed(conn: sqlite3.Connection, contract: Contract, dev_accounts: bool) -> No
                  hash_password(DEV_PASSWORD) if signs_in else None,
                  u["createdAt"]),
             )
+        if dev_accounts:
+            for e in DEV_EDITORS:
+                conn.execute(
+                    "INSERT INTO users (id, role, display_name, email, password_hash, created_at) VALUES (?, 'editor', ?, ?, ?, ?)",
+                    (e["id"], e["displayName"], dev_email(e["id"]), hash_password(DEV_PASSWORD), db.now()),
+                )
+                domains.put(conn, e["id"], e["categories"])
         for p in m("profiles.json"):
             db.put_doc(conn, "profiles", p)
         for s in m("stories.json"):

@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT UNIQUE,
     password_hash TEXT,
     created_at TEXT NOT NULL,
-    learned_reset_at TEXT
+    learned_reset_at TEXT,
+    domains TEXT  -- editors: JSON list of the categories they review; NULL = everything
 );
 CREATE TABLE IF NOT EXISTS sessions (
     token_hash TEXT PRIMARY KEY,
@@ -126,6 +127,9 @@ def connect(path: Path) -> sqlite3.Connection:
 
 def init(conn: sqlite3.Connection) -> None:
     conn.executescript(SCHEMA)
+    # Databases created before editor domains existed.
+    if "domains" not in {r[1] for r in conn.execute("PRAGMA table_info(users)")}:
+        conn.execute("ALTER TABLE users ADD COLUMN domains TEXT")
 
 
 def is_empty(conn: sqlite3.Connection) -> bool:

@@ -90,6 +90,11 @@ function start(user) {
   $("#login").hidden = true;
   $("#app").hidden = false;
   loadQueue();
+  // The queue only holds the editor's categories; say which.
+  api("GET", "/v1/admin/editors/me").then((me) => {
+    const desk = me.role === "admin" || !me.categories ? "all categories" : me.categories.join(", ");
+    $("#who").textContent = `${user.displayName || user.id} · ${user.role} · ${desk}`;
+  }).catch(() => {});
 }
 
 // ---- Queue ----

@@ -5,13 +5,15 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Query, Request
 
-from .. import db, stores
-from ..auth import Conn, Editor
+from .. import db, domains, stores
+from ..auth import Admin, Conn, Editor
 from ..errors import ApiError, not_found
 
 router = APIRouter(prefix="/v1/admin", tags=["admin"])
 
 RISK_ORDER = {"red": 0, "amber": 1, "none": 2}
+CATEGORIES = ("economy", "society", "politics", "shopping", "sport", "safety", "culture", "transport", "education",
+              "housing", "health", "work", "environment", "technology", "world", "cityLife")
 ACTIONS = ("approve", "reject", "sendBack", "keepAsLead")
 
 NOTICES = {
@@ -105,12 +107,18 @@ def _get_story(conn, story_id: str) -> dict:
 
 @router.get("/queue")
 def queue(conn: Conn, user: Editor):
+    """The review queue, limited to the editor's domain."""
+    scope = domains.Scope(conn, user)
     items = []
     for s in db.docs(conn, "SELECT doc FROM stories WHERE status = 'inReview'"):
+        if not scope.covers(s):
+            continue
         items.append({"kind": "agentDraft", "id": s["id"], "risk": s["risk"], "createdAt": s["createdAt"],
                       "trail": _trail(conn, story_id=s["id"])})
     stories = {s["id"]: s for s in db.docs(conn, "SELECT doc FROM stories")}
     for r in db.docs(conn, "SELECT doc FROM reports WHERE status IN ('sent', 'inReview')"):
+        if not scope.covers(r):
+            continue
         if r["kind"] == "problem":
             risk = stories.get(r.get("storyId"), {}).get("risk", "none")
             kind = "readerFlag"
@@ -131,11 +139,13 @@ def _trail(conn, story_id: str | None = None, report_id: str | None = None) -> l
 
 @router.patch("/stories/{story_id}")
 def edit_story(request: Request, story_id: str, conn: Conn, user: Editor, body: dict = Body(...)):
-    _get_story(conn, story_id)
+    scope = domains.Scope(conn, user)
+    scope.check(_get_story(conn, story_id))
     if body.get("id") != story_id:
         raise ApiError(422, "invalid", "id in the body must match the path")
     body["updatedAt"] = db.now()
     request.app.state.contract.check("story.schema.json", body)
+    scope.check(body)  # no moving a story out of your domain
     if body["status"] == "published":
         problems = publish_problems(body)
         if problems:
@@ -151,6 +161,8 @@ def edit_story(request: Request, story_id: str, conn: Conn, user: Editor, body: 
 def decide_story(request: Request, story_id: str, conn: Conn, user: Editor, body: dict = Body(...)):
     action, note = _decision(body)
     story = _get_story(conn, story_id)
+    scope = domains.Scope(conn, user)
+    scope.check(story)
     now = db.now()
     if action == "keepAsLead":
         raise ApiError(422, "invalid", "keepAsLead only applies to reports")
@@ -246,6 +258,8 @@ def _get_report(conn, report_id: str) -> dict:
 def get_report(request: Request, report_id: str, conn: Conn, user: Editor):
     """The first editor to open a sent report moves it to inReview."""
     report = _get_report(conn, report_id)
+    scope = domains.Scope(conn, user)
+    scope.check(report)
     if report["status"] == "sent":
         _set_report_status(report, "inReview", db.now())
         request.app.state.contract.check("report.schema.json", report)
@@ -259,6 +273,8 @@ def get_report(request: Request, report_id: str, conn: Conn, user: Editor):
 def decide_report(request: Request, report_id: str, conn: Conn, user: Editor, body: dict = Body(...)):
     action, note = _decision(body)
     report = _get_report(conn, report_id)
+    scope = domains.Scope(conn, user)
+    scope.check(report)
     if report["status"] != "inReview":
         raise ApiError(409, "notInReview", f"Only reports in review can be decided; this one is {report['status']}")
     c = request.app.state.contract
@@ -301,5 +317,63 @@ def decide_report(request: Request, report_id: str, conn: Conn, user: Editor, bo
 
 @router.get("/audit")
 def get_audit(conn: Conn, user: Editor, limit: Annotated[int, Query(ge=1, le=500)] = 100):
-    rows = conn.execute("SELECT * FROM audit ORDER BY seq DESC LIMIT ?", (limit,))
-    return [db.audit_entry(r) for r in rows]
+    """The audit log; an editor with a domain sees only entries about stories and reports in it."""
+    scope = domains.Scope(conn, user)
+    if not scope.categories:
+        rows = conn.execute("SELECT * FROM audit ORDER BY seq DESC LIMIT ?", (limit,))
+        return [db.audit_entry(r) for r in rows]
+    stories = {s["id"]: s for s in db.docs(conn, "SELECT doc FROM stories")}
+    reports = {r["id"]: r for r in db.docs(conn, "SELECT doc FROM reports")}
+    out = []
+    for row in conn.execute("SELECT * FROM audit ORDER BY seq DESC"):
+        story, report = stories.get(row["story_id"]), reports.get(row["report_id"])
+        if report is not None or story is not None:
+            allowed = scope.covers(report or story)
+        else:
+            allowed = not (row["story_id"] or row["report_id"])
+        if allowed:
+            out.append(db.audit_entry(row))
+            if len(out) == limit:
+                break
+    return out
+
+
+def _editor(conn, user_id: str) -> dict:
+    row = conn.execute("SELECT * FROM users WHERE id = ? AND role IN ('editor', 'admin')", (user_id,)).fetchone()
+    if row is None:
+        raise not_found("Editor")
+    return {**db.user_doc(row), "categories": domains.get(conn, user_id)}
+
+
+@router.get("/editors")
+def list_editors(conn: Conn, user: Admin):
+    """Editors and admins with the categories they review (backend only, not in the contract)."""
+    rows = conn.execute("SELECT id FROM users WHERE role IN ('editor', 'admin') ORDER BY id")
+    return [_editor(conn, r["id"]) for r in rows]
+
+
+@router.get("/editors/me")
+def my_domains(conn: Conn, user: Editor):
+    return _editor(conn, user["id"])
+
+
+DOMAINS_EXAMPLE = {"categories": ["politics", "economy"]}
+
+
+@router.put("/editors/{user_id}/domains")
+def set_domains(request: Request, user_id: str, conn: Conn, user: Admin,
+                body: dict | None = Body(None, examples=[DOMAINS_EXAMPLE])):
+    """Set the categories an editor reviews. Send null or an empty list to let them see everything."""
+    _editor(conn, user_id)
+    body = body or {}
+    if set(body) - {"categories"}:
+        raise ApiError(422, "invalid", f"Unknown fields: {', '.join(sorted(set(body) - {'categories'}))}")
+    categories = body.get("categories") or []
+    if not isinstance(categories, list) or set(categories) - set(CATEGORIES):
+        raise ApiError(422, "invalid", f"categories must be from: {', '.join(CATEGORIES)}")
+    categories = list(dict.fromkeys(categories)) or None
+    with conn:
+        domains.put(conn, user_id, categories)
+        db.audit(conn, _actor(user), "route",
+                 f"Editor domain for {user_id}: {', '.join(categories) if categories else 'everything'}")
+    return _editor(conn, user_id)

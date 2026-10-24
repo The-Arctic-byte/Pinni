@@ -96,6 +96,12 @@ Sign in at `/admin` as an editor or admin (`aino@pinni.test` / `pinni-dev` in de
 members are turned away. The page shows the review queue (agent drafts, community reports, reader flags,
 red risk first), each item with its agent trail, and lets the editor approve, reject, send back, keep a
 report as a lead (with a note to the reporter) or edit a story as JSON. The audit log has its own tab.
+Each editor works a desk: the categories they review. The queue, decisions and audit log are limited
+to those categories (403 outside them); an editor with no categories and every admin see everything.
+Admins set desks with `PUT /v1/admin/editors/{id}/domains` (`{"categories": [...]}`) and list them with
+`GET /v1/admin/editors`; this is backend only, not part of the contract. Development accounts
+`leo@pinni.test` (politics, economy, society, world) and `mira@pinni.test` (safety, transport, city life,
+housing, work) show it; `aino@pinni.test` sees everything.
 It is plain HTML/JS with no build step and only calls the `/v1/admin/*` and `/v1/stories` endpoints.
 
 ## Rules the backend enforces
@@ -106,7 +112,9 @@ It is plain HTML/JS with no build step and only calls the `/v1/admin/*` and `/v1
 - Readers cannot join channels, post or report (403).
 - A red-risk story cannot be published with a tier-3 (unchecked) translation (409).
 - Events are append-only and uploads are idempotent by event id.
-- Approving a community report creates a published story and notifies the reporter.
+- Reports follow `contract/processes/report-review.md`: the backend sets `sensitive` (always for safety),
+  opening a `sent` report moves it to `inReview`, only reports in review can be decided, every step is
+  added to `history`, and the reporter is notified of the outcome. Sensitive reports are never published.
 
 ## Ranking
 
