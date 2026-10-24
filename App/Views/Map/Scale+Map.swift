@@ -41,7 +41,7 @@ extension CLLocationCoordinate2D {
 }
 
 extension Story.MapObject {
-    /// SF Symbol for the raised 3D tile; Thiings 3D images replace these with A1.
+    /// SF Symbol drawn in the pin; Thiings images replace these with A1.
     var symbolName: String {
         switch self {
         case .stadium: "sportscourt.fill"
