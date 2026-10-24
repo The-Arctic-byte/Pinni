@@ -9,6 +9,7 @@ struct ProfileScreen: View {
     #if DEBUG
     /// `-profileReports YES` as a launch argument opens My reports directly (screenshots).
     @State private var opensReports = UserDefaults.standard.bool(forKey: "profileReports")
+    @State private var apiBaseURL = UserDefaults.standard.string(forKey: DataSource.defaultsKey) ?? ""
     #endif
 
     private var uiLanguage: String { locale.language.languageCode?.identifier ?? "en" }
@@ -168,8 +169,21 @@ struct ProfileScreen: View {
             } label: {
                 Text(verbatim: "Restart onboarding")
             }
+            TextField(text: $apiBaseURL, prompt: Text(verbatim: "http://localhost:8000")) {
+                Text(verbatim: "API URL")
+            }
+            .autocorrectionDisabled()
+            #if os(iOS)
+            .textInputAutocapitalization(.never)
+            .keyboardType(.URL)
+            #endif
+            .onSubmit { UserDefaults.standard.set(apiBaseURL, forKey: DataSource.defaultsKey) }
         } header: {
             Text(verbatim: "Mock data")
+        } footer: {
+            Text(verbatim: DataSource.current == .mock
+                 ? "Using the contract's mock files. Enter an API URL and relaunch to use a backend."
+                 : "Using the API at \(apiBaseURL). Clear the URL and relaunch for mock data.")
         }
     }
 

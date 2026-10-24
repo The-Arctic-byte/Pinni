@@ -8,9 +8,17 @@ struct StoryPin: View {
     let label: String
     let isSelected: Bool
     var count = 1
+    /// Labels for ordinary stories only at Area and City. Farther out, only a must-see or the selected pin is named.
+    var scale: Scale = .city
 
     private var diameter: CGFloat { 30 + 18 * item.relevance }
-    private var showsLabel: Bool { isSelected || item.mustSee || item.relevance >= 0.5 }
+    private var showsLabel: Bool {
+        if isSelected || item.mustSee { return true }
+        switch scale {
+        case .area, .city: return item.relevance >= 0.5
+        case .finland, .world: return false
+        }
+    }
     private var isHighlighted: Bool { item.mustSee || item.relevance >= 0.7 }
 
     var body: some View {
@@ -57,7 +65,9 @@ struct StoryPin: View {
                     Circle().strokeBorder(.white, style: StrokeStyle(lineWidth: 2, dash: [4, 3]))
                 }
             }
-            .padding(3)
+            .padding(2.5)
+            .background(.white, in: .circle)
+            .padding(isHighlighted ? 3 : 0)
             .overlay {
                 if isHighlighted {
                     Circle().strokeBorder(.tint, lineWidth: 3)
@@ -80,6 +90,10 @@ private struct RaisedTile: View {
                 .offset(y: size * 0.14)
             RoundedRectangle(cornerRadius: size * 0.22)
                 .fill(color.gradient)
+                .overlay {
+                    RoundedRectangle(cornerRadius: size * 0.22)
+                        .strokeBorder(.white.opacity(0.9), lineWidth: 2)
+                }
             Image(systemName: symbolName)
                 .font(.system(size: size * 0.45, weight: .semibold))
                 .foregroundStyle(.white)

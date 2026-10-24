@@ -18,9 +18,6 @@ struct StoryDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                if language.choices.count > 1 {
-                    languagePicker
-                }
                 content
                     .environment(\.layoutDirection, shown.contentLayoutDirection)
                 SourcesView(story: story, uiLanguage: uiLanguage)
@@ -71,21 +68,11 @@ struct StoryDetailView: View {
 
     @ViewBuilder
     private var content: some View {
+        Text(story.title.text(for: shown))
+            .font(.title.bold())
+            .fixedSize(horizontal: false, vertical: true)
+
         StoryHeader(story: story, uiLanguage: uiLanguage)
-
-        if choice == .finnishOriginal {
-            BilingualView(story: story, language: shown)
-        } else {
-            Text(story.title.text(for: shown))
-                .font(.title2.bold())
-                .fixedSize(horizontal: false, vertical: true)
-        }
-
-        if choice == .mine, language.isTranslationWithheld {
-            Callout(symbol: "checkmark.shield", tint: .orange) {
-                Text("This story is about residence, health, money, work or safety, so you see the checked English version until a reviewer approves the translation.")
-            }
-        }
 
         if let reason = item?.reasons.first {
             Callout(symbol: "sparkles", tint: .accentColor, title: "Why you see this") {
@@ -95,7 +82,19 @@ struct StoryDetailView: View {
 
         TrustRow(story: story, language: shown)
 
-        if choice != .finnishOriginal {
+        if language.choices.count > 1 {
+            languagePicker
+        }
+
+        if choice == .mine, language.isTranslationWithheld {
+            Callout(symbol: "checkmark.shield", tint: .orange) {
+                Text("This story is about residence, health, money, work or safety, so you see the checked English version until a reviewer approves the translation.")
+            }
+        }
+
+        if choice == .finnishOriginal {
+            BilingualView(story: story, language: shown)
+        } else {
             ExplanationView(story: story, language: shown)
         }
     }

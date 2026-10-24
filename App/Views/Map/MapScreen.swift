@@ -92,7 +92,7 @@ struct MapScreen: View {
             entries: panelEntries,
             mustSee: mustSeeEntries,
             chips: chipItems,
-            selectedChip: listFilter?.placeId,
+            selectedChip: selectedChipId,
             isFiltered: listFilter != nil,
             path: $path,
             onSelectChip: select(chip:),
@@ -106,8 +106,8 @@ struct MapScreen: View {
             ForEach(visibleEntries, id: \.item.id) { entry in
                 if let location = entry.story.location, location.isArea {
                     MapCircle(center: location.coordinate.clLocation, radius: location.radiusMeters)
-                        .foregroundStyle(entry.story.category.mapColor.opacity(0.18))
-                        .stroke(entry.story.category.mapColor, style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
+                        .foregroundStyle(entry.story.category.mapColor.opacity(0.22))
+                        .stroke(entry.story.category.mapColor.opacity(0.9), style: StrokeStyle(lineWidth: 2))
                         .tag(entry.story.id)
                     Annotation(coordinate: location.coordinate.clLocation) {
                         Button {
@@ -134,7 +134,8 @@ struct MapScreen: View {
                                 item: group.lead,
                                 label: story.label.text(for: model.contentLanguage),
                                 isSelected: highlightedIds.contains(story.id),
-                                count: group.members.count
+                                count: group.members.count,
+                                scale: scale
                             )
                         }
                         .buttonStyle(.plain)
@@ -166,6 +167,15 @@ struct MapScreen: View {
             if new.isEmpty { areaSelection = nil }
         }
         .safeAreaInset(edge: .top) {
+            #if os(iOS)
+            // The sheet's chips are the scale control. Only the location button stays on the map.
+            HStack {
+                Spacer(minLength: 0)
+                locationButton
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            #else
             HStack(spacing: 10) {
                 scalePicker
                 locationButton
@@ -173,6 +183,7 @@ struct MapScreen: View {
             .padding(.horizontal)
             .padding(.vertical, 8)
             .frame(maxWidth: 540)
+            #endif
         }
         .onChange(of: model.profile?.homePlaceId, initial: true) {
             show(readerScale.startScale, animated: false)
@@ -230,17 +241,54 @@ struct MapScreen: View {
     }
 
     private var placeChips: PlaceChips {
-        PlaceChips(places: model.places, homeCityId: readerScale.homeCityId, homeCountryCode: model.profile?.homeCountryCode)
+        PlaceChips(
+            places: model.places,
+            homeAreaId: readerScale.homeAreaId,
+            homeCityId: readerScale.homeCityId,
+            homeCountryCode: model.profile?.homeCountryCode
+        )
+    }
+
+    /// The chip that matches where the reader is. On iPhone this stands in for the scale picker,
+    /// including while they pinch and no chip is tapped.
+    private var selectedChipId: String? {
+        if let place = listFilter?.placeId { return place }
+        #if os(iOS)
+        switch scale {
+        case .area: return Scale.area.rawValue
+        case .city: return Scale.city.rawValue
+        case .finland: return ReaderScale.homeCountryId
+        case .world: return "world"
+        }
+        #else
+        return nil
+        #endif
     }
 
     private var chipItems: [MapPanel.Chip] {
         let chips = placeChips
-        return chips.ids.compactMap { id in
+        let places = chips.ids.compactMap { id -> MapPanel.Chip? in
             guard let place = model.places[id] else { return nil }
             let count = model.rankedStories.count { chips.contains(id, storyPlaceId: $0.story.placeId) }
             return MapPanel.Chip(id: id, name: place.name.text(for: uiLanguage), count: count)
         }
+        #if os(iOS)
+        // Area and City are scales, not place names. A reader with no neighbourhood has no area
+        // place, and the city place (Oulu) mixes both scales, so the old picker options would vanish.
+        let covered = Set([readerScale.homeAreaId, readerScale.homeCityId].compactMap { $0 })
+        return [scaleChip(.area), scaleChip(.city)] + places.filter { !covered.contains($0.id) }
+        #else
+        return places
+        #endif
     }
+
+    #if os(iOS)
+    /// Area or City, labeled like the old scale picker, counting the stories at that scale.
+    private func scaleChip(_ scale: Scale) -> MapPanel.Chip {
+        let count = model.rankedStories.count { readerScale.scale(of: $0.story) == scale }
+        return MapPanel.Chip(id: scale.rawValue, name: String(localized: scale.title), count: count)
+    }
+    #endif
 
     /// Point stories only. An area (`radiusMeters > 0`) stays a circle and is never grouped into a pin.
     private var groups: [PinGroup] {
@@ -363,7 +411,15 @@ struct MapScreen: View {
     }
 
     /// A place chip lists that place's stories and flies the map there; tapping it again goes back.
+    /// Area and City are the old scale picker: they show that scale and do not toggle off.
     private func select(chip id: String) {
+        if id == Scale.area.rawValue || id == Scale.city.rawValue {
+            let next: Scale = id == Scale.area.rawValue ? .area : .city
+            guard scale != next || listFilter != nil else { return }
+            model.zoomed(to: next)
+            show(next, animated: true)
+            return
+        }
         guard listFilter?.placeId != id else {
             showAll()
             return
@@ -374,6 +430,7 @@ struct MapScreen: View {
         listFilter = .place(id)
         // Keep the scale control in step with where the map goes.
         scale = switch id {
+        case readerScale.homeAreaId: .area
         case readerScale.homeCityId: .city
         case ReaderScale.homeCountryId: .finland
         default: .world
@@ -391,6 +448,7 @@ struct MapScreen: View {
 
     private func chipCamera(_ id: String) -> MapCamera {
         switch id {
+        case readerScale.homeAreaId: return Scale.area.camera(home: home)
         case readerScale.homeCityId: return Scale.city.camera(home: home)
         case ReaderScale.homeCountryId: return Scale.finland.camera(home: home)
         case "world": return Scale.world.camera(home: home)
