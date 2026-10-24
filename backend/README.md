@@ -85,6 +85,8 @@ pinni/
   auth.py        tokens (only the hash is stored), scrypt passwords, role checks
   recommender.py /v1/feed: Track B recommender over the backend's stores
   ranking.py     learned preferences and channel suggestions
+  domains.py     editor desks (categories an editor reviews)
+  drafts.py      intake for Track B supervisor stories -> editor queue (not scheduled yet)
   seed.py        contract/mock -> database
   routers/       auth, reader, community, admin
 tests/           one file per router, plus contract coverage
@@ -124,5 +126,18 @@ gives it the backend's data through small adapters (profile and events from SQLi
 similarity from Chroma, what similar people liked from the knowledge graph) and keeps the parts that
 follow the contract's place tree here: the `scale`/`placeId` filters and paging.
 
-Channel suggestions blend what similar people follow (60%) with profile overlap (40%);
-`similarMembers` is shown from 20 people up, as the contract requires.
+Channel suggestions blend what similar people follow (60%) with how well the channel fits the profile
+(40%: categories, place, language, housing community, popularity); a reader with no profile gets the most
+popular channels. `similarMembers` is shown from 20 people up, as the contract requires. As in the app's
+mock, readers start as members of the channels they posted in. `GET /v1/channels?all=true` lists every
+channel for the app's "More channels" section; it still has to be added to the contract.
+
+Likes and dislikes sent again with `value: 0` (the app's undo) cancel the earlier reaction.
+
+## Agent drafts
+
+`drafts.save_agent_story` takes a story from the Track B supervisor, fixes the agent's nulls, and stores
+it in review (`origin: agent`) so it appears in the editor queue of the right desk. Red-risk stories and
+stories that break the publish rules never skip review, and a story an editor already decided is not
+overwritten. `tests/test_drafts.py` runs the real supervisor offline to keep both sides in step; nothing
+schedules the agent yet.

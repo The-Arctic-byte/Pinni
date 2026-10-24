@@ -47,6 +47,10 @@ def seed(conn: sqlite3.Connection, contract: Contract, dev_accounts: bool) -> No
             db.put_report(conn, r)
         for p in m("channel-posts.json"):
             db.put_post(conn, p)
+            # As in the app's mock: the contract has no membership file, so authors are members of
+            # the channels they posted in (memberCount in channels.json already counts them).
+            conn.execute("INSERT OR IGNORE INTO memberships (user_id, channel_id, joined_at) VALUES (?, ?, ?)",
+                         (p["authorId"], p["channelId"], p["createdAt"]))
         for n in m("notifications.json"):
             db.put_notification(conn, n)
         for e in m("events.json"):

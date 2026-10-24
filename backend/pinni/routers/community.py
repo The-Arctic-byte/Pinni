@@ -20,7 +20,11 @@ def suggested(request: Request, conn: Conn, user: CurrentUser):
 
 
 @router.get("/channels")
-def get_channels(conn: Conn, user: CurrentUser, ids: str | None = Query(None)):
+def get_channels(conn: Conn, user: CurrentUser, ids: str | None = Query(None),
+                 all: bool = Query(False, description="Every channel, for the app's \"More channels\" list. "
+                                                      "Not in the contract yet.")):
+    if all:
+        return db.docs(conn, "SELECT doc FROM channels ORDER BY rowid")
     if ids:
         wanted = [i for i in ids.split(",") if i]
         found = {c["id"]: c for c in (db.get_doc(conn, "channels", i) for i in wanted) if c}

@@ -25,6 +25,21 @@ from .vectors import VectorStore
 RECOMMENDER_SCORE_SCALE = 20
 
 
+def without_undone(events: list[dict]) -> list[dict]:
+    """Drop likes and dislikes the reader took back (the app resends them with value 0); the
+    recommender counts every like event, whatever its value."""
+    out: list[dict] = []
+    for e in events:
+        if e["type"] in ("like", "dislike") and e.get("value") == 0:
+            for i in range(len(out) - 1, -1, -1):
+                if out[i]["type"] == e["type"] and out[i].get("storyId") == e.get("storyId"):
+                    del out[i]
+                    break
+        else:
+            out.append(e)
+    return out
+
+
 class _Store:
     def __init__(self, conn: sqlite3.Connection, user_id: str, stories: list[dict]):
         self.conn = conn
@@ -35,7 +50,7 @@ class _Store:
         return db.get_doc(self.conn, "profiles", user_id) or default_profile(user_id)
 
     def list_user_events(self, user_id: str) -> list[dict]:
-        return events_since_reset(self.conn, user_id)
+        return without_undone(events_since_reset(self.conn, user_id))
 
     def list_stories(self, status: str | None = None) -> list[dict]:
         return [s for s in self.stories if status is None or s["status"] == status]

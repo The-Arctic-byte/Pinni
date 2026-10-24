@@ -1,18 +1,41 @@
-def test_suggested_channels(client, login, valid):
-    suggestions = client.get("/v1/channels/suggested", headers=login("sara")).json()
+import json
+
+from pinni.config import BACKEND
+
+MOCK = BACKEND.parent / "contract" / "mock"
+
+
+def test_suggested_channels(client, login, anonymous, valid):
+    headers = login("sara")
+    suggestions = client.get("/v1/channels/suggested", headers=headers).json()
     valid("channel.schema.json#/$defs/Suggestion", suggestions)
-    ids = [s["channelId"] for s in suggestions]
-    assert "persian-oulu" not in ids  # already joined
-    assert ids[0] == "psoas-residents"
+    joined = {c["id"] for c in client.get("/v1/channels", headers=headers).json()}
+    assert suggestions and not joined & {s["channelId"] for s in suggestions}
+    assert [s["score"] for s in suggestions] == sorted((s["score"] for s in suggestions), reverse=True)
+    # A channel in a language Sara does not read is not pushed to her.
+    assert "ukrainians-oulu" not in [s["channelId"] for s in suggestions[:5]]
+
+    # Cold start: no profile, no similar people -> the most popular channels.
+    new, _ = anonymous()
+    cold = client.get("/v1/channels/suggested", headers=new).json()
+    valid("channel.schema.json#/$defs/Suggestion", cold)
+    assert all(s["reason"]["en"] == "Popular in Oulu" for s in cold)
+    counts = {c["id"]: c["memberCount"] for c in json.loads((MOCK / "channels.json").read_text(encoding="utf-8"))}
+    assert [counts[s["channelId"]] for s in cold] == sorted((counts[s["channelId"]] for s in cold), reverse=True)
 
 
 def test_joined_and_by_id(client, login, valid):
     headers = login("sara")
     joined = client.get("/v1/channels", headers=headers).json()
     valid("channel.schema.json", joined)
-    assert [c["id"] for c in joined] == ["persian-oulu"]
+    # As in the app's mock: joinChannel events plus the channels the reader posted in.
+    posts = json.loads((MOCK / "channel-posts.json").read_text(encoding="utf-8"))
+    assert {c["id"] for c in joined} == {"persian-oulu"} | {p["channelId"] for p in posts if p["authorId"] == "u-sara"}
     some = client.get("/v1/channels", params={"ids": "student-sports,psoas-residents"}, headers=headers).json()
     assert [c["id"] for c in some] == ["student-sports", "psoas-residents"]
+    every = client.get("/v1/channels", params={"all": "true"}, headers=headers).json()
+    valid("channel.schema.json", every)
+    assert len(every) == len(json.loads((MOCK / "channels.json").read_text(encoding="utf-8")))
 
 
 def test_membership(client, login, anonymous):

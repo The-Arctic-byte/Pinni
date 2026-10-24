@@ -140,3 +140,24 @@ def test_devices(client, anonymous):
     headers, _ = anonymous()
     assert client.put("/v1/devices", json={"apnsToken": "abc", "platform": "ios"}, headers=headers).status_code == 204
     assert client.put("/v1/devices", json={"apnsToken": "abc", "platform": "android"}, headers=headers).status_code == 422
+
+
+def test_taking_back_a_like(client, anonymous):
+    headers, user = anonymous()
+
+    def relevance():
+        items = client.get("/v1/feed", headers=headers).json()["items"]
+        return next(i["relevance"] for i in items if i["storyId"] == "lidl-ideapark")
+
+    def like(n, value):
+        return {"id": f"ev-like-{n}", "userId": user, "type": "like", "storyId": "lidl-ideapark",
+                "value": value, "occurredAt": f"2026-10-24T12:0{n}:00Z"}
+
+    client.post("/v1/events", json=[{"id": "ev-open-0", "userId": user, "type": "open",
+                                     "storyId": "orpo-kyiv", "occurredAt": "2026-10-24T11:59:00Z"}], headers=headers)
+    before = relevance()
+    client.post("/v1/events", json=[like(1, 1)], headers=headers)
+    assert relevance() != before
+    # The app sends the same reaction with value 0 to take it back.
+    client.post("/v1/events", json=[like(2, 0)], headers=headers)
+    assert relevance() == before

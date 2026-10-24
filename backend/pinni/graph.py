@@ -39,6 +39,9 @@ SHARED_GROUP = 0.5
 def signal(event: dict) -> float:
     if event["type"] == "dwell":
         return min(event.get("value", 0) / 60, 1.0) * 0.5
+    if event["type"] in ("like", "dislike") and event.get("value") == 0:
+        # The app sends the same reaction with value 0 when the reader takes it back.
+        return -SIGNAL[event["type"]]
     return SIGNAL.get(event["type"], 0.0)
 
 

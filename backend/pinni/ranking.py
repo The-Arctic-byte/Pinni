@@ -1,6 +1,7 @@
 """What the reader's events say (learned preferences) and channel suggestions. Feed ranking is
 done by the Track B recommender, see recommender.py."""
 
+import math
 import sqlite3
 from datetime import datetime
 
@@ -107,9 +108,29 @@ def collaborative(graph: Graph | None, user_id: str) -> dict[str, float]:
     return {sid: v / total for sid, v in out.items()}
 
 
+CHANNEL_REASONS = {
+    "similarMany": {"en": "{n} people like you follow this", "fi": "{n} kaltaistasi seuraa tätä",
+                    "fa": "{n} نفر مثل تو این را دنبال می‌کنند", "sv": "{n} personer som du följer den här"},
+    "similar": {"en": "People like you follow this", "fi": "Kaltaisesi seuraavat tätä",
+                "fa": "افرادی مثل تو این را دنبال می‌کنند", "sv": "Personer som du följer den här"},
+    "housing": {"en": "For residents like you", "fi": "Kaltaisillesi asukkaille",
+                "fa": "برای ساکنانی مثل تو", "sv": "För boende som du"},
+    "language": {"en": "In your language", "fi": "Omalla kielelläsi", "fa": "به زبان خودت", "sv": "På ditt språk"},
+    "near": {"en": "Near you", "fi": "Lähelläsi", "fa": "نزدیک تو", "sv": "Nära dig"},
+    "interests": {"en": "Matches your interests", "fi": "Vastaa kiinnostuksiasi",
+                  "fa": "با علاقه‌هایت جور است", "sv": "Passar dina intressen"},
+    "popular": {"en": "Popular in Oulu", "fi": "Suosittu Oulussa", "fa": "محبوب در اولو", "sv": "Populär i Uleåborg"},
+}
+
+
+def _reason(key: str, n: int | None = None) -> dict:
+    return {lang: text.format(n=n) for lang, text in CHANNEL_REASONS[key].items()}
+
+
 def suggested_channels(conn: sqlite3.Connection, user_id: str, graph: Graph | None = None) -> list[dict]:
-    """Channels that similar people (knowledge graph) follow, blended with overlap with the
-    stated profile so new readers with no similar people still get suggestions."""
+    """Channels that similar people (knowledge graph) follow, blended with how well the channel fits
+    the stated profile, so new readers with no similar people still get suggestions. A reader with no
+    profile at all gets the most popular channels."""
     profile = db.get_doc(conn, "profiles", user_id) or default_profile(user_id)
     places = {p["id"]: p for p in db.docs(conn, "SELECT doc FROM places")}
     joined = {r[0] for r in conn.execute("SELECT channel_id FROM memberships WHERE user_id = ?", (user_id,))}
@@ -117,37 +138,46 @@ def suggested_channels(conn: sqlite3.Connection, user_id: str, graph: Graph | No
     total = sum(score for _, score in similar)
     weight = dict(similar)
     followers = graph.channel_counts([u for u, _ in similar]) if similar else {}
-    my_places = set(ancestors(places, profile.get("homePlaceId"))) | set(profile.get("followedPlaceIds", []))
+    home = profile.get("homePlaceId")
+    near = ({home} if home else set()) | set(profile.get("followedPlaceIds", []))
+    around = set(ancestors(places, home))
+    housing = profile.get("housing", {}).get("provider")
+    stated = bool(profile["categoryWeights"] or home or profile.get("targetGroups") or housing)
+    channels = db.docs(conn, "SELECT doc FROM channels")
+    biggest = max((c["memberCount"] for c in channels), default=0)
     out = []
-    for c in db.docs(conn, "SELECT doc FROM channels"):
+    for c in channels:
         if c["id"] in joined:
             continue
+        popularity = math.log1p(c["memberCount"]) / math.log1p(biggest) if biggest else 0.0
         cat = max((profile["categoryWeights"].get(k, 0.5) for k in c["categories"]), default=0.5)
-        place = 1.0 if c.get("placeId") in my_places else 0.3
-        lang = 1.0 if c.get("language") and c["language"] == profile["language"] else 0.5
-        housing = profile.get("housing", {}).get("provider")
+        place = 1.0 if c.get("placeId") in near else 0.6 if c.get("placeId") in around else 0.3
+        # A channel in another language is little use; channels without one are for everyone.
+        lang = 0.5 if not c.get("language") else 1.0 if c["language"] == profile["language"] else 0.1
         community = 1.0 if housing and housing in c["id"] else 0.5
-        score = 0.4 * cat + 0.25 * place + 0.2 * lang + 0.15 * community
+        score = (0.3 * cat + 0.2 * place + 0.15 * lang + 0.25 * community + 0.1 * popularity
+                 if stated else 0.5 * popularity)
         people = followers.get(c["id"], [])
         suggestion = {"channelId": c["id"]}
         if total and people:
             score = 0.6 * (sum(weight[u] for u in people) / total) + 0.4 * score
         if len(people) >= MIN_SIMILAR_MEMBERS:
-            n = len(people)
-            suggestion["similarMembers"] = n
-            reason = {"en": f"{n} people like you follow this", "fi": f"{n} kaltaistasi seuraa tätä",
-                      "fa": f"{n} نفر مثل تو این را دنبال می‌کنند", "sv": f"{n} personer som du följer den här"}
+            suggestion["similarMembers"] = len(people)
+            reason = _reason("similarMany", len(people))
         elif people:
-            reason = {"en": "People like you follow this", "fi": "Kaltaisesi seuraavat tätä",
-                      "fa": "افرادی مثل تو این را دنبال می‌کنند", "sv": "Personer som du följer den här"}
-        elif c.get("language") and c["language"] == profile["language"]:
-            reason = {"en": "In your language", "fi": "Omalla kielelläsi", "fa": "به زبان خودت", "sv": "På ditt språk"}
-        elif c.get("placeId") in my_places:
-            reason = {"en": "Near you", "fi": "Lähelläsi", "fa": "نزدیک تو", "sv": "Nära dig"}
+            reason = _reason("similar")
+        elif not stated:
+            reason = _reason("popular")
+        elif community == 1.0:
+            reason = _reason("housing")
+        elif lang == 1.0:
+            reason = _reason("language")
+        elif place == 1.0:
+            reason = _reason("near")
+        elif cat >= 0.7:
+            reason = _reason("interests")
         else:
-            reason = {"en": "Matches your interests", "fi": "Vastaa kiinnostuksiasi",
-                      "fa": "با علاقه‌هایت جور است", "sv": "Passar dina intressen"}
+            reason = _reason("popular")
         out.append({**suggestion, "score": round(min(score, 1.0), 3), "reason": reason})
-    out.sort(key=lambda s: -s["score"])
+    out.sort(key=lambda s: (-s["score"], s["channelId"]))
     return out[:10]
-
