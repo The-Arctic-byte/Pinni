@@ -1,4 +1,112 @@
 [
-  { "id": "post-0001", "channelId": "persian-oulu", "authorId": "u-sara", "storyId": "lidl-ideapark", "text": "یک فروشگاه دیگر در مسیر کیمینکی!", "likes": 4, "createdAt": "2026-10-23T19:00:00+03:00" },
-  { "id": "post-0002", "channelId": "kiiminki-neighbours", "authorId": "u-matti", "storyId": "icy-path-kiiminki", "likes": 9, "createdAt": "2026-10-24T08:45:00+03:00" }
+  {
+    "id": "post-0001",
+    "channelId": "persian-oulu",
+    "authorId": "u-sara",
+    "storyId": "lidl-ideapark",
+    "text": "یک فروشگاه دیگر در مسیر کیمینکی!",
+    "likes": 4,
+    "createdAt": "2026-10-23T19:00:00+03:00"
+  },
+  {
+    "id": "post-0002",
+    "channelId": "kiiminki-neighbours",
+    "authorId": "u-matti",
+    "storyId": "icy-path-kiiminki",
+    "likes": 9,
+    "createdAt": "2026-10-24T08:45:00+03:00"
+  },
+  {
+    "id": "post-0003",
+    "channelId": "international-jobs-oulu",
+    "authorId": "u-matti",
+    "storyId": "international-job-fair",
+    "text": "Bring printed CVs, some companies prefer paper.",
+    "likes": 14,
+    "createdAt": "2026-10-22T12:00:00+03:00"
+  },
+  {
+    "id": "post-0004",
+    "channelId": "winter-cycling-oulu",
+    "authorId": "u-matti",
+    "storyId": "toppila-bike-path",
+    "likes": 8,
+    "createdAt": "2026-10-20T18:30:00+03:00"
+  },
+  {
+    "id": "post-0005",
+    "channelId": "winter-cycling-oulu",
+    "authorId": "u-sara",
+    "text": "Which studded tyres are worth it for a first winter?",
+    "likes": 5,
+    "createdAt": "2026-10-21T09:15:00+03:00"
+  },
+  {
+    "id": "post-0006",
+    "channelId": "persian-oulu",
+    "authorId": "u-sara",
+    "storyId": "free-finnish-courses",
+    "text": "کسی ثبت‌نام کرده؟ شاید با هم برویم.",
+    "likes": 11,
+    "createdAt": "2026-10-21T20:00:00+03:00"
+  },
+  {
+    "id": "post-0007",
+    "channelId": "psoas-residents",
+    "authorId": "u-sara",
+    "storyId": "linnanmaa-psoas-hot-water",
+    "likes": 6,
+    "createdAt": "2026-10-24T07:30:00+03:00"
+  },
+  {
+    "id": "post-0008",
+    "channelId": "psoas-residents",
+    "authorId": "u-matti",
+    "storyId": "psoas-rent-january",
+    "text": "Remember to update your Kela housing allowance after the change.",
+    "likes": 19,
+    "createdAt": "2026-10-23T15:00:00+03:00"
+  },
+  {
+    "id": "post-0009",
+    "channelId": "karpat-fans",
+    "authorId": "u-matti",
+    "storyId": "karpat-home-game",
+    "text": "Watch party at the student bar before the game.",
+    "likes": 23,
+    "createdAt": "2026-10-23T11:00:00+03:00"
+  },
+  {
+    "id": "post-0010",
+    "channelId": "kiiminki-neighbours",
+    "authorId": "u-sara",
+    "storyId": "kiiminki-ice-rink",
+    "likes": 9,
+    "createdAt": "2026-10-22T16:40:00+03:00"
+  },
+  {
+    "id": "post-0011",
+    "channelId": "linnanmaa-students",
+    "authorId": "u-sara",
+    "storyId": "linnanmaa-hackathon",
+    "text": "Looking for a team, I do design.",
+    "likes": 7,
+    "createdAt": "2026-10-22T13:20:00+03:00"
+  },
+  {
+    "id": "post-0012",
+    "channelId": "oulu-foodies",
+    "authorId": "u-matti",
+    "storyId": "oulu-market-indoors",
+    "likes": 4,
+    "createdAt": "2026-10-23T09:00:00+03:00"
+  },
+  {
+    "id": "post-0013",
+    "channelId": "finnish-language-cafe",
+    "authorId": "u-matti",
+    "text": "Tänään klo 17 kirjastossa! Everyone welcome, all levels.",
+    "likes": 12,
+    "createdAt": "2026-10-21T08:00:00+03:00"
+  }
 ]

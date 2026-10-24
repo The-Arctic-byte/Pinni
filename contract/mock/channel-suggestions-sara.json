@@ -1,5 +1,65 @@
 [
-  { "channelId": "psoas-residents", "score": 0.86, "similarMembers": 132, "reason": { "en": "132 students like you who live in PSOAS follow this", "fa": "۱۳۲ دانشجو مثل تو که در PSOAS زندگی می‌کنند این را دنبال می‌کنند" } },
-  { "channelId": "student-sports", "score": 0.74, "similarMembers": 58, "reason": { "en": "58 people with your interests follow this", "fa": "۵۸ نفر با علاقه‌های مشابه تو این را دنبال می‌کنند" } },
-  { "channelId": "kiiminki-neighbours", "score": 0.61, "similarMembers": 41, "reason": { "en": "41 people in your area follow this", "fa": "۴۱ نفر در محله تو این را دنبال می‌کنند" } }
+  {
+    "channelId": "psoas-residents",
+    "score": 0.86,
+    "similarMembers": 132,
+    "reason": {
+      "en": "132 students like you who live in PSOAS follow this",
+      "fa": "۱۳۲ دانشجو مثل تو که در PSOAS زندگی می‌کنند این را دنبال می‌کنند"
+    }
+  },
+  {
+    "channelId": "student-sports",
+    "score": 0.74,
+    "similarMembers": 58,
+    "reason": {
+      "en": "58 people with your interests follow this",
+      "fa": "۵۸ نفر با علاقه‌های مشابه تو این را دنبال می‌کنند"
+    }
+  },
+  {
+    "channelId": "kiiminki-neighbours",
+    "score": 0.61,
+    "similarMembers": 41,
+    "reason": {
+      "en": "41 people in your area follow this",
+      "fa": "۴۱ نفر در محله تو این را دنبال می‌کنند"
+    }
+  },
+  {
+    "channelId": "linnanmaa-students",
+    "score": 0.82,
+    "reason": {
+      "en": "210 students like you follow this",
+      "fa": "۲۱۰ دانشجو مثل تو این را دنبال می‌کنند"
+    },
+    "similarMembers": 210
+  },
+  {
+    "channelId": "international-jobs-oulu",
+    "score": 0.71,
+    "reason": {
+      "en": "96 non-EU students in Oulu follow this",
+      "fa": "۹۶ دانشجوی غیر اتحادیه اروپا در اولو این را دنبال می‌کنند"
+    },
+    "similarMembers": 96
+  },
+  {
+    "channelId": "finnish-language-cafe",
+    "score": 0.66,
+    "reason": {
+      "en": "44 newcomers who chose Persian follow this",
+      "fa": "۴۴ تازه‌وارد فارسی‌زبان این را دنبال می‌کنند"
+    },
+    "similarMembers": 44
+  },
+  {
+    "channelId": "winter-cycling-oulu",
+    "score": 0.4,
+    "reason": {
+      "en": "27 people in Kiiminki follow this",
+      "fa": "۲۷ نفر در کیمینکی این را دنبال می‌کنند"
+    },
+    "similarMembers": 27
+  }
 ]

@@ -2,9 +2,19 @@
   {
     "id": "persian-oulu",
     "kind": "language",
-    "name": { "en": "Persian speakers in Oulu", "fa": "فارسی‌زبان‌های اولو" },
-    "description": { "en": "News, tips and questions in Persian.", "fa": "خبر، پیشنهاد و پرسش به فارسی." },
-    "categories": ["society", "shopping", "cityLife"],
+    "name": {
+      "en": "Persian speakers in Oulu",
+      "fa": "فارسی‌زبان‌های اولو"
+    },
+    "description": {
+      "en": "News, tips and questions in Persian.",
+      "fa": "خبر، پیشنهاد و پرسش به فارسی."
+    },
+    "categories": [
+      "society",
+      "shopping",
+      "cityLife"
+    ],
     "placeId": "oulu",
     "language": "fa",
     "memberCount": 214,
@@ -13,9 +23,20 @@
   {
     "id": "kiiminki-neighbours",
     "kind": "place",
-    "name": { "en": "Kiiminki neighbours", "fi": "Kiimingin naapurit", "fa": "همسایه‌های کیمینکی" },
-    "description": { "en": "What is happening in Kiiminki: roads, shops, events.", "fa": "اتفاق‌های کیمینکی: راه‌ها، فروشگاه‌ها، رویدادها." },
-    "categories": ["cityLife", "transport", "safety"],
+    "name": {
+      "en": "Kiiminki neighbours",
+      "fi": "Kiimingin naapurit",
+      "fa": "همسایه‌های کیمینکی"
+    },
+    "description": {
+      "en": "What is happening in Kiiminki: roads, shops, events.",
+      "fa": "اتفاق‌های کیمینکی: راه‌ها، فروشگاه‌ها، رویدادها."
+    },
+    "categories": [
+      "cityLife",
+      "transport",
+      "safety"
+    ],
     "placeId": "kiiminki",
     "memberCount": 512,
     "createdAt": "2026-08-25T10:00:00+03:00"
@@ -23,9 +44,18 @@
   {
     "id": "student-sports",
     "kind": "topic",
-    "name": { "en": "Student sports in Oulu", "fa": "ورزش دانشجویی در اولو" },
-    "description": { "en": "Clubs, gyms, newcomer hours and matches.", "fa": "باشگاه‌ها، سالن‌ها، ساعت‌های تازه‌واردها و مسابقه‌ها." },
-    "categories": ["sport", "education"],
+    "name": {
+      "en": "Student sports in Oulu",
+      "fa": "ورزش دانشجویی در اولو"
+    },
+    "description": {
+      "en": "Clubs, gyms, newcomer hours and matches.",
+      "fa": "باشگاه‌ها، سالن‌ها، ساعت‌های تازه‌واردها و مسابقه‌ها."
+    },
+    "categories": [
+      "sport",
+      "education"
+    ],
     "placeId": "oulu",
     "memberCount": 388,
     "createdAt": "2026-09-05T10:00:00+03:00"
@@ -33,11 +63,179 @@
   {
     "id": "psoas-residents",
     "kind": "community",
-    "name": { "en": "PSOAS residents", "fa": "ساکنان PSOAS" },
-    "description": { "en": "Rent, maintenance and building news for PSOAS tenants.", "fa": "اجاره، تعمیرات و خبرهای ساختمان برای مستأجران PSOAS." },
-    "categories": ["housing"],
+    "name": {
+      "en": "PSOAS residents",
+      "fa": "ساکنان PSOAS"
+    },
+    "description": {
+      "en": "Rent, maintenance and building news for PSOAS tenants.",
+      "fa": "اجاره، تعمیرات و خبرهای ساختمان برای مستأجران PSOAS."
+    },
+    "categories": [
+      "housing"
+    ],
     "placeId": "oulu",
     "memberCount": 640,
     "createdAt": "2026-08-30T10:00:00+03:00"
+  },
+  {
+    "id": "ukrainians-oulu",
+    "kind": "language",
+    "name": {
+      "en": "Ukrainians in Oulu",
+      "fa": "اوکراینی‌های اولو",
+      "fi": "Ukrainalaiset Oulussa"
+    },
+    "description": {
+      "en": "News, help and events in Ukrainian.",
+      "fa": "خبر، کمک و رویداد به زبان اوکراینی."
+    },
+    "categories": [
+      "society",
+      "world"
+    ],
+    "placeId": "oulu",
+    "memberCount": 302,
+    "createdAt": "2026-09-03T10:00:00+03:00",
+    "language": "uk"
+  },
+  {
+    "id": "international-jobs-oulu",
+    "kind": "topic",
+    "name": {
+      "en": "Jobs for internationals",
+      "fa": "کار برای خارجی‌ها",
+      "fi": "Töitä kansainvälisille"
+    },
+    "description": {
+      "en": "Job tips, fairs and English-speaking employers in Oulu.",
+      "fa": "پیشنهاد کار، نمایشگاه‌ها و کارفرماهای انگلیسی‌زبان در اولو."
+    },
+    "categories": [
+      "work",
+      "economy"
+    ],
+    "placeId": "oulu",
+    "memberCount": 871,
+    "createdAt": "2026-09-02T10:00:00+03:00"
+  },
+  {
+    "id": "winter-cycling-oulu",
+    "kind": "topic",
+    "name": {
+      "en": "Winter cycling Oulu",
+      "fa": "دوچرخه‌سواری زمستانی اولو",
+      "fi": "Talvipyöräily Oulu"
+    },
+    "description": {
+      "en": "Routes, ploughing and gear for cycling in winter.",
+      "fa": "مسیرها، برف‌روبی و تجهیزات دوچرخه‌سواری زمستانی."
+    },
+    "categories": [
+      "transport",
+      "environment"
+    ],
+    "placeId": "oulu",
+    "memberCount": 455,
+    "createdAt": "2026-09-06T10:00:00+03:00"
+  },
+  {
+    "id": "finnish-language-cafe",
+    "kind": "community",
+    "name": {
+      "en": "Finnish language café",
+      "fa": "کافه زبان فنلاندی",
+      "fi": "Suomen kielen kahvila"
+    },
+    "description": {
+      "en": "Practise Finnish together, every Tuesday at the library.",
+      "fa": "تمرین فنلاندی با هم، هر سه‌شنبه در کتابخانه."
+    },
+    "categories": [
+      "education",
+      "culture"
+    ],
+    "placeId": "oulu",
+    "memberCount": 238,
+    "createdAt": "2026-09-08T10:00:00+03:00"
+  },
+  {
+    "id": "kiiminki-families",
+    "kind": "place",
+    "name": {
+      "en": "Kiiminki families",
+      "fa": "خانواده‌های کیمینکی",
+      "fi": "Kiimingin perheet"
+    },
+    "description": {
+      "en": "Schools, day care, playgrounds and family events in Kiiminki.",
+      "fa": "مدرسه، مهدکودک، زمین بازی و رویدادهای خانوادگی در کیمینکی."
+    },
+    "categories": [
+      "education",
+      "cityLife"
+    ],
+    "placeId": "kiiminki",
+    "memberCount": 189,
+    "createdAt": "2026-09-10T10:00:00+03:00"
+  },
+  {
+    "id": "karpat-fans",
+    "kind": "topic",
+    "name": {
+      "en": "Kärpät fans",
+      "fa": "هواداران کارپت",
+      "fi": "Kärppäfanit"
+    },
+    "description": {
+      "en": "Oulu's ice hockey team: games, tickets, watch parties.",
+      "fa": "تیم هاکی روی یخ اولو: بازی‌ها، بلیت، تماشای گروهی."
+    },
+    "categories": [
+      "sport"
+    ],
+    "placeId": "oulu",
+    "memberCount": 1240,
+    "createdAt": "2026-09-04T10:00:00+03:00"
+  },
+  {
+    "id": "linnanmaa-students",
+    "kind": "place",
+    "name": {
+      "en": "Linnanmaa students",
+      "fa": "دانشجویان لینامآ",
+      "fi": "Linnanmaan opiskelijat"
+    },
+    "description": {
+      "en": "Campus life, events and second-hand sales around the university.",
+      "fa": "زندگی دانشگاهی، رویدادها و فروش دست‌دوم اطراف دانشگاه."
+    },
+    "categories": [
+      "education",
+      "cityLife"
+    ],
+    "placeId": "linnanmaa",
+    "memberCount": 960,
+    "createdAt": "2026-09-05T10:00:00+03:00"
+  },
+  {
+    "id": "oulu-foodies",
+    "kind": "topic",
+    "name": {
+      "en": "Oulu food and prices",
+      "fa": "غذا و قیمت در اولو",
+      "fi": "Oulun ruoka ja hinnat"
+    },
+    "description": {
+      "en": "Cheap groceries, evening discounts and where to eat.",
+      "fa": "خرید ارزان، تخفیف‌های شبانه و جای غذا خوردن."
+    },
+    "categories": [
+      "shopping",
+      "economy"
+    ],
+    "placeId": "oulu",
+    "memberCount": 640,
+    "createdAt": "2026-09-07T10:00:00+03:00"
   }
 ]

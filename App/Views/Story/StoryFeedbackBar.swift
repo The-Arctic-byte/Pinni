@@ -8,6 +8,7 @@ struct StoryFeedbackBar: View {
     let story: Story
     @State private var asksNotForMe = false
     @State private var reportsProblem = false
+    @State private var postsToChannel = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -24,8 +25,11 @@ struct StoryFeedbackBar: View {
             .buttonStyle(.bordered)
             .controlSize(.large)
 
-            Button("Something wrong?", systemImage: "flag") { reportsProblem = true }
-                .buttonStyle(.borderless)
+            HStack(spacing: 20) {
+                Button("Post to a channel", systemImage: "bubble.left.and.text.bubble.right") { postsToChannel = true }
+                Button("Something wrong?", systemImage: "flag") { reportsProblem = true }
+            }
+            .buttonStyle(.borderless)
         }
         .confirmationDialog("Not for me", isPresented: $asksNotForMe, titleVisibility: .visible) {
             Button("Hide this story") { hide(wholeCategory: false) }
@@ -35,6 +39,9 @@ struct StoryFeedbackBar: View {
         }
         .sheet(isPresented: $reportsProblem) {
             ReportForm(draft: .problem(with: story), story: story)
+        }
+        .sheet(isPresented: $postsToChannel) {
+            ShareToChannelSheet(story: story)
         }
     }
 

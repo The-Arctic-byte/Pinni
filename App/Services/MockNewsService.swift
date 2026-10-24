@@ -10,11 +10,13 @@ struct MockNewsService: NewsService {
     let bundle: Bundle
     private let saved: SavedProfiles
     private let newsroom: MockNewsroom
+    private let community: MockCommunity
 
     init(bundle: Bundle = .main, defaults: UserDefaults = .standard) {
         self.bundle = bundle
         self.saved = SavedProfiles(defaults: defaults)
         self.newsroom = MockNewsroom(defaults: defaults)
+        self.community = MockCommunity(defaults: defaults)
     }
 
     func places() async throws -> [Place] {
@@ -59,12 +61,45 @@ struct MockNewsService: NewsService {
     }
 
     func suggestedChannels(for userId: String) async throws -> [ChannelSuggestion] {
-        // Only Sara has suggestions in the mock data; others are new to the community.
-        userId == Persona.sara.userId ? try load("channel-suggestions-sara") : []
+        guard let persona = Persona(userId: userId) else { return [] }
+        let suggestions: [ChannelSuggestion] = try load(persona.suggestionsFile)
+        return suggestions.sorted { $0.score > $1.score }
     }
 
     func channels() async throws -> [Channel] {
         try load("channels")
+    }
+
+    func joinedChannels(for userId: String) async throws -> [Channel] {
+        let all = try await channels()
+        // The contract has no membership file: a reader starts in the channels they posted in.
+        let filePosts: [ChannelPost] = try load("channel-posts")
+        let seeded = Set(filePosts.filter { $0.authorId == userId }.map(\.channelId))
+        let joined = community.joined(for: userId, seeded: seeded)
+        return all.filter { joined.contains($0.id) }
+    }
+
+    func setMembership(_ joined: Bool, channelId: String, userId: String) async throws {
+        community.setMembership(joined, channelId: channelId, userId: userId)
+    }
+
+    func posts(in channelId: String) async throws -> [ChannelPost] {
+        let file: [ChannelPost] = try load("channel-posts")
+        return (file + community.posts).filter { $0.channelId == channelId }.sorted { $0.createdAt > $1.createdAt }
+    }
+
+    func post(storyId: String?, text: String?, in channelId: String, authorId: String) async throws -> ChannelPost {
+        let post = ChannelPost(
+            id: "post-" + UUID().uuidString.lowercased(),
+            channelId: channelId,
+            authorId: authorId,
+            storyId: storyId,
+            text: text,
+            likes: 0,
+            createdAt: Date()
+        )
+        community.add(post)
+        return post
     }
 
     func reports(for userId: String) async throws -> [Report] {
@@ -251,6 +286,52 @@ private extension Story {
     }
 }
 
+/// Channel memberships and posts made through the mock. Kept in UserDefaults so they survive relaunch.
+final class MockCommunity {
+    private struct State: Codable {
+        /// Explicit joins (true) and leaves (false), per reader and channel; anything else follows the seed.
+        var membership: [String: [String: Bool]] = [:]
+        var posts: [ChannelPost] = []
+    }
+
+    private let defaults: UserDefaults
+    private let key = "mock.community"
+
+    init(defaults: UserDefaults) {
+        self.defaults = defaults
+    }
+
+    var posts: [ChannelPost] { state.posts }
+
+    func joined(for userId: String, seeded: Set<String>) -> Set<String> {
+        var joined = seeded
+        for (channelId, isMember) in state.membership[userId] ?? [:] {
+            if isMember { joined.insert(channelId) } else { joined.remove(channelId) }
+        }
+        return joined
+    }
+
+    func setMembership(_ joined: Bool, channelId: String, userId: String) {
+        var current = state
+        current.membership[userId, default: [:]][channelId] = joined
+        state = current
+    }
+
+    func add(_ post: ChannelPost) {
+        var current = state
+        current.posts.append(post)
+        state = current
+    }
+
+    private var state: State {
+        get {
+            guard let data = defaults.data(forKey: key) else { return State() }
+            return (try? JSONDecoder.contract.decode(State.self, from: data)) ?? State()
+        }
+        set { defaults.set(try? JSONEncoder.contract.encode(newValue), forKey: key) }
+    }
+}
+
 /// The mock readers from `contract/mock`. Switchable in the Profile tab (debug builds) to compare rankings.
 enum Persona: String, CaseIterable, Identifiable, Sendable {
     case sara, matti, newUser
@@ -275,6 +356,14 @@ enum Persona: String, CaseIterable, Identifiable, Sendable {
         case .sara: "feed-sara"
         case .matti: "feed-matti"
         case .newUser: "feed-new"
+        }
+    }
+
+    var suggestionsFile: String {
+        switch self {
+        case .sara: "channel-suggestions-sara"
+        case .matti: "channel-suggestions-matti"
+        case .newUser: "channel-suggestions-new"
         }
     }
 
