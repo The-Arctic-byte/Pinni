@@ -10,6 +10,7 @@ import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
+import pinni_agent.agent  # noqa: F401  (must load before .recommender: the agent package imports it back)
 from pinni_agent.config import Settings
 from pinni_agent.recommender import RecommendationEngine
 
