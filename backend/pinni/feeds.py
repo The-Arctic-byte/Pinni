@@ -31,12 +31,15 @@ class Feed:
     max_age: timedelta = timedelta(days=7)
     # Service pages some feeds list next to their news.
     skip_links: tuple[str, ...] = ()
+    # Who every item of the feed is about (Story.affects), e.g. a landlord's tenants.
+    affects: tuple[str, ...] = ()
 
 
 FEEDS = [
     Feed("Yle News", "https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_NEWS", "finland"),
     # Student housing in Oulu; posts a few times a month.
-    Feed("PSOAS", "https://psoas.fi/en/feed/", "oulu", max_age=timedelta(days=45), skip_links=("/fault-reports/",)),
+    Feed("PSOAS", "https://psoas.fi/en/feed/", "oulu", max_age=timedelta(days=45), skip_links=("/fault-reports/",),
+         affects=("housing:psoas",)),
 ]
 TIMEOUT = 10
 MAX_ITEMS_PER_FEED = 25
@@ -113,6 +116,7 @@ def parse(feed: Feed, body: bytes, places: list[dict], now: datetime | None = No
             "category": category_of(text),
             "place": place_of(text, places, feed.place_id),
             "publishedAt": published.isoformat(timespec="seconds"),
+            "affects": list(feed.affects),
         })
         if len(out) == MAX_ITEMS_PER_FEED:
             break

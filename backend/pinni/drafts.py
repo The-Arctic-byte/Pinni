@@ -4,10 +4,11 @@ backend so editors review them in the admin queue.
 Not scheduled yet: nothing calls this until the agent runs next to the backend. It is kept in step
 with the agent's output by tests/test_drafts.py, which runs the real supervisor offline."""
 
+import copy
 import sqlite3
 from datetime import datetime
 
-from . import db
+from . import db, feeds
 from .contract import Contract
 from .routers.admin import publish_problems
 
@@ -109,6 +110,15 @@ def _touched_by_editor(conn: sqlite3.Connection, story_id: str) -> bool:
                         (story_id, AGENT)).fetchone() is not None
 
 
+def feed_affects(story: dict) -> None:
+    """Who a story from one of the live feeds is about (feeds.Feed.affects), e.g. PSOAS news is for
+    PSOAS tenants. Stories read before feeds carried it have none."""
+    names = {s.get("name") for s in story.get("sources", [])}
+    extra = {a for f in feeds.FEEDS if f.name in names for a in f.affects}
+    if extra - set(story.get("affects", [])):
+        story["affects"] = sorted(set(story.get("affects", [])) | extra)
+
+
 def tidy_agent_stories(conn: sqlite3.Connection, contract: Contract) -> int:
     """At startup: bring stories the agent stored before fit_for_the_app existed in line."""
     ids = [r[0] for r in conn.execute("SELECT DISTINCT story_id FROM audit WHERE actor = ? AND story_id IS NOT NULL",
@@ -119,9 +129,9 @@ def tidy_agent_stories(conn: sqlite3.Connection, contract: Contract) -> int:
             story = db.get_doc(conn, "stories", story_id)
             if story is None or story.get("origin") != "agent":
                 continue
-            before = dict(story, location=dict(story.get("location") or {}), title=dict(story["title"]),
-                          translations=list(story.get("translations", [])))
+            before = copy.deepcopy(story)
             fit_for_the_app(story)
+            feed_affects(story)
             if not _touched_by_editor(conn, story_id):
                 unreviewed_english(story)
             if story != before:

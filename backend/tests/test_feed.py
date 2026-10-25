@@ -94,3 +94,25 @@ def test_a_place_seen_five_times_is_followed(client, anonymous):
     # Followed places rank higher, with their reason.
     feed, _ = ranked(client, headers)
     assert any(r["en"] == "From a place you follow (Tuira)" for item in feed["items"] for r in item["reasons"])
+
+
+def test_news_about_the_readers_landlord_is_must_see(client, login, monkeypatch):
+    """Sara lives in PSOAS housing, Matti does not: PSOAS news is must-see for her only, and live
+    PSOAS feed items are marked as about PSOAS residents."""
+    def item(headers, story_id):
+        feed = client.get("/v1/feed", params={"limit": 100}, headers=headers).json()
+        return next(i for i in feed["items"] if i["storyId"] == story_id)
+
+    sara, matti = item(login("sara"), "psoas-rent-january"), item(login("matti"), "psoas-rent-january")
+    assert sara["mustSee"] and sara["reasons"][0]["en"] == "For PSOAS residents like you"
+    assert not matti["mustSee"]
+    assert all(r["en"] != "For PSOAS residents like you" for r in matti["reasons"])
+
+    from pinni import feeds
+    psoas = next(f for f in feeds.FEEDS if f.name == "PSOAS")
+    rss = b"""<rss><channel><item><title>Laundry rooms renovated in Linnanmaa</title>
+    <link>https://www.psoas.fi/en/laundry/</link><description>New machines.</description>
+    <pubDate>Sat, 24 Oct 2026 09:00:00 +0000</pubDate></item></channel></rss>"""
+    places = client.get("/v1/places", headers=login("sara")).json()
+    parsed = feeds.parse(psoas, rss, places, now=datetime(2026, 10, 25, tzinfo=timezone.utc))
+    assert parsed[0]["affects"] == ["housing:psoas"] and parsed[0]["place"] == "linnanmaa"

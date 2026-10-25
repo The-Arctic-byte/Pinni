@@ -104,3 +104,20 @@ def test_every_time_the_app_reads_is_whole_seconds(app, client, login, monkeypat
     stories += client.get("/v1/stories", params={"ids": ",".join(ids[100:])}, headers=mira).json() if ids[100:] else []
     bad = [(s["id"], k, v) for s in stories for k, v in dates(s) if not DATE.match(v)]
     assert not bad, bad[:5]
+
+
+def test_psoas_news_is_for_psoas_tenants():
+    """Stories from the PSOAS feed carry housing:psoas, both new ones (as_read) and ones read before
+    the feed said so (drafts.feed_affects at startup)."""
+    from pinni import drafts
+    item = {"url": "https://psoas.fi/en/x", "publishedAt": "2026-10-20T10:00:00+03:00", "place": "oulu",
+            "affects": ["housing:psoas"]}
+    story = {"sources": [{"name": "PSOAS", "url": item["url"]}], "affects": ["student"]}
+    newsroom.as_read(story, {item["url"]: item}, {"oulu": {"kind": "city"}})
+    assert story["affects"] == ["housing:psoas", "student"]
+    old = {"sources": [{"name": "PSOAS", "url": "https://psoas.fi/en/y"}]}
+    drafts.feed_affects(old)
+    assert old["affects"] == ["housing:psoas"]
+    yle = {"sources": [{"name": "Yle News"}]}
+    drafts.feed_affects(yle)
+    assert "affects" not in yle

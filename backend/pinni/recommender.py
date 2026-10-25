@@ -24,7 +24,7 @@ from pinni_agent.config import Settings
 from pinni_agent.recommender import RecommendationEngine
 
 from . import db
-from .graph import Graph
+from .graph import Graph, user_groups
 from .ranking import ancestors, collaborative, default_profile, events_since_reset, learned
 from .vectors import VectorStore
 
@@ -36,6 +36,8 @@ RECOMMENDER_SCORE_SCALE = 20
 STATED_PERSONALIZATION = 0.8
 # How far learned behaviour moves a category weight: learned weights run 0..1 around 0.5.
 LEARNING_RATE = 1.5
+# The recommender's floor for must-see stories (the feed is ordered by relevance).
+MUST_SEE_RELEVANCE = 0.95
 # Weight of a category the reader did not pick, once they picked some in onboarding.
 NOT_PICKED = 0.3
 
@@ -127,6 +129,40 @@ def readable(reasons: list[dict], places: dict) -> list[dict]:
     return out
 
 
+def group_reason(group: str, places: dict) -> dict:
+    kind, _, value = group.partition(":")
+    if kind == "housing":
+        name = {"psoas": "PSOAS"}.get(value, value)
+        return {"en": f"For {name} residents like you", "fi": f"{name}:n asukkaille kuten sinä",
+                "fa": f"برای ساکنان {name} مثل شما"}
+    if kind == "residents":
+        place = places.get(value, {}).get("name", {})
+        return {"en": f"For people who live in {place.get('en', value)}",
+                "fi": f"Alueella {place.get('fi', value)} asuville",
+                "fa": f"برای ساکنان {place.get('fa') or place.get('en', value)}"}
+    if kind == "residence":
+        return {"en": "For people with your residence status", "fi": "Kaltaisellesi oleskeluluvan haltijalle",
+                "fa": "برای افرادی با وضعیت اقامت شما"}
+    return {"en": "For people like you", "fi": "Kaltaisillesi", "fa": "برای افرادی مثل شما"}
+
+
+def for_their_group(items: list[dict], stories: dict[str, dict], profile: dict | None, places: dict) -> None:
+    """A story that names the reader's group in `affects` (their housing provider, where they live,
+    their residence status) is about them: it is must-see, with that as its first reason. The
+    recommender itself only checks residence status and target groups."""
+    if not profile:
+        return
+    groups = user_groups(profile)
+    for item in items:
+        mine = [a for a in stories[item["storyId"]].get("affects", []) if a in groups]
+        if mine:
+            item["mustSee"] = True
+            item["isExploration"] = False
+            item["relevance"] = max(item["relevance"], MUST_SEE_RELEVANCE)
+            item["reasons"] = [group_reason(mine[0], places)] + item["reasons"]
+    items.sort(key=lambda i: (1 if i["mustSee"] else 0, i["relevance"]), reverse=True)
+
+
 @dataclass
 class _Hit:
     id: str
@@ -167,6 +203,8 @@ def feed(conn: sqlite3.Connection, user_id: str, scale: str | None, place_id: st
     ranked = engine.get_feed(user_id, limit=len(stories))
     for item in ranked["items"]:
         item["reasons"] = readable(item["reasons"], places)
+    for_their_group(ranked["items"], {s["id"]: s for s in stories},
+                    db.get_doc(conn, "profiles", user_id), places)
 
     start = int(cursor) if cursor and cursor.isdigit() else 0
     out = {

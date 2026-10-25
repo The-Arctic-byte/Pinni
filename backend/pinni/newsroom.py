@@ -76,6 +76,8 @@ def as_read(story: dict, by_url: dict[str, dict], places: dict[str, dict]) -> No
         source["publishedAt"] = item["publishedAt"]
     story["publishedAt"] = item["publishedAt"]
     story["placeId"] = item["place"]
+    if item.get("affects"):
+        story["affects"] = sorted(set(story.get("affects", [])) | set(item["affects"]))
     kind = places.get(item["place"], {}).get("kind")
     story["scale"] = kind if kind in ("area", "city") else "finland" if item["place"] == "finland" else "world"
     story.pop("location", None)  # drafts.place_on_map puts area and city stories at the centre of their place
