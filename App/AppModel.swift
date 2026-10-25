@@ -53,17 +53,19 @@ final class AppModel {
     /// A fresh install is the anonymous new user; the debug switch in Profile picks other mock readers.
     init(service: any NewsService = MockNewsService(), persona: Persona = .newUser, defaults: UserDefaults = .standard) {
         self.service = service
+        // Read the persona through a local. `@Observable` property access needs `self` fully initialized.
         #if DEBUG
         // The reader picked in Profile, kept across launches; `-persona sara` as a launch argument wins (screenshots).
-        self.persona = defaults.string(forKey: Self.personaKey).flatMap(Persona.init(rawValue:)) ?? persona
+        let resolved = defaults.string(forKey: Self.personaKey).flatMap(Persona.init(rawValue:)) ?? persona
         #else
-        self.persona = persona
+        let resolved = persona
         #endif
+        self.persona = resolved
         self.defaults = defaults
-        self.userId = self.persona.userId
+        self.userId = resolved.userId
         #if DEBUG
         // Sara and Matti already have a profile; only the new user starts with onboarding.
-        self.hasCompletedOnboarding = defaults.bool(forKey: Self.onboardingKey) || self.persona != .newUser
+        self.hasCompletedOnboarding = defaults.bool(forKey: Self.onboardingKey) || resolved != .newUser
         #else
         self.hasCompletedOnboarding = defaults.bool(forKey: Self.onboardingKey)
         #endif
