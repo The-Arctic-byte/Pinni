@@ -27,11 +27,7 @@ struct MapScreen: View {
     @State private var reportsNews = false
 
     var body: some View {
-        if case .failed(let message) = model.state {
-            LoadFailure(message: message) { await model.load() }
-        } else {
-            content
-        }
+        content
     }
 
     @ViewBuilder
@@ -72,7 +68,7 @@ struct MapScreen: View {
     #if os(iOS)
     /// How much of the map the sheet covers at its current height (large keeps the medium value: the map is hidden anyway).
     private var sheetCover: CGFloat {
-        guard model.hasCompletedOnboarding else { return 0 }
+        guard model.hasCompletedOnboarding || model.showsUnreachableAPI else { return 0 }
         switch sheetDetent {
         case .collapsed: return 110
         case .resting: return screenHeight * 0.34
@@ -80,9 +76,9 @@ struct MapScreen: View {
         }
     }
 
-    /// The sheet stays up for good once onboarding is done (it would block the onboarding cover otherwise).
+    /// The sheet stays up once onboarding is done, and also when the API failed, so Profile can be opened.
     private var showsSheet: Binding<Bool> {
-        Binding(get: { model.hasCompletedOnboarding }, set: { _ in })
+        Binding(get: { model.hasCompletedOnboarding || model.showsUnreachableAPI }, set: { _ in })
     }
     #endif
 
@@ -325,6 +321,7 @@ struct MapScreen: View {
     }
 
     private var panelTitle: Text {
+        if model.showsUnreachableAPI { return Text(verbatim: "Pinni") }
         switch listFilter {
         case .group(let ids):
             return Text("\(ids.count) stories here")

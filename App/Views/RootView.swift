@@ -16,8 +16,9 @@ struct RootView: View {
             #endif
     }
 
+    /// A dead API must not cover the map: the sheet is where Profile, and the URL, can be opened.
     private var showsOnboarding: Binding<Bool> {
-        Binding(get: { !model.hasCompletedOnboarding }, set: { _ in })
+        Binding(get: { !model.hasCompletedOnboarding && !model.showsUnreachableAPI }, set: { _ in })
     }
 
     private var onboarding: some View {

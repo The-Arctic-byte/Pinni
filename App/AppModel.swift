@@ -7,7 +7,6 @@ import Observation
 final class AppModel {
     enum LoadState: Equatable {
         case idle, loading, loaded
-        case failed(String)
     }
 
     enum Reaction: String, Codable {
@@ -22,7 +21,7 @@ final class AppModel {
 
     private static let onboardingKey = "onboarding.completed"
 
-    private let service: any NewsService
+    private var service: any NewsService
     private let defaults: UserDefaults
 
     private(set) var persona: Persona
@@ -30,6 +29,8 @@ final class AppModel {
     private(set) var userId: String
     private(set) var hasCompletedOnboarding: Bool
     private(set) var state: LoadState = .idle
+    /// The API URL did not answer. The sheet stays up with an empty list so Profile can change the URL.
+    private(set) var showsUnreachableAPI = false
     private(set) var profile: Profile?
     private(set) var places: [String: Place] = [:]
     private(set) var feed: FeedPage?
@@ -76,6 +77,26 @@ final class AppModel {
         }
     }
 
+    /// Drops whatever the last load stored, so a failed URL cannot leave another server's news on screen.
+    private func clearLoadedData() {
+        profile = nil
+        places = [:]
+        feed = nil
+        stories = [:]
+        reports = []
+        learned = .none
+        channels = [:]
+        channelSuggestions = []
+        joinedChannelIds = []
+        posts = [:]
+    }
+
+    private func noteUnreachableAPI() {
+        #if DEBUG
+        if case .api = DataSource.current { showsUnreachableAPI = true }
+        #endif
+    }
+
     func reaction(to storyId: String) -> Reaction? {
         feedback.reactions[storyId]
     }
@@ -116,11 +137,29 @@ final class AppModel {
             self.feed = page
             self.stories = Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, $0) })
             state = .loaded
+            showsUnreachableAPI = false
         } catch {
             guard generation == loadGeneration else { return }
-            state = .failed(String(describing: error))
+            // A dead API must not replace the app. The list is empty until a URL answers.
+            clearLoadedData()
+            state = .loaded
+            noteUnreachableAPI()
         }
     }
+
+    #if DEBUG
+    /// Saves the debug API URL and loads it now. An empty URL goes back to the sample news.
+    func applyAPIBaseURL(_ raw: String) async {
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty {
+            defaults.removeObject(forKey: DataSource.defaultsKey)
+        } else {
+            defaults.set(trimmed, forKey: DataSource.defaultsKey)
+        }
+        service = DataSource.current.makeService()
+        await load()
+    }
+    #endif
 
     func switchPersona(to persona: Persona) async {
         guard persona != self.persona else { return }
@@ -143,7 +182,7 @@ final class AppModel {
             _ = try await service.save(answers.profile(userId: userId, now: now))
             try await service.send(answers.events(userId: userId, now: now) { "ev-" + UUID().uuidString.lowercased() })
         } catch {
-            state = .failed(String(describing: error))
+            noteUnreachableAPI()
             return
         }
         defaults.set(true, forKey: Self.onboardingKey)

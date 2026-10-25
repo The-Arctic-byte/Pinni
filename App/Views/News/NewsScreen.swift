@@ -7,13 +7,19 @@ struct NewsScreen: View {
     var body: some View {
         NavigationStack {
             Group {
-                switch model.state {
-                case .idle, .loading:
-                    ProgressView()
-                case .failed(let message):
-                    LoadFailure(message: message) { await model.load() }
-                case .loaded:
-                    list
+                if model.showsUnreachableAPI {
+                    ContentUnavailableView {
+                        Label("Couldn’t load news", systemImage: "exclamationmark.triangle")
+                    } description: {
+                        Text("Open Profile to change the API URL.")
+                    }
+                } else {
+                    switch model.state {
+                    case .idle, .loading:
+                        ProgressView()
+                    case .loaded:
+                        list
+                    }
                 }
             }
             .navigationTitle(Text("News"))

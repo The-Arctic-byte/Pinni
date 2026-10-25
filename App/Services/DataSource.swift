@@ -1,7 +1,7 @@
 import Foundation
 
 /// Where the app gets its data: the contract's mock files (default) or a backend that implements `contract/openapi.yaml`.
-/// Debug builds pick it with `-apiBaseURL http://localhost:8000` or in Profile → Mock data; it applies at the next launch.
+/// Debug builds pick it with `-apiBaseURL http://localhost:8000` or in Profile. An empty value is the sample news.
 enum DataSource: Equatable {
     case mock
     case api(URL)
