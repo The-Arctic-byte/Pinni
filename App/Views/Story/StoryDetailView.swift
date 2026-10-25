@@ -39,7 +39,8 @@ struct StoryDetailView: View {
             #endif
             if !language.choices.contains(choice) { choice = language.choices.first ?? .english }
             openedAt = Date()
-            model.opened(story, from: .story)
+            // After the push has started: logging the event saves the queue, which is not needed for the first frame.
+            Task { model.opened(story, from: .story) }
         }
         .onDisappear {
             if let openedAt { model.read(story, for: Date().timeIntervalSince(openedAt)) }
@@ -343,7 +344,9 @@ private struct BilingualView: View {
 private struct WordOfDayView: View {
     let word: Story.WordOfDay
     let language: String
-    @State private var speaker = AVSpeechSynthesizer()
+    /// Made on the first "Say it": creating a synthesizer takes a moment, and as view state it was
+    /// made each time a story with a word of the day opened, which held up the push.
+    @MainActor private static var speaker: AVSpeechSynthesizer?
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -362,6 +365,8 @@ private struct WordOfDayView: View {
                 let utterance = AVSpeechUtterance(string: word.word)
                 utterance.voice = AVSpeechSynthesisVoice(language: "fi-FI")
                 utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.8
+                let speaker = Self.speaker ?? AVSpeechSynthesizer()
+                Self.speaker = speaker
                 speaker.speak(utterance)
             }
             .labelStyle(.iconOnly)

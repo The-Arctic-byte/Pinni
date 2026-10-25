@@ -160,6 +160,8 @@ final class AppModel {
             let page = try await service.feed(for: userId)
             let loaded = try await service.stories(ids: page.items.map(\.storyId))
             let loadedLearned = try await service.learned(for: userId)
+            // Places the reader keeps looking at join their followed places on the server.
+            profile = try await service.profile(for: userId)
             feed = page
             stories = Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, $0) })
             learned = loadedLearned

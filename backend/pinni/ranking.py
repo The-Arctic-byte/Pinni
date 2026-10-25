@@ -9,6 +9,9 @@ from . import db
 from .graph import Graph, signal
 
 EVENTS_FOR_FULL_PERSONALIZATION = 30
+# A neighbourhood or city the reader looked at this often (stories opened there, its chip tapped)
+# joins their followed places.
+FOLLOW_AFTER_VIEWS = 5
 SIMILAR_PEOPLE = 50
 # Contract: similarMembers is shown only from 20 people up.
 MIN_SIMILAR_MEMBERS = 20
@@ -181,3 +184,31 @@ def suggested_channels(conn: sqlite3.Connection, user_id: str, graph: Graph | No
         out.append({**suggestion, "score": round(min(score, 1.0), 3), "reason": reason})
     out.sort(key=lambda s: (-s["score"], s["channelId"]))
     return out[:10]
+
+
+def follow_seen_places(conn: sqlite3.Connection, user_id: str) -> list[str]:
+    """Adds to the profile's followedPlaceIds every area or city the reader viewed at least
+    FOLLOW_AFTER_VIEWS times since the last reset, and returns the places it added."""
+    profile = db.get_doc(conn, "profiles", user_id)
+    if profile is None:
+        return []
+    places = {p["id"]: p for p in db.docs(conn, "SELECT doc FROM places")}
+    stories = {s["id"]: s["placeId"] for s in db.docs(conn, "SELECT doc FROM stories")}
+    views: dict[str, int] = {}
+    for e in events_since_reset(conn, user_id):
+        if e["type"] == "open":
+            place = stories.get(e.get("storyId"))
+        elif e["type"] == "placeChipTap":
+            place = e.get("placeId")
+        else:
+            continue
+        if place and places.get(place, {}).get("kind") in ("area", "city"):
+            views[place] = views.get(place, 0) + 1
+    followed = list(profile.get("followedPlaceIds") or [])
+    added = [p for p, n in sorted(views.items(), key=lambda kv: -kv[1])
+             if n >= FOLLOW_AFTER_VIEWS and p not in followed and p != profile.get("homePlaceId")]
+    if added:
+        profile["followedPlaceIds"] = followed + added
+        profile["updatedAt"] = db.now()
+        db.put_doc(conn, "profiles", profile)
+    return added

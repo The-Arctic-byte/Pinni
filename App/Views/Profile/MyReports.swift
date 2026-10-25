@@ -1,8 +1,7 @@
 import SwiftUI
 
 /// Profile → My reports: everything the reader reported and where each report is in the review
-/// (contract/processes/report-review.md). Opens one report as a read-only form with its history;
-/// the report destination is declared on `ProfileScreen`, the stack's root.
+/// (contract/processes/report-review.md). Opens one report as a read-only form with its history.
 struct MyReportsScreen: View {
     @Environment(AppModel.self) private var model
     @State private var reportsNews = false
@@ -17,7 +16,11 @@ struct MyReportsScreen: View {
                 )
             }
             ForEach(model.reports) { report in
-                NavigationLink(value: report.id) {
+                // A view link, like the one that opened this screen: a value link would reset the
+                // stack's path and drop this screen, so the tap landed back on Profile.
+                NavigationLink {
+                    ReportDetailView(reportId: report.id)
+                } label: {
                     ReportRow(report: report)
                 }
             }

@@ -77,3 +77,20 @@ def test_reasons_use_names_not_ids(client, anonymous):
     assert "Matches your interest in city life" in texts
     assert not any("(linnanmaa)" in t or "cityLife" in t for t in texts)
     assert any("لینامآ" in r["fa"] for r in reasons)
+
+
+def test_a_place_seen_five_times_is_followed(client, anonymous):
+    headers, uid = onboard(client, anonymous, ["transport"])
+    _, stories = ranked(client, headers)
+    in_tuira = [s["id"] for s in stories if s["placeId"] == "tuira"]
+    assert in_tuira
+    opens = [event(uid, "open", storyId=in_tuira[i % len(in_tuira)], context={"screen": "story"}) for i in range(4)]
+    assert client.post("/v1/events", json=opens, headers=headers).status_code == 202
+    assert "tuira" not in client.get("/v1/profile", headers=headers).json()["followedPlaceIds"]
+    tap = event(uid, "placeChipTap", placeId="tuira", context={"screen": "map"})
+    assert client.post("/v1/events", json=[tap], headers=headers).status_code == 202
+    profile = client.get("/v1/profile", headers=headers).json()
+    assert profile["followedPlaceIds"] == ["linnanmaa", "tuira"]
+    # Followed places rank higher, with their reason.
+    feed, _ = ranked(client, headers)
+    assert any(r["en"] == "From a place you follow (Tuira)" for item in feed["items"] for r in item["reasons"])

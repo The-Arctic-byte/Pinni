@@ -106,7 +106,10 @@ def post_events(request: Request, conn: Conn, user: CurrentUser, body: list = Bo
             raise forbidden(f"[{i}] events can only be uploaded for yourself")
     with conn:
         accepted = [e for e in body if db.add_event(conn, e)]
+        followed = ranking.follow_seen_places(conn, user["id"]) if accepted else []
     stores.events_added(request, accepted)
+    if followed:
+        stores.profile_changed(request, db.get_doc(conn, "profiles", user["id"]))
     return {"accepted": len(accepted), "duplicates": len(body) - len(accepted)}
 
 
