@@ -147,6 +147,21 @@ final class AppModel {
         }
     }
 
+    /// Pull to refresh: sends the events still queued, then asks for the feed again, ranked with them.
+    func refreshFeed() async {
+        await flushEvents()
+        do {
+            let page = try await service.feed(for: userId)
+            let loaded = try await service.stories(ids: page.items.map(\.storyId))
+            let loadedLearned = try await service.learned(for: userId)
+            feed = page
+            stories = Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, $0) })
+            learned = loadedLearned
+        } catch {
+            noteUnreachableAPI()
+        }
+    }
+
     #if DEBUG
     /// Saves the debug API URL and loads it now. An empty URL goes back to the sample news.
     func applyAPIBaseURL(_ raw: String) async {

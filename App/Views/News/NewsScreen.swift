@@ -35,6 +35,7 @@ struct NewsScreen: View {
                 StoryRow(story: entry.story, item: entry.item, language: model.contentLanguage)
             }
         }
+        .refreshable { await model.refreshFeed() }
     }
 }
 
