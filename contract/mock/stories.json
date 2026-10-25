@@ -10,7 +10,7 @@
         "lat": 65.131,
         "lon": 25.735
       },
-      "radiusMeters": 600
+      "radiusMeters": 0
     },
     "category": "safety",
     "tags": [
@@ -842,7 +842,7 @@
         "lat": 65.129,
         "lon": 25.741
       },
-      "radiusMeters": 100
+      "radiusMeters": 0
     },
     "category": "transport",
     "tags": [
@@ -912,7 +912,7 @@
         "lat": 65.0124,
         "lon": 25.465
       },
-      "radiusMeters": 220
+      "radiusMeters": 0
     },
     "category": "safety",
     "tags": [
@@ -1725,7 +1725,7 @@
         "lat": 65.061,
         "lon": 25.472
       },
-      "radiusMeters": 300
+      "radiusMeters": 0
     },
     "category": "housing",
     "tags": [
@@ -2084,7 +2084,7 @@
         "lat": 65.078,
         "lon": 25.53
       },
-      "radiusMeters": 300
+      "radiusMeters": 0
     },
     "category": "health",
     "tags": [
@@ -3325,7 +3325,7 @@
         "lat": 65.025,
         "lon": 25.4
       },
-      "radiusMeters": 2000
+      "radiusMeters": 0
     },
     "category": "environment",
     "tags": [
@@ -4122,7 +4122,7 @@
         "lat": 66.0,
         "lon": 26.0
       },
-      "radiusMeters": 50000
+      "radiusMeters": 0
     },
     "category": "environment",
     "tags": [

@@ -164,9 +164,10 @@ def test_taking_back_a_like(client, anonymous):
 
 
 def test_every_story_is_a_pin(client, login, valid):
-    """Product decision: no area circles on the map; the app draws any radiusMeters > 0 as one."""
+    """Product decision: no area circles on the map; the app draws any radiusMeters > 0 as one.
+    Neither the mock data the app ships with nor anything the API serves has a radius."""
     mock = json.loads((CONTRACT / "mock" / "stories.json").read_text(encoding="utf-8"))
-    assert any(s.get("location", {}).get("radiusMeters", 0) > 0 for s in mock)
+    assert all(s.get("location", {}).get("radiusMeters", 0) == 0 for s in mock)
     headers = login("admin")
     stories = client.get("/v1/stories", params={"ids": ",".join(s["id"] for s in mock[:100])}, headers=headers).json()
     assert stories and all(s["location"]["radiusMeters"] == 0 for s in stories if "location" in s)
