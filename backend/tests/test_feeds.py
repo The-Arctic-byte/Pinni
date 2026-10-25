@@ -70,3 +70,37 @@ def test_live_news_takes_down_sample_news(app, client, login, monkeypatch):
     status = {i["id"]: i["status"] for i in client.get("/v1/admin/agent/stories", headers=admin).json()}
     assert status[kept] == "published"
     assert all(status[s] == "rejected" for s in samples[1:])
+
+
+DATE = __import__("re").compile(r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(Z|[+-]\d\d:\d\d)$")
+
+
+def dates(value, key=""):
+    if isinstance(value, dict):
+        for k, v in value.items():
+            yield from dates(v, k)
+    elif isinstance(value, list):
+        for v in value:
+            yield from dates(v, key)
+    elif isinstance(value, str) and (key == "at" or key.endswith("At")):
+        yield key, value
+
+
+def test_every_time_the_app_reads_is_whole_seconds(app, client, login, monkeypatch):
+    """The app's ISO 8601 decoder fails on fractions of a second, and one bad story stops the
+    whole feed from loading."""
+    monkeypatch.setattr(feeds, "read_all", lambda p, *a: feeds.parse(feeds.FEEDS[0], YLE.read_bytes(), p, now=NOW))
+    state = app.state
+    conn = newsroom.db.connect(state.settings.db_path)
+    newsroom.run(conn, state.contract, state.settings)
+    newsroom.run(conn, state.contract, type(state.settings)(**{**state.settings.__dict__, "agent_live": True}))
+    matti, mira = login("matti"), login("mira")
+    report = client.post("/v1/reports", json={"kind": "newsTip", "category": "cityLife", "text": "The Tuira sauna opens again."},
+                         headers=matti).json()
+    client.get(f"/v1/admin/reports/{report['id']}", headers=mira)
+    client.post(f"/v1/admin/reports/{report['id']}/decision", json={"action": "sendBack"}, headers=mira)
+    ids = [s["id"] for s in newsroom.db.docs(conn, "SELECT doc FROM stories")]
+    stories = client.get("/v1/stories", params={"ids": ",".join(ids[:100])}, headers=mira).json()
+    stories += client.get("/v1/stories", params={"ids": ",".join(ids[100:])}, headers=mira).json() if ids[100:] else []
+    bad = [(s["id"], k, v) for s in stories for k, v in dates(s) if not DATE.match(v)]
+    assert not bad, bad[:5]

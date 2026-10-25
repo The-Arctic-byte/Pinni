@@ -28,7 +28,7 @@ def _whole_seconds(value):
     if isinstance(value, dict):
         out = {}
         for k, v in value.items():
-            if k.endswith("At") and isinstance(v, str):
+            if (k == "at" or k.endswith("At")) and isinstance(v, str):
                 try:
                     v = datetime.fromisoformat(v).isoformat(timespec="seconds")
                 except ValueError:
@@ -81,6 +81,20 @@ def fit_for_the_app(story: dict) -> None:
         story["title"].pop(lang)
     story["translations"] = [t for t in story.get("translations", []) if t["language"] not in fake]
     story["label"] = {lang: short_label(text) for lang, text in story["title"].items()}
+
+
+def stories_in_whole_seconds(conn: sqlite3.Connection, contract: Contract) -> int:
+    """At startup: stories stored with microseconds (the agent's timeline entries were missed
+    before) would stop the app from reading the whole feed."""
+    changed = 0
+    with conn:
+        for story in db.docs(conn, "SELECT doc FROM stories"):
+            fixed = _whole_seconds(story)
+            if fixed != story:
+                contract.check("story.schema.json", fixed)
+                db.put_story(conn, fixed)
+                changed += 1
+    return changed
 
 
 def unreviewed_english(story: dict) -> None:
