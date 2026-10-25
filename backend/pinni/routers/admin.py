@@ -166,13 +166,26 @@ def decide_story(request: Request, story_id: str, conn: Conn, user: Editor, body
     now = db.now()
     if action == "keepAsLead":
         raise ApiError(422, "invalid", "keepAsLead only applies to reports")
+    report_id = story.get("community", {}).get("reportId")
+    if action == "sendBack" and report_id and story["status"] in ("inReview", "draft"):
+        # A story the agent wrote from a report: it writes it again now, from the report.
+        from .. import newsroom  # here, not at the top: it loads the agent
+
+        report = _get_report(conn, report_id)
+        place = _nearest_place(conn, report.get("location"))
+        rewritten = newsroom.draft_from_report(conn, request.app.state.contract, request.app.state.settings,
+                                               report, place["id"])
+        with conn:
+            db.audit(conn, _actor(user), "route", "sendBack" + (f": {note}" if note else ""), story_id=story_id)
+        if rewritten is None:
+            return story
+        stores.story_changed(request, rewritten)
+        return rewritten
     if action == "approve":
         problems = publish_problems(story)
         if problems:
             raise ApiError(409, "notPublishable", "; ".join(problems))
-        story["status"] = "published"
-        story["verification"] = {"verifiedBy": user.get("displayName", user["id"]), "verifiedAt": now}
-        story.setdefault("publishedAt", now)
+        story = _approved(story, user, now)
     elif action == "reject":
         story["status"] = "rejected"
     else:  # sendBack: back to the agent
@@ -195,6 +208,25 @@ def decide_story(request: Request, story_id: str, conn: Conn, user: Editor, body
             _notify(conn, report["reporterId"], "reportPublished", report, story_id)
     stores.story_changed(request, story)
     return story
+
+
+def _approved(story: dict, editor: dict, now: str) -> dict:
+    """Published, verified by the editor, who read the English version to approve it."""
+    name = editor.get("displayName", editor["id"])
+    story = dict(story, status="published", verification={"verifiedBy": name, "verifiedAt": now})
+    story.setdefault("publishedAt", now)
+    story["translations"] = [{"language": "en", "tier": 1, "reviewedBy": name} if t["language"] == "en" else t
+                             for t in story["translations"]]
+    return story
+
+
+def _drop_draft(conn, editor: dict, draft: dict | None, now: str) -> None:
+    """The agent's story from a report that will not be published goes with it."""
+    if draft is None:
+        return
+    db.put_story(conn, dict(draft, status="rejected", updatedAt=now))
+    db.audit(conn, _actor(editor), "review", "Dropped with its report", story_id=draft["id"],
+             report_id=draft["community"]["reportId"])
 
 
 def _nearest_place(conn, location: dict | None) -> dict:
@@ -282,19 +314,43 @@ def decide_report(request: Request, report_id: str, conn: Conn, user: Editor, bo
     c = request.app.state.contract
     now = db.now()
     story = None
+    from .. import newsroom  # here, not at the top: it loads the agent
+
+    if action == "sendBack" and report["kind"] == "newsTip" and not report["sensitive"]:
+        # The agent writes the tip up as a story for this queue; the report stays in review.
+        place = _nearest_place(conn, report.get("location"))
+        story = newsroom.draft_from_report(conn, c, request.app.state.settings, report, place["id"])
+        if story is None:
+            note = (note + " " if note else "") + "(The agent could not write a story from it.)"
+    draft = newsroom.report_draft(conn, report_id)
     with conn:
         if action == "sendBack":
-            # To the agent for more work; the report stays in review.
+            # A problem report or a sensitive one stays with the editor: the agent never publishes
+            # those, and a sensitive report never becomes a story.
             status, notice = None, None
         elif action == "reject":
             status, notice = "rejected", "reportRejected"
+            _drop_draft(conn, user, draft, now)
         elif action == "keepAsLead" or report["sensitive"]:
             # A sensitive report is never published, even when approved.
             status, notice = "editorLead", "reportEditorLead"
+            _drop_draft(conn, user, draft, now)
         elif report["kind"] == "problem":
             # The editor fixed the story the reader flagged.
             report["resultStoryId"] = report["storyId"]
             status, notice = "edited", "reportCorrected"
+        elif draft is not None:
+            # The agent wrote it up: publishing the report publishes that story.
+            problems = publish_problems(draft)
+            if problems:
+                raise ApiError(409, "notPublishable", "; ".join(problems))
+            story = _approved(draft, user, now)
+            c.check("story.schema.json", story)
+            db.put_story(conn, story)
+            db.audit(conn, _actor(user), "publish", "Published the agent's story from community report",
+                     story_id=story["id"], report_id=report_id)
+            report["resultStoryId"] = story["id"]
+            status, notice = "published", "reportPublished"
         else:
             story = story_from_report(conn, report, user)
             c.check("story.schema.json", story)

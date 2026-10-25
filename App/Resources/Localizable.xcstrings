@@ -2578,6 +2578,28 @@
         }
       }
     },
+    "Published by %@ · %@" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "منتشرشده توسط %1$@ · %2$@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Julkaisija: %1$@ · %2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Publicerad av %1$@ · %2$@"
+          }
+        }
+      }
+    },
     "Reached %lld people" : {
       "localizations" : {
         "fa" : {
@@ -4380,6 +4402,28 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Skriv i kanalen"
+          }
+        }
+      }
+    },
+    "Written by AI from a news site, not checked by an editor" : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "نوشته‌شده با هوش مصنوعی از یک سایت خبری، بدون بررسی ویراستار"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tekoälyn kirjoittama uutissivuston pohjalta, toimittaja ei ole tarkistanut"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Skriven av AI från en nyhetssajt, inte granskad av en redaktör"
           }
         }
       }

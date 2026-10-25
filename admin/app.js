@@ -7,6 +7,8 @@ const KIND_LABEL = { agentDraft: "Agent draft", communityReport: "Community repo
 
 let token = null;
 let selected = null;
+// Report id -> queue item of the story the agent wrote from it, from the last queue load.
+let draftOf = {};
 // Which list the left column shows: the review queue, or everything the agent wrote.
 let mode = "queue";
 const reload = () => (mode === "agent" ? loadAgentNews() : loadQueue());
@@ -118,12 +120,18 @@ async function loadQueue() {
   // Agent drafts show their English title; the queue item itself only carries the id.
   const draftIds = items.filter((i) => i.kind === "agentDraft").map((i) => i.id);
   const titles = {};
+  draftOf = {};
   if (draftIds.length) {
     const stories = await api("GET", `/v1/stories?ids=${draftIds.map(encodeURIComponent).join(",")}`).catch(() => []);
-    for (const s of stories) titles[s.id] = s.title.en;
+    for (const s of stories) {
+      titles[s.id] = s.title.en;
+      // A story the agent wrote from a reader's report ("Send to agent").
+      const reportId = s.community?.reportId;
+      if (reportId) draftOf[reportId] = items.find((i) => i.id === s.id && i.kind === "agentDraft");
+    }
   }
   for (const item of items) {
-    const li = el("li", { onclick: () => open(item, li) },
+    const li = el("li", { onclick: () => open(item, li), "data-id": item.id },
       el("span", { class: "title" }, titles[item.id] || item.id),
       el("span", { class: "badges" }, badge(KIND_LABEL[item.kind]), item.risk !== "none" ? badge(`${item.risk} risk`, item.risk) : null),
       el("span", { class: "muted" }, when(item.createdAt)));
@@ -235,6 +243,8 @@ function showStory(story, item) {
       story.risk !== "none" ? badge(`${story.risk} risk`, story.risk) : null,
       story.isOpinion ? badge("opinion") : null),
     el("div", { class: "meta" }, tiers),
+    story.community && story.status === "inReview"
+      ? el("p", { class: "muted" }, `Written by the agent from reader report ${story.community.reportId}. Publishing it also publishes the report and tells the reader.`) : null,
     story.risk === "red" && story.translations.some((t) => t.tier === 3)
       ? el("p", { class: "error" }, "Red-risk: every tier-3 translation must be checked before this can be published. ",
         el("button", { onclick: () => checkTranslations(story, item) }, "I checked the translations")) : null,
@@ -279,6 +289,8 @@ async function checkTranslations(story, item) {
 
 function showReport(report, story, item) {
   const loc = report.location;
+  const draft = draftOf[report.id];
+  const agentCanWrite = report.kind === "newsTip" && !report.sensitive;
   fill($("#detail"), 
     el("h2", {}, report.kind === "problem" ? "Reader flag on a story" : "News tip from a reader"),
     el("div", { class: "meta" },
@@ -292,12 +304,19 @@ function showReport(report, story, item) {
       el("a", { href: `https://www.openstreetmap.org/?mlat=${loc.coordinate.lat}&mlon=${loc.coordinate.lon}#map=16/${loc.coordinate.lat}/${loc.coordinate.lon}`, target: "_blank", rel: "noopener" }, "map")) : null,
     story ? el("div", {}, el("h3", {}, "About this story"), el("p", { dir: "auto" }, `${story.title.en} (${story.id})`)) : null,
     report.sensitive ? el("p", { class: "error" }, "Sensitive: check with an official source before publishing.") : null,
+    draft ? el("div", { class: "decision card" },
+      el("h3", {}, "The agent wrote a story from this report"),
+      el("p", { class: "muted" }, "It waits in this queue. Publishing the report publishes that story; read and edit it first."),
+      el("button", { onclick: () => open(draft, [...document.querySelectorAll(".queue li")].find((li) => li.dataset.id === draft.id)) },
+        "Open the agent's story")) : null,
     trail(item),
     decision([
       // Sensitive reports are never published: approving one only keeps it as a lead.
-      report.sensitive ? null : ["approve", report.kind === "problem" ? "Mark story as fixed" : "Publish", "primary"],
+      report.sensitive ? null : ["approve", report.kind === "problem" ? "Mark story as fixed"
+        : draft ? "Publish the agent's story" : "Publish the reader's text", "primary"],
       ["keepAsLead", "Keep as editor lead"],
-      ["sendBack", "Send to agent"],
+      // The agent writes up news tips only; sensitive ones never become stories.
+      agentCanWrite ? ["sendBack", draft ? "Ask the agent to write it again" : "Send to agent (it writes a story)"] : null,
       ["reject", "Reject", "danger"],
     ], (action, note) => api("POST", `/v1/admin/reports/${report.id}/decision`, { action, note })),
   );
@@ -320,7 +339,7 @@ async function loadAgentNews() {
   const live = items.filter((i) => i.status === "published").length;
   $("#queue-count").textContent = items.length ? `${items.length} agent stories · ${live} in the app` : "The agent has written nothing yet";
   for (const item of items) {
-    const li = el("li", { onclick: () => open(item, li) },
+    const li = el("li", { onclick: () => open(item, li), "data-id": item.id },
       el("span", { class: "title" }, item.title),
       el("span", { class: "badges" }, badge(STATUS_LABEL[item.status] || item.status), badge(item.category),
         item.risk !== "none" ? badge(`${item.risk} risk`, item.risk) : null),

@@ -4,7 +4,9 @@ The agent gathers news for what readers asked for: every stored profile goes to 
 gathering (housing provider, student, home place, interests, wanted news, liked categories). News
 read on news sites needs no editor: drafts.save_agent_story publishes it straight away, on the map at
 its place. Only red-risk stories and ones that break the publish rules wait in the editor queue.
-Reader reports never come through here; they always go to the editor desk of their category.
+Reader reports never come through here on their own; they always go to the editor desk of their
+category. An editor can hand one to the agent ("Send to agent"): draft_from_report writes it up as a
+story that waits for that editor's approval, and is never published by the agent.
 
 The agent keeps its own working files in data/agent.db. With PINNI_AGENT_LLM=1 it uses Ollama
 (PINNI_OLLAMA_URL); otherwise it runs its offline heuristics, which need nothing installed."""
@@ -20,7 +22,7 @@ from pinni_agent.mcp.tools.sources import gather_by_user_profile, retrieve_web_i
 from . import db, graph as kg
 from .config import Settings
 from .contract import Contract
-from .drafts import save_agent_story
+from .drafts import AGENT, _whole_seconds, _without_nulls, fit_for_the_app, place_on_map, save_agent_story, unreviewed_english
 
 log = logging.getLogger("pinni.newsroom")
 
@@ -95,3 +97,62 @@ def run(conn: sqlite3.Connection, contract: Contract, settings: Settings,
     log.info("Newsroom round: %s", counts)
     return counts
 
+
+
+COMMUNITY_SOURCE = "Pinni community report"
+HEADLINE_LENGTH = 90
+
+
+def headline(text: str) -> str:
+    """The report's first sentence, as a working title for the agent."""
+    text = " ".join(text.split())
+    first = next((text[:i + 1] for i, ch in enumerate(text) if ch in ".!?" and i > 10), text)
+    return first if len(first) <= HEADLINE_LENGTH else first[:HEADLINE_LENGTH - 1].rstrip() + "…"
+
+
+def report_draft(conn: sqlite3.Connection, report_id: str) -> dict | None:
+    """The agent's open draft (inReview or draft) written from this report, if any."""
+    return next((s for s in db.docs(conn, "SELECT doc FROM stories WHERE status IN ('inReview', 'draft')")
+                 if s.get("community", {}).get("reportId") == report_id), None)
+
+
+def draft_from_report(conn: sqlite3.Connection, contract: Contract, settings: Settings, report: dict,
+                      place_id: str) -> dict | None:
+    """The agent writes a news tip up as a story (title, label, explanation, place, translations it
+    can make). The story is origin community, links the report and waits in the editor queue: an
+    editor approves it, which also publishes the report. None when the agent drops the tip."""
+    item = {"title": headline(report["text"]), "description": report["text"], "source": COMMUNITY_SOURCE,
+            "category": report["category"], "place": place_id}
+    settings.db_path.parent.mkdir(parents=True, exist_ok=True)
+    written = Supervisor(agent_settings(settings)).process_incoming_news([item])
+    if not written:
+        return None
+    story = _whole_seconds(_without_nulls(written[0]))
+    now = db.now()
+    previous = report_draft(conn, report["id"])
+    story.update({
+        "id": previous["id"] if previous else db.new_id("community"),
+        "status": "inReview",
+        "origin": "community",
+        "category": report["category"],
+        "community": {"reportId": report["id"], "confirmations": 0},
+        # The reader's text is the only source; there is no link to give.
+        "sources": [{"name": COMMUNITY_SOURCE, "publishedAt": report["createdAt"]}],
+        "createdAt": previous["createdAt"] if previous else now,
+        "updatedAt": now,
+    })
+    story.pop("location", None)
+    if report.get("location"):
+        # A pin at the centre of the reported area, as for stories published straight from a report.
+        story["location"] = {"coordinate": dict(report["location"]["coordinate"]), "radiusMeters": 0}
+    for key in ("publishedAt", "verification"):
+        story.pop(key, None)
+    place_on_map(conn, story)
+    fit_for_the_app(story)
+    unreviewed_english(story)
+    contract.check("story.schema.json", story)
+    with conn:
+        db.put_story(conn, story)
+        db.audit(conn, AGENT, "explain", "Wrote a draft from the reader's report; it waits for an editor",
+                 story_id=story["id"], report_id=report["id"])
+    return story

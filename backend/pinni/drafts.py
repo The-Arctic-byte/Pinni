@@ -83,6 +83,18 @@ def fit_for_the_app(story: dict) -> None:
     story["label"] = {lang: short_label(text) for lang, text in story["title"].items()}
 
 
+def unreviewed_english(story: dict) -> None:
+    """The agent marks its English as checked by an editor (tier 1, "Aino K.") although no one
+    has read it. Until an editor does, it is machine text: tier 3, no reviewer."""
+    story["translations"] = [{"language": "en", "tier": 3} if t["language"] == "en" else t
+                             for t in story.get("translations", [])]
+
+
+def _touched_by_editor(conn: sqlite3.Connection, story_id: str) -> bool:
+    return conn.execute("SELECT 1 FROM audit WHERE story_id = ? AND actor != ? LIMIT 1",
+                        (story_id, AGENT)).fetchone() is not None
+
+
 def tidy_agent_stories(conn: sqlite3.Connection, contract: Contract) -> int:
     """At startup: bring stories the agent stored before fit_for_the_app existed in line."""
     ids = [r[0] for r in conn.execute("SELECT DISTINCT story_id FROM audit WHERE actor = ? AND story_id IS NOT NULL",
@@ -93,8 +105,11 @@ def tidy_agent_stories(conn: sqlite3.Connection, contract: Contract) -> int:
             story = db.get_doc(conn, "stories", story_id)
             if story is None or story.get("origin") != "agent":
                 continue
-            before = dict(story, location=dict(story.get("location") or {}), title=dict(story["title"]))
+            before = dict(story, location=dict(story.get("location") or {}), title=dict(story["title"]),
+                          translations=list(story.get("translations", [])))
             fit_for_the_app(story)
+            if not _touched_by_editor(conn, story_id):
+                unreviewed_english(story)
             if story != before:
                 contract.check("story.schema.json", story)
                 db.put_story(conn, story)
@@ -113,6 +128,7 @@ def save_agent_story(conn: sqlite3.Connection, contract: Contract, story: dict, 
     story["origin"] = "agent"
     place_on_map(conn, story)
     fit_for_the_app(story)
+    unreviewed_english(story)
     now = db.now()
     wants = publish or story.get("status") == "published"
     if wants and story.get("risk") != "red" and not publish_problems(story):

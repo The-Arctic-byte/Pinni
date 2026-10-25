@@ -162,3 +162,93 @@ def test_older_database_is_upgraded(app, client, login, valid):
     report = client.get("/v1/admin/reports/report-wrong-date", headers=login("mira")).json()
     valid("report.schema.json", report)
     assert [h["status"] for h in report["history"]] == ["sent", "inReview"]
+
+
+def test_send_to_agent_writes_a_story_for_the_editor(client, login, valid):
+    """'Send to agent' on a news tip: the agent writes it up, it waits for the editor, and approving
+    it publishes the report with that story. The agent publishes nothing itself."""
+    matti, mira = login("matti"), login("mira")
+    text = "Bus 4 stop at Linnanmaa is closed because of road works. The temporary stop is 200 m north."
+    report_id = _send(client, matti, kind="newsTip", category="transport", text=text,
+                      location={"coordinate": {"lat": 65.06, "lon": 25.47}, "radiusMeters": 300})
+    client.get(f"/v1/admin/reports/{report_id}", headers=mira)
+    r = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "sendBack"}, headers=mira)
+    assert r.status_code == 200 and r.json()["status"] == "inReview"
+
+    queue = client.get("/v1/admin/queue", headers=mira).json()
+    drafts = [i for i in queue if i["kind"] == "agentDraft"]
+    stories = client.get("/v1/stories", params={"ids": ",".join(i["id"] for i in drafts)}, headers=mira).json()
+    draft = next(s for s in stories if s.get("community", {}).get("reportId") == report_id)
+    valid("story.schema.json", draft)
+    assert draft["status"] == "inReview" and draft["origin"] == "community"
+    assert draft["title"]["en"].startswith("Bus 4 stop at Linnanmaa is closed")
+    assert draft["location"] == {"coordinate": {"lat": 65.06, "lon": 25.47}, "radiusMeters": 0}
+    assert draft["sources"][0]["name"] == "Pinni community report" and "url" not in draft["sources"][0]
+    # No one has read it yet: the agent does not get to say an editor did.
+    assert {"language": "en", "tier": 3} in draft["translations"]
+    trail = next(i for i in drafts if i["id"] == draft["id"])["trail"]
+    assert trail[-1]["actor"] == "agent:supervisor"
+    # Readers do not see it.
+    assert draft["id"] not in {i["storyId"] for i in client.get("/v1/feed?limit=100", headers=matti).json()["items"]}
+
+    # Sending it again rewrites the same draft instead of adding one.
+    client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "sendBack"}, headers=mira)
+    again = client.get("/v1/admin/queue", headers=mira).json()
+    assert sum(i["kind"] == "agentDraft" for i in again) == len(drafts)
+
+    r = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "approve"}, headers=mira)
+    assert r.status_code == 200
+    report = r.json()
+    assert report["status"] == "published" and report["resultStoryId"] == draft["id"]
+    published = client.get(f"/v1/stories/{draft['id']}", headers=matti).json()
+    assert published["status"] == "published" and published["verification"]["verifiedBy"] == "Mira (city desk)"
+    assert {"language": "en", "tier": 1, "reviewedBy": "Mira (city desk)"} in published["translations"]
+    notices = client.get("/v1/notifications", headers=matti).json()
+    assert any(n["kind"] == "reportPublished" and n.get("storyId") == draft["id"] for n in notices)
+
+
+def test_approving_the_agents_story_publishes_the_report(client, login):
+    matti, mira = login("matti"), login("mira")
+    report_id = _send(client, matti, kind="newsTip", category="cityLife", text="The Tuira sauna opens again on Monday.")
+    client.get(f"/v1/admin/reports/{report_id}", headers=mira)
+    client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "sendBack"}, headers=mira)
+    draft = next(s for s in client.get("/v1/admin/agent/stories", headers=mira).json()
+                 if s["id"].startswith("community"))
+    r = client.post(f"/v1/admin/stories/{draft['id']}/decision", json={"action": "approve"}, headers=mira)
+    assert r.status_code == 200
+    report = client.get(f"/v1/reports/{report_id}", headers=matti).json()
+    assert report["status"] == "published" and report["resultStoryId"] == draft["id"]
+
+
+def test_rejecting_a_report_drops_the_agents_story(client, login):
+    matti, mira = login("matti"), login("mira")
+    report_id = _send(client, matti, kind="newsTip", category="cityLife", text="Street lights are out on Pohjantie.")
+    client.get(f"/v1/admin/reports/{report_id}", headers=mira)
+    client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "sendBack"}, headers=mira)
+    client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "reject", "note": "Not news."}, headers=mira)
+    queue = client.get("/v1/admin/queue", headers=mira).json()
+    assert not any(i["id"] == report_id for i in queue)
+    stories = client.get("/v1/admin/agent/stories", headers=mira).json()
+    assert all(s["status"] == "rejected" for s in stories if s["id"].startswith("community"))
+
+
+def test_sensitive_reports_are_not_given_to_the_agent(client, login):
+    matti, mira = login("matti"), login("mira")
+    report_id = _send(client, matti, kind="newsTip", category="safety", text="A man with a knife near the station.")
+    client.get(f"/v1/admin/reports/{report_id}", headers=mira)
+    r = client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "sendBack"}, headers=mira)
+    assert r.status_code == 200 and r.json()["status"] == "inReview"
+    assert not any(s["id"].startswith("community") for s in client.get("/v1/admin/agent/stories", headers=mira).json())
+
+
+def test_send_back_rewrites_the_agents_story(client, login):
+    matti, mira = login("matti"), login("mira")
+    report_id = _send(client, matti, kind="newsTip", category="cityLife", text="The Tuira sauna opens again on Monday.")
+    client.get(f"/v1/admin/reports/{report_id}", headers=mira)
+    client.post(f"/v1/admin/reports/{report_id}/decision", json={"action": "sendBack"}, headers=mira)
+    draft = next(s for s in client.get("/v1/admin/agent/stories", headers=mira).json() if s["id"].startswith("community"))
+    r = client.post(f"/v1/admin/stories/{draft['id']}/decision", json={"action": "sendBack", "note": "Shorter."}, headers=mira)
+    assert r.status_code == 200
+    again = r.json()
+    assert again["id"] == draft["id"] and again["status"] == "inReview"
+    assert again["community"]["reportId"] == report_id
