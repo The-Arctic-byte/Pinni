@@ -39,7 +39,8 @@ struct StoryDetailView: View {
             #endif
             if !language.choices.contains(choice) { choice = language.choices.first ?? .english }
             openedAt = Date()
-            model.opened(story, from: .story)
+            // After the push has started: logging the event saves the queue, which is not needed for the first frame.
+            Task { model.opened(story, from: .story) }
         }
         .onDisappear {
             if let openedAt { model.read(story, for: Date().timeIntervalSince(openedAt)) }
@@ -138,7 +139,15 @@ private struct TrustRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            if let verification = story.verification {
+            if let verification = story.verification, publishedByAgent {
+                Label {
+                    Text("Published by \(verification.verifiedBy) · \(verification.verifiedAt.formatted(.dateTime.day().month()))")
+                } icon: {
+                    Image(systemName: "sparkles")
+                }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+            } else if let verification = story.verification {
                 Label {
                     Text("Verified by \(verification.verifiedBy) · \(verification.verifiedAt.formatted(.dateTime.day().month()))")
                 } icon: {
@@ -158,8 +167,15 @@ private struct TrustRow: View {
         }
     }
 
+    /// News the agent read on a news site and published without an editor: the backend signs it
+    /// "Pinni agent (<source>)" instead of an editor's name.
+    private var publishedByAgent: Bool {
+        story.verification?.verifiedBy.hasPrefix("Pinni agent") == true
+    }
+
     private var origin: LocalizedStringResource {
-        story.origin == .community ? "Community report, checked by an editor" : "AI-assisted draft, checked by an editor"
+        if story.origin == .community { return "Community report, checked by an editor" }
+        return publishedByAgent ? "Written by AI from a news site, not checked by an editor" : "AI-assisted draft, checked by an editor"
     }
 
     private func tierText(_ translation: Story.Translation) -> LocalizedStringResource {
@@ -328,7 +344,9 @@ private struct BilingualView: View {
 private struct WordOfDayView: View {
     let word: Story.WordOfDay
     let language: String
-    @State private var speaker = AVSpeechSynthesizer()
+    /// Made on the first "Say it": creating a synthesizer takes a moment, and as view state it was
+    /// made each time a story with a word of the day opened, which held up the push.
+    @MainActor private static var speaker: AVSpeechSynthesizer?
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -347,6 +365,8 @@ private struct WordOfDayView: View {
                 let utterance = AVSpeechUtterance(string: word.word)
                 utterance.voice = AVSpeechSynthesisVoice(language: "fi-FI")
                 utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.8
+                let speaker = Self.speaker ?? AVSpeechSynthesizer()
+                Self.speaker = speaker
                 speaker.speak(utterance)
             }
             .labelStyle(.iconOnly)

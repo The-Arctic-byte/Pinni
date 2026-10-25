@@ -131,6 +131,11 @@ struct ReportForm: View {
         Task {
             do {
                 sent = try await model.submit(ready)
+            } catch let error as APINewsService.APIError where error.status == 403 {
+                failure = String(localized: "Only members can send reports. Sign in with an account and try again.")
+            } catch let error as APINewsService.APIError where (400..<500).contains(error.status) {
+                // The server read the report and said what is wrong with it.
+                failure = error.localizedDescription
             } catch {
                 failure = String(localized: "Could not send. Check your connection and try again.")
             }

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pinni Editor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="login" class="login" hidden>
+    <form id="login-form" class="card">
+      <h1>Pinni editor</h1>
+      <p class="muted">For editors and admins.</p>
+      <label>Email <input name="email" type="email" autocomplete="username" required></label>
+      <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <button type="submit" class="primary">Sign in</button>
+      <p id="login-error" class="error" role="alert"></p>
+    </form>
+  </main>
+
+  <div id="app" hidden>
+    <header class="bar">
+      <strong>Pinni editor</strong>
+      <nav>
+        <button data-view="queue" class="tab active">Review queue</button>
+        <button data-view="agent" class="tab">Agent news</button>
+        <button data-view="audit" class="tab">Audit log</button>
+      </nav>
+      <span id="who" class="muted"></span>
+      <button id="sign-out">Sign out</button>
+    </header>
+
+    <section id="queue-view" class="split">
+      <aside>
+        <div class="list-head">
+          <span id="queue-count" class="muted"></span>
+          <button id="run-agent" title="The agent gathers news for readers' profiles and publishes it; red-risk stories join this queue">Run agent</button>
+          <button id="refresh">Refresh</button>
+        </div>
+        <ul id="queue" class="queue"></ul>
+      </aside>
+      <article id="detail" class="detail">
+        <p class="muted">Pick an item from the queue.</p>
+      </article>
+    </section>
+
+    <section id="audit-view" hidden>
+      <table class="audit">
+        <thead><tr><th>When</th><th>Actor</th><th>Step</th><th>Message</th><th>Item</th></tr></thead>
+        <tbody id="audit"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <template id="decision-template">
+    <div class="decision card">
+      <label>Note <textarea name="note" rows="2" placeholder="Shown to the reporter (reports) or the agent (send back)"></textarea></label>
+      <div class="actions"></div>
+      <p class="error" role="alert"></p>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -154,6 +154,10 @@ struct MapScreen: View {
             if let id { open(id) }
         }
         .onChange(of: path) { old, new in
+            #if os(iOS)
+            // A story needs room: a low sheet showed only its first lines.
+            if !new.isEmpty, sheetDetent == .collapsed || sheetDetent == .resting { sheetDetent = .medium }
+            #endif
             if let id = new.last {
                 flyIn(to: id)
             } else if let last = old.last, model.stories[last]?.mapObject != nil {

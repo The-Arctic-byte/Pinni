@@ -20,6 +20,7 @@ final class AppModel {
     }
 
     private static let onboardingKey = "onboarding.completed"
+    private static let personaKey = "persona"
 
     private var service: any NewsService
     private let defaults: UserDefaults
@@ -52,15 +53,22 @@ final class AppModel {
     /// A fresh install is the anonymous new user; the debug switch in Profile picks other mock readers.
     init(service: any NewsService = MockNewsService(), persona: Persona = .newUser, defaults: UserDefaults = .standard) {
         self.service = service
+        // Read the persona through a local. `@Observable` property access needs `self` fully initialized.
         #if DEBUG
-        // `-persona sara` as a launch argument picks a mock reader (screenshots).
-        self.persona = defaults.string(forKey: "persona").flatMap(Persona.init(rawValue:)) ?? persona
+        // The reader picked in Profile, kept across launches; `-persona sara` as a launch argument wins (screenshots).
+        let resolved = defaults.string(forKey: Self.personaKey).flatMap(Persona.init(rawValue:)) ?? persona
         #else
-        self.persona = persona
+        let resolved = persona
         #endif
+        self.persona = resolved
         self.defaults = defaults
-        self.userId = persona.userId
+        self.userId = resolved.userId
+        #if DEBUG
+        // Sara and Matti already have a profile; only the new user starts with onboarding.
+        self.hasCompletedOnboarding = defaults.bool(forKey: Self.onboardingKey) || resolved != .newUser
+        #else
         self.hasCompletedOnboarding = defaults.bool(forKey: Self.onboardingKey)
+        #endif
     }
 
     /// Language stories are shown in. Falls back to English per text when a translation is missing.
@@ -147,6 +155,23 @@ final class AppModel {
         }
     }
 
+    /// Pull to refresh: sends the events still queued, then asks for the feed again, ranked with them.
+    func refreshFeed() async {
+        await flushEvents()
+        do {
+            let page = try await service.feed(for: userId)
+            let loaded = try await service.stories(ids: page.items.map(\.storyId))
+            let loadedLearned = try await service.learned(for: userId)
+            // Places the reader keeps looking at join their followed places on the server.
+            profile = try await service.profile(for: userId)
+            feed = page
+            stories = Dictionary(uniqueKeysWithValues: loaded.map { ($0.id, $0) })
+            learned = loadedLearned
+        } catch {
+            noteUnreachableAPI()
+        }
+    }
+
     #if DEBUG
     /// Saves the debug API URL and loads it now. An empty URL goes back to the sample news.
     func applyAPIBaseURL(_ raw: String) async {
@@ -164,6 +189,7 @@ final class AppModel {
     func switchPersona(to persona: Persona) async {
         guard persona != self.persona else { return }
         self.persona = persona
+        defaults.set(persona.rawValue, forKey: Self.personaKey)
         await load()
     }
 
@@ -188,6 +214,9 @@ final class AppModel {
         defaults.set(true, forKey: Self.onboardingKey)
         hasCompletedOnboarding = true
         persona = .newUser
+        #if DEBUG
+        defaults.set(persona.rawValue, forKey: Self.personaKey)
+        #endif
         await load()
     }
 
@@ -281,12 +310,15 @@ final class AppModel {
         feedback = LocalFeedback()
         saveFeedback()
         record(.profileEdit, detail: ["field": .string("learned"), "reset": .bool(true)], screen: .profile)
+        await refreshFeed()
     }
 
     private func save(_ updated: Profile, detail: [String: JSONValue]) async {
         guard let saved = try? await service.save(updated) else { return }
         profile = saved
         record(.profileEdit, detail: detail, screen: .profile)
+        // The feed is ranked with the profile, so a changed preference shows at once.
+        await refreshFeed()
     }
 
     // MARK: Community

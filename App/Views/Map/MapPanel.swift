@@ -171,6 +171,7 @@ struct MapPanel: View {
             }
         }
         .listStyle(.plain)
+        .refreshable { await model.refreshFeed() }
     }
 }
 

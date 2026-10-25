@@ -1,0 +1,46 @@
+# docker compose -f backend/compose.yaml up --build
+# The backend with the Track B agent inside it (pinni/newsroom.py), Neo4j for the knowledge graph,
+# and Chroma embedded in the data volume. Without Ollama the backend uses its hashing embedder and
+# the agent its offline heuristics; to use a local Ollama, add for example
+#   PINNI_OLLAMA_URL: http://host.docker.internal:11434
+#   PINNI_AGENT_LLM: "true"
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      PINNI_SEED_MOCK: "true"
+      PINNI_DEV_ACCOUNTS: "true"
+      PINNI_NEO4J_URI: bolt://neo4j:7687
+      PINNI_NEO4J_USER: neo4j
+      PINNI_NEO4J_PASSWORD: ${NEO4J_PASSWORD:-pinni-dev-graph}
+      PINNI_CHROMA: /data/chroma
+    volumes:
+      - pinni-data:/data
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+
+  neo4j:
+    image: neo4j:5.26-community
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-pinni-dev-graph}
+    ports:
+      - "7474:7474"   # browser
+      - "7687:7687"   # bolt
+    volumes:
+      - neo4j-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:7474 || exit 1"]
+      interval: 10s
+      retries: 12
+
+volumes:
+  pinni-data:
+  neo4j-data:
