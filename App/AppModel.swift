@@ -296,12 +296,15 @@ final class AppModel {
         feedback = LocalFeedback()
         saveFeedback()
         record(.profileEdit, detail: ["field": .string("learned"), "reset": .bool(true)], screen: .profile)
+        await refreshFeed()
     }
 
     private func save(_ updated: Profile, detail: [String: JSONValue]) async {
         guard let saved = try? await service.save(updated) else { return }
         profile = saved
         record(.profileEdit, detail: detail, screen: .profile)
+        // The feed is ranked with the profile, so a changed preference shows at once.
+        await refreshFeed()
     }
 
     // MARK: Community
