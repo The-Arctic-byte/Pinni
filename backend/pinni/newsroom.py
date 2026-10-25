@@ -17,9 +17,10 @@ import sqlite3
 import pinni_agent.agent  # noqa: F401  (load order, see pinni/recommender.py)
 from pinni_agent.agent.supervisor import Supervisor
 from pinni_agent.config import Settings as AgentSettings
+from pinni_agent.mcp.tools import sources as agent_sources
 from pinni_agent.mcp.tools.sources import gather_by_user_profile, retrieve_web_information
 
-from . import db, graph as kg
+from . import db, feeds, graph as kg
 from .config import Settings
 from .contract import Contract
 from .drafts import AGENT, _whole_seconds, _without_nulls, fit_for_the_app, place_on_map, save_agent_story, unreviewed_english
@@ -65,6 +66,43 @@ def gather(conn: sqlite3.Connection) -> list[dict]:
     return out
 
 
+def as_read(story: dict, by_url: dict[str, dict], places: dict[str, dict]) -> None:
+    """Dates and place as the feed gave them. The agent stamps its sources with the time it read
+    them, and its geocoder puts places it does not know at the centre of Oulu."""
+    item = next((by_url[s["url"]] for s in story.get("sources", []) if s.get("url") in by_url), None)
+    if item is None:
+        return
+    for source in story["sources"]:
+        source["publishedAt"] = item["publishedAt"]
+    story["publishedAt"] = item["publishedAt"]
+    story["placeId"] = item["place"]
+    kind = places.get(item["place"], {}).get("kind")
+    story["scale"] = kind if kind in ("area", "city") else "finland" if item["place"] == "finland" else "world"
+    story.pop("location", None)  # drafts.place_on_map puts area and city stories at the centre of their place
+
+
+SAMPLE_URLS = {i["url"] for pool in (agent_sources.SAMPLE_KALEVA_ITEMS, agent_sources.SAMPLE_CITY_OULU_ITEMS,
+                                      agent_sources.SAMPLE_PSOAS_ITEMS, agent_sources.SAMPLE_CAMPUS_ITEMS)
+               for i in pool if i.get("url")}
+
+
+def retire_samples(conn: sqlite3.Connection) -> int:
+    """Once real news comes in, the agent takes down what it wrote from its sample sources (their
+    links do not exist). Only stories no editor has touched: an editor's decision stays."""
+    retired = 0
+    with conn:
+        for story in db.docs(conn, "SELECT doc FROM stories WHERE status IN ('published', 'inReview')"):
+            if story.get("origin") != "agent" or not any(s.get("url") in SAMPLE_URLS for s in story.get("sources", [])):
+                continue
+            if conn.execute("SELECT 1 FROM audit WHERE story_id = ? AND actor != ? LIMIT 1", (story["id"], AGENT)).fetchone():
+                continue
+            db.put_story(conn, dict(story, status="rejected", updatedAt=db.now()))
+            db.audit(conn, AGENT, "review", "Taken down: written from a sample source, now that real news comes in",
+                     story_id=story["id"])
+            retired += 1
+    return retired
+
+
 def run_round(state) -> dict:
     """A round on its own connection, for the timer in main.py."""
     conn = db.connect(state.settings.db_path)
@@ -78,10 +116,16 @@ def run(conn: sqlite3.Connection, contract: Contract, settings: Settings,
         graph: kg.Graph | None = None, vectors=None) -> dict:
     """One newsroom round. Returns what happened, for the admin page and the log."""
     settings.db_path.parent.mkdir(parents=True, exist_ok=True)
-    items = gather(conn)
+    places = {p["id"]: p for p in db.docs(conn, "SELECT doc FROM places")}
+    live = feeds.read_all(list(places.values())) if settings.agent_live else []
+    items = live or gather(conn)
     stories = Supervisor(agent_settings(settings)).process_incoming_news(items)
-    counts = {"gathered": len(items), "written": len(stories), "queued": 0, "published": 0, "unchanged": 0}
+    counts = {"gathered": len(items), "written": len(stories), "queued": 0, "published": 0, "unchanged": 0,
+              "live": bool(live)}
+    by_url = {i["url"]: i for i in live}
     for story in stories:
+        if live:
+            as_read(story, by_url, places)
         before = db.get_doc(conn, "stories", story["id"])
         saved = save_agent_story(conn, contract, story, publish=True)
         if before and before["status"] != "draft":
@@ -94,6 +138,8 @@ def run(conn: sqlite3.Connection, contract: Contract, settings: Settings,
                     update(store)
                 except Exception:  # noqa: BLE001  (derived stores catch up on restart)
                     log.exception("Could not index agent story %s", saved["id"])
+    if live:
+        counts["retired"] = retire_samples(conn)
     log.info("Newsroom round: %s", counts)
     return counts
 

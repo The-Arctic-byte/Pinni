@@ -386,8 +386,9 @@ $("#run-agent").addEventListener("click", async (event) => {
   try {
     const r = await api("POST", "/v1/admin/agent/run");
     await reload();
+    const from = r.live ? "read live feeds (Yle News, PSOAS)" : "live feeds unreachable, used its samples";
     $("#queue-count").textContent += r.published || r.queued
-      ? ` · agent: ${r.published} published, ${r.queued} to review` : " · agent: no new news";
+      ? ` · agent ${from}: ${r.published} published, ${r.queued} to review` : ` · agent ${from}: no new news`;
   } catch (err) {
     $("#queue-count").textContent = err.message;
   } finally {

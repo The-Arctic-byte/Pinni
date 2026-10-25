@@ -66,6 +66,7 @@ Turn the dev accounts off with `PINNI_DEV_ACCOUNTS=false` anywhere outside devel
 | `PINNI_EMBED_MODEL` | `bge-m3` | Ollama embedding model (multilingual) |
 | `PINNI_AGENT_EVERY_MINUTES` | `30` | Run the agent at startup and then every N minutes. 0 = only from the editor page |
 | `PINNI_AGENT_LLM` | `false` | Let the agent use Ollama (`PINNI_OLLAMA_URL`, its `PINNI_LLM_MODEL`); otherwise its offline heuristics |
+| `PINNI_AGENT_LIVE` | `true` | Read real RSS feeds (Yle News, PSOAS; `pinni/feeds.py`) instead of the agent's sample sources, and take down the sample news once real news comes in. Falls back to the samples when no feed can be read |
 
 Changing the embedding model empties the vector index; it is rebuilt on the next start.
 

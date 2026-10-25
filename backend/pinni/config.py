@@ -40,6 +40,8 @@ class Settings:
     # the admin page; tests use 0), and whether it may use Ollama (otherwise its offline heuristics).
     agent_every_minutes: float = 0
     agent_llm: bool = False
+    # Read real RSS feeds (pinni/feeds.py) instead of the agent's sample sources. Off in tests.
+    agent_live: bool = False
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -58,4 +60,5 @@ class Settings:
             seed_content=_flag("PINNI_SEED_CONTENT", True),
             agent_every_minutes=float(os.environ.get("PINNI_AGENT_EVERY_MINUTES", "30")),
             agent_llm=_flag("PINNI_AGENT_LLM", False),
+            agent_live=_flag("PINNI_AGENT_LIVE", True),
         )
