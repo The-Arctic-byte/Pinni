@@ -1,12 +1,8 @@
 import SwiftUI
 
 @main struct Pinni: App {
-    #if DEBUG
-    // Test builds start as Sara, a member who can send reports; Profile → Mock data switches readers.
-    @State private var model = AppModel(service: DataSource.current.makeService(), persona: .sara)
-    #else
+    // A first launch is the new user, so onboarding shows. Profile → Mock data switches to Sara or Matti.
     @State private var model = AppModel(service: DataSource.current.makeService())
-    #endif
 
     var body: some Scene {
         WindowGroup {
