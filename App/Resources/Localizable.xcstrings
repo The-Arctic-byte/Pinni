@@ -2182,6 +2182,28 @@
         }
       }
     },
+    "Only members can send reports. Sign in with an account and try again." : {
+      "localizations" : {
+        "fa" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "فقط اعضا می‌توانند گزارش بفرستند. با یک حساب وارد شو و دوباره امتحان کن."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Vain jäsenet voivat lähettää ilmoituksia. Kirjaudu sisään tilillä ja yritä uudelleen."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bara medlemmar kan skicka rapporter. Logga in med ett konto och försök igen."
+          }
+        }
+      }
+    },
     "Only your area is shared, at least 300 m wide, never your exact location." : {
       "localizations" : {
         "fa" : {
